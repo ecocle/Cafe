@@ -5,7 +5,7 @@ export default createBoard({
     name: 'App',
     Board: () => <App />,
     environmentProps: {
-        canvasWidth: 660,
-        canvasHeight: 392
+        canvasWidth: 670,
+        canvasHeight: 424
     }
 });

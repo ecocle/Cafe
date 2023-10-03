@@ -5,4 +5,8 @@ export default createBoard({
     name: 'Coffee',
     Board: () => <Coffee />,
     isSnippet: true,
+    environmentProps: {
+        canvasHeight: 259,
+        canvasWidth: 298
+    }
 });

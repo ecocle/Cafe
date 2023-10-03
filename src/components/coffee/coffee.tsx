@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+// @ts-ignore
 import styles from './coffee.module.scss';
 
 export interface CoffeeProps {
@@ -7,13 +8,7 @@ export interface CoffeeProps {
     price: number;
 }
 
-/**
- * This component was created using Codux's Default new component template.
- * To create custom component templates, see https://help.codux.com/kb/en/article/kb16522
- */
 export const Coffee = ({ className, name, price }: CoffeeProps) => {
-
-
     return (
         <div className={classNames(styles.root, className)}>
             <div className={styles.coffee}>

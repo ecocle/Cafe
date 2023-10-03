@@ -46,6 +46,7 @@
     transition: all 0.5s;
     cursor: not-allowed;
     margin: 5px;
+    box-shadow: 5.2px 3px 15px black;
     opacity: 0.6;
 }
 
@@ -63,8 +64,9 @@
     cursor: pointer;
     margin: 0.2vw;
     top: 0;
-    position: absolute;
     right: 0vw;
+    float: right;
+    direction: ltr;
 }
 
 .button span {
@@ -108,4 +110,19 @@ strong {
     text-align: center;
 }
 
-.home {}
+.home {
+    position: absolute;
+    margin: 0.3vw;
+}
+
+.coffee_show {
+    position: absolute;
+    margin: 0.3px;
+}
+
+.coffeeContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
