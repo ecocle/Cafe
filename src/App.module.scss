@@ -16,33 +16,32 @@
 
 .button {
     display: inline-block;
-    border-radius: 0.8vw;
     background-color: rgb(138, 43, 226);
     border: none;
     color: #FFFFFF;
     text-align: center;
     font-family: Georgia, serif;
-    font-size: 1.5vw;
-    padding: 1.2vw;
-    width: 13vw;
+    font-size: 1.8em;
+    padding: 1em;
+    width: auto;
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
     box-shadow: 5.2px 3px 15px black;
     opacity: 1;
+    border-radius: 0.6em;
 }
 
 .button_disabled {
     display: inline-block;
-    border-radius: 0.8vw;
     background-color: dimgray;
     border: none;
     color: #FFFFFF;
     text-align: center;
     font-family: Georgia, serif;
-    font-size: 1.5vw;
-    padding: 1.2vw;
-    width: 13vw;
+    font-size: 1.8em;
+    padding: 1em;
+    width: auto;
     transition: all 0.5s;
     cursor: not-allowed;
     margin: 5px;
@@ -58,13 +57,13 @@
     color: #FFFFFF;
     text-align: center;
     font-family: Times, "Times New Roman", serif;
-    font-size: 1vw;
-    padding: 0.4vw;
-    width: 4vw;
+    font-size: 0.8em;
+    padding: 0.6em;
+    width: auto;
     cursor: pointer;
-    margin: 0.2vw;
+    margin: 0.3em;
     top: 0;
-    right: 0vw;
+    right: 0;
     float: right;
     direction: ltr;
     position: absolute;
@@ -82,12 +81,12 @@
     position: absolute;
     opacity: 0;
     top: 0;
-    right: -0.6vw;
+    right: -1em;
     transition: 0.5s;
 }
 
 .button:hover span {
-    padding-right: 1.2vw;
+    padding-right: 0.8em;
 }
 
 .button:hover span:after {
@@ -101,8 +100,9 @@
 
 .disclaimer {
     font-family: Tahoma, sans-serif;
-    font-size: 0.8vw;
-    margin: 0px;
+    font-size: 1vw;
+    overflow: hidden;
+    white-space: nowrap;
     display: block;
 }
 
@@ -115,6 +115,7 @@
     font-family: "URW Chancery L", cursive;
     width: 100%;
     text-align: center;
+    font-size: 5em;
 }
 
 .home {
@@ -134,4 +135,12 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+
+.return {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
 }

@@ -1,0 +1,164 @@
+.root {}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s, transform 0.5s;
+}
+
+.popup.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0%);
+}
+
+.popup-inner {
+    position: absolute;
+    background-color: slategrey;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    width: auto;
+    height: auto;
+    animation: slide-in 0.3s, fade-in 0.5s;
+}
+
+.popup.closed {
+    opacity: 0;
+    visibility: hidden;
+    animation: slide-out 0.5s, fade-out 0.5s;
+}
+
+@keyframes slide-out {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    cursor: pointer;
+    text-align: end;
+    right: 0.5em;
+    background-color: mediumblue;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    top: 0.5em;
+}
+
+.close-btn:hover {
+    background-color: darkblue;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.option-group {
+    margin-bottom: 10px;
+}
+
+.option-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.option {
+    margin-right: 20px;
+}
+
+.order-btn {
+    background-color: #4caf50;
+    border: none;
+    color: #fff;
+    padding: 0.5em;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 1em 0em 0em;
+}
+
+.order-btn:hover {
+    background-color: #45a049;
+}
+
+span.no-line-break {
+    white-space: nowrap;
+}
+
+.price {
+    position: relative;
+    text-align: start;
+    direction: ltr;
+}
+
+.name {
+    position: absolute;
+    cursor: pointer;
+    text-align: start;
+    top: 0.5em;
+    left: 0.5em;
+    font-size: 14px;
+    direction: ltr;
+}

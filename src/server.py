@@ -4,16 +4,6 @@ from flask import Flask, send_from_directory
 
 app = Flask(__name__, static_folder='dist', static_url_path='')
 
-# Create a connection to your MySQL database
-connection = pymysql.connect(
-    host='119.29.236.82',
-    user='root',
-    password='Shawn090209!',
-    db='Coffee_Orders',
-    charset='utf8mb4',
-    cursorclass=pymysql.cursors.DictCursor
-)
-
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -25,42 +15,45 @@ def serve(path):
 
 
 @app.route('/api/dataCoffee', methods=['GET'])
-def get_data():
-    try:
-        with connection.cursor() as cursor:
-            # Execute your SQL query
-            sql = "SELECT * FROM Coffee"
-            cursor.execute(sql)
-            result = cursor.fetchall()
-            return {'data': result}
-    except Exception as e:
-        return {'error': str(e)}
+def get_data_coffee():
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
+    cursor = conn.cursor()
+    sql = "SELECT * FROM Coffee"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {'data': result}
 
 
 @app.route('/api/dataCaffeineFree', methods=['GET'])
-def get_data():
-    try:
-        with connection.cursor() as cursor:
-            # Execute your SQL query
-            sql = "SELECT * FROM Caffeine_free"
-            cursor.execute(sql)
-            result = cursor.fetchall()
-            return {'data': result}
-    except Exception as e:
-        return {'error': str(e)}
+def get_data_caffeine_free():
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
+    cursor = conn.cursor()
+    sql = "SELECT * FROM Caffeine_free"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {'data': result}
 
 
 @app.route('/api/dataBreakfast', methods=['GET'])
-def get_data():
-    try:
-        with connection.cursor() as cursor:
-            # Execute your SQL query
-            sql = "SELECT * FROM Breakfast"
-            cursor.execute(sql)
-            result = cursor.fetchall()
-            return {'data': result}
-    except Exception as e:
-        return {'error': str(e)}
+def get_data_breakfast():
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
+    cursor = conn.cursor()
+    sql = "SELECT * FROM Breakfast"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {'data': result}
 
 
 if __name__ == '__main__':

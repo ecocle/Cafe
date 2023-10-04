@@ -12,6 +12,8 @@ function App() {
         coffee: false,
         caffeineFree: false,
         breakfast: false,
+        main: true,
+        return: false,
     });
 
     useEffect(() => {
@@ -23,13 +25,17 @@ function App() {
                 return response.json();
             })
             .then(data => {
-                console.log(data.data);
-                setCoffeeData(data.data);
+                const formattedData = data.data.map((item: [string, string]) => ({
+                    Name: item[0],
+                    Price: Number(item[1])
+                }));
+                setCoffeeData(formattedData);
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     }, []);
+
 
     useEffect(() => {
         fetch('http://192.168.3.8:8080/api/dataCaffeineFree')
@@ -40,8 +46,11 @@ function App() {
                 return response.json();
             })
             .then(data => {
-                console.log(data.data);
-                setCaffeineFreeData(data.data);
+                const formattedData = data.data.map((item: [string, string]) => ({
+                    Name: item[0],
+                    Price: Number(item[1])
+                }));
+                setCaffeineFreeData(formattedData);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -57,8 +66,11 @@ function App() {
                 return response.json();
             })
             .then(data => {
-                console.log(data.data);
-                setBreakfastData(data.data);
+                const formattedData = data.data.map((item: [string, string]) => ({
+                    Name: item[0],
+                    Price: Number(item[1])
+                }));
+                setBreakfastData(formattedData);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -71,6 +83,8 @@ function App() {
             coffee: !prevState.coffee,
             caffeineFree: false,
             breakfast: false,
+            main: false,
+            return: true,
         }));
     };
 
@@ -80,65 +94,103 @@ function App() {
             coffee: false,
             caffeineFree: !prevState.caffeineFree,
             breakfast: false,
+            main: false,
+            return: true,
         }));
     };
 
-    const showBreakfast = () => {
+    function showBreakfast() {
         setShowStates((prevState) => ({
             ...prevState,
             coffee: false,
             caffeineFree: false,
             breakfast: !prevState.breakfast,
+            main: false,
+            return: true,
+        }));
+    }
+
+    const showMain = () => {
+        setShowStates((prevState) => ({
+            ...prevState,
+            coffee: false,
+            caffeineFree: false,
+            breakfast: false,
+            main: true,
+            return: false,
         }));
     };
 
     return (
         <div className={styles.App}>
-            <div className={styles.home}>
-                {showStates.coffee && (
+            {showStates.main && (
+                <div className={styles.home}>
+                    <div>
+                        <div className={styles.top}>
+                            <button className={styles.button_login} name="login" type="button">
+                                login
+                            </button>
+                            <strong className={styles.disclaimer}>
+                                THIS WEBSITE IS IN EARLY BETA, WHICH MEANS THERE WILL BE ISSUES. So if you have any suggestions/bug reports etc, contact me(shawn).
+                            </strong>
+                        </div>
+                        <h1 className={styles.title}>My Cafe</h1>
+                        <div className={styles.buttons}>
+                            <button className={styles.button} onClick={showCoffee}>
+                                <span>Coffee</span>
+                            </button>
+                            <button className={styles.button} onClick={showCaffeineFree}>
+                                <span>Caffeine free</span>
+                            </button>
+                            <button className={styles.button} onClick={showBreakfast}>
+                                <span>Breakfast</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {showStates.coffee && (
+                <div>
+                    <div className={styles.return}>
+                        <button className={styles.button} onClick={showMain}>
+                            <span>Return</span>
+                        </button>
+                    </div>
                     <div className={styles.coffeeContainer}>
                         {coffeeData.map((coffee, index) => (
                             <Coffee key={index} Name={coffee.Name} Price={coffee.Price} />
                         ))}
                     </div>
-                )}
-                {showStates.caffeineFree && (
-                    <div>
-                        {caffeineFreeData.map((CaffeineFree, index) => (
-                            <Coffee key={index} Name={CaffeineFree.Name} Price={CaffeineFree.Price} />
-                        ))}
-                    </div>
-                )}
-                {showStates.breakfast && (
-                    <div>
-                        {breakfastData.map((Breakfast, index) => (
-                            <Coffee key={index} Name={Breakfast.Name} Price={Breakfast.Price} />
-                        ))}
-                    </div>
-                )}
-                <div>
-                    <div className={styles.top}>
-                        <button className={styles.button_login} name="login" type="button">
-                            login
-                        </button>
-                        <strong className={styles.disclaimer}>
-                            THIS WEBSITE IS IN EARLY BETA, WHICH MEANS THERE WILL BE ISSUES. So if you have any suggestions/bug reports etc, contact me(shawn).
-                        </strong>
-                    </div>
-                    <h1 className={styles.title}>My Cafe</h1>
-                    <div className={styles.buttons}>
-                        <button className={styles.button} onClick={showCoffee}>
-                            <span>Coffee</span>
-                        </button>
-                        <button className={styles.button} onClick={showCaffeineFree}>
-                            <span>Caffeine free</span>
-                        </button>
-                        <button className={styles.button} onClick={showBreakfast}>
-                            <span>Breakfast</span>
-                        </button></div>
                 </div>
-            </div>
-        </div>
+            )}
+            {showStates.caffeineFree && (
+                <div>
+                    <div className={styles.return}>
+                        <button className={styles.button} onClick={showMain}>
+                            <span>Return</span>
+                        </button>
+                    </div>
+                    <div className={styles.coffeeContainer}>
+                        {caffeineFreeData.map((caffeineFree, index) => (
+                            <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price} />
+                        ))}
+                    </div>
+                </div>
+            )}
+            {showStates.breakfast && (
+                <div>
+                    <div className={styles.return}>
+                        <button className={styles.button} onClick={showMain}>
+                            <span>Return</span>
+                        </button>
+                    </div>
+                    <div className={styles.coffeeContainer}>
+                        {breakfastData.map((breakfast, index) => (
+                            <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} />
+                        ))}
+                    </div>
+                </div>
+            )}</div>
     );
 }
 
