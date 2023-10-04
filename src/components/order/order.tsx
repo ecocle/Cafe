@@ -29,6 +29,18 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
             newPrice += 3;
         }
 
+        selectedToppings.forEach(topping => {
+            if (topping === 'oatmilkSubstitution') {
+                newPrice += 1;
+            } else if (topping === 'boba') {
+                newPrice += 1;
+            } else if (topping === 'extraExpressoShot') {
+                newPrice += 2;
+            } else if (topping === 'redBean') {
+                newPrice += 1;
+            }
+        });
+
         setPrice(newPrice);
     };
 
@@ -39,20 +51,23 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
 
         setSelectedToppings(updatedToppings);
 
-            let newPrice = originalPrice;
+        let newPrice = originalPrice;
 
-            updatedToppings.forEach(topping => {
-                if (topping === 'oatmilkSubstitution') {
-                    newPrice += 1;
-                } else if (topping === 'boba') {
-                    newPrice += 1;
-                } else if (topping === 'extraExpressoShot') {
-                    newPrice += 2;
-                } else if (topping === 'redBean') {
-                    newPrice += 1;
-                }
+        if (selectedSize === 'large') {
+            newPrice += 3;
+        }
 
-            });
+        updatedToppings.forEach(topping => {
+            if (topping === 'oatmilkSubstitution') {
+                newPrice += 1;
+            } else if (topping === 'boba') {
+                newPrice += 1;
+            } else if (topping === 'extraExpressoShot') {
+                newPrice += 2;
+            } else if (topping === 'redBean') {
+                newPrice += 1;
+            }
+        });
 
         setPrice(newPrice);
     };
