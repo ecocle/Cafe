@@ -1,0 +1,29 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    height: auto;
+    width: auto;
+    margin: 1vw;
+}
+
+.coffee {
+    display: inline;
+    overflow: visible;
+    position: static;
+    background-color: dimgrey;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: cover;
+    background-attachment: scroll;
+    background-origin: padding-box;
+    background-clip: border-box;
+    box-shadow: 2.83px 2.83px 12px black;
+    margin: 0px;
+}
+
+.text {
+    margin: 0.3vw;
+    padding: 0vw;
+}

@@ -51,7 +51,7 @@
 }
 
 .button_login {
-    display: inline-block;
+    display: block;
     border-radius: 0.8vw;
     background-color: darkgreen;
     border: none;
@@ -67,6 +67,7 @@
     right: 0vw;
     float: right;
     direction: ltr;
+    position: absolute;
 }
 
 .button span {
@@ -94,9 +95,15 @@
     right: 0;
 }
 
-strong {
+.top {
+    text-align: start;
+}
+
+.disclaimer {
     font-family: Tahoma, sans-serif;
     font-size: 0.8vw;
+    margin: 0px;
+    display: block;
 }
 
 .buttons {
@@ -111,8 +118,10 @@ strong {
 }
 
 .home {
-    position: absolute;
+    position: relative;
     margin: 0.3vw;
+    display: block;
+    text-align: center;
 }
 
 .coffee_show {
