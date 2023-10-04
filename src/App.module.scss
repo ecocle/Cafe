@@ -1,22 +1,17 @@
-@keyframes logo-spin {
+@media (prefers-color-scheme: dark) {
+  @keyframes logo-spin {
     from {
-        transform: rotate(0deg);
+      transform: rotate(0deg);
     }
 
     to {
-        transform: rotate(360deg);
+      transform: rotate(360deg);
     }
-}
+  }
 
-@media (prefers-reduced-motion: no-preference) {
-    a:nth-of-type(2) .logo {
-        animation: logo-spin infinite 20s linear;
-    }
-}
-
-.button {
+  .button {
     display: inline-block;
-    background-color: rgb(138, 43, 226);
+    background-color: blueviolet;
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -30,9 +25,9 @@
     box-shadow: 5.2px 3px 15px black;
     opacity: 1;
     border-radius: 0.6em;
-}
+  }
 
-.button_disabled {
+  .button_disabled {
     display: inline-block;
     background-color: dimgray;
     border: none;
@@ -47,9 +42,9 @@
     margin: 5px;
     box-shadow: 5.2px 3px 15px black;
     opacity: 0.6;
-}
+  }
 
-.button_login {
+  .button_login {
     display: block;
     border-radius: 0.8vw;
     background-color: darkgreen;
@@ -67,80 +62,224 @@
     float: right;
     direction: ltr;
     position: absolute;
-}
+  }
 
-.button span {
+  .button span {
     cursor: pointer;
     display: inline-block;
     position: relative;
     transition: 0.5s;
-}
+  }
 
-.button span:after {
+  .button span:after {
     content: '\00bb';
     position: absolute;
     opacity: 0;
     top: 0;
     right: -1em;
     transition: 0.5s;
-}
+  }
 
-.button:hover span {
+  .button:hover span {
     padding-right: 0.8em;
-}
+  }
 
-.button:hover span:after {
+  .button:hover span:after {
     opacity: 1;
     right: 0;
-}
+  }
 
-.top {
+  .top {
     text-align: start;
-}
+  }
 
-.disclaimer {
+  .disclaimer {
     font-family: Tahoma, sans-serif;
     font-size: 1vw;
     overflow: hidden;
     white-space: nowrap;
     display: block;
-}
+  }
 
-.buttons {
+  .buttons {
     width: 100%;
     text-align: center;
-}
+  }
 
-.title {
+  .title {
     font-family: "URW Chancery L", cursive;
     width: 100%;
     text-align: center;
     font-size: 5em;
-}
+  }
 
-.home {
+  .home {
     position: relative;
     margin: 0.3vw;
     display: block;
     text-align: center;
-}
+  }
 
-.coffee_show {
+  .coffee_show {
     position: absolute;
     margin: 0.3px;
-}
+  }
 
-.coffeeContainer {
+  .coffeeContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-}
+  }
 
-.return {
+  .return {
     position: sticky;
     top: 0;
     left: 0;
     width: 100%;
     text-align: center;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .button {
+    display: inline-block;
+    background-color: #6A5ACD;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Georgia, serif;
+    font-size: 1.8em;
+    padding: 1em;
+    width: auto;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+    box-shadow: 5.2px 3px 15px black;
+    opacity: 1;
+    border-radius: 0.6em;
+  }
+
+  .button_disabled {
+    display: inline-block;
+    background-color: dimgray;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Georgia, serif;
+    font-size: 1.8em;
+    padding: 1em;
+    width: auto;
+    transition: all 0.5s;
+    cursor: not-allowed;
+    margin: 5px;
+    box-shadow: 5.2px 3px 15px black;
+    opacity: 0.6;
+  }
+
+  .button_login {
+    display: block;
+    border-radius: 0.8vw;
+    background-color: darkgreen;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Times, "Times New Roman", serif;
+    font-size: 0.8em;
+    padding: 0.6em;
+    width: auto;
+    cursor: pointer;
+    margin: 0.3em;
+    top: 0;
+    right: 0;
+    float: right;
+    direction: ltr;
+    position: absolute;
+  }
+
+  .button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+
+  .button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -1em;
+    transition: 0.5s;
+  }
+
+  .button:hover span {
+    padding-right: 0.8em;
+  }
+
+  .button:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
+
+  .top {
+    text-align: start;
+  }
+
+  .disclaimer {
+    font-family: Tahoma, sans-serif;
+    font-size: 1vw;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+  }
+
+  .buttons {
+    width: 100%;
+    text-align: center;
+  }
+
+  .title {
+    font-family: "URW Chancery L", cursive;
+    width: 100%;
+    text-align: center;
+    font-size: 5em;
+  }
+
+  .home {
+    position: relative;
+    margin: 0.3vw;
+    display: block;
+    text-align: center;
+  }
+
+  .coffee_show {
+    position: absolute;
+    margin: 0.3px;
+  }
+
+  .coffeeContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .return {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
 }

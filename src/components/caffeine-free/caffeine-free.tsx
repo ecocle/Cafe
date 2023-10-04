@@ -29,8 +29,8 @@ export const CaffeineFree = ({ className, Name, Price }: CaffeineFreeProps) => {
             <div className={classNames(styles.root, className)}>
                 <div className={styles.coffee} onClick={handleOrder}>
                     <h2 className={styles.text}>{Name}</h2>
-                    <p className={classNames(styles.text, styles['price-tag'])}>M:{Price}</p>
-                    <p className={classNames(styles.text, styles['price-tag'])}>L:{PriceLarge}</p>
+                    <p className={classNames(styles.text, styles['border-text'])}>M:{Price}</p>
+                    <p className={classNames(styles.text, styles['border-text'])}>L:{PriceLarge}</p>
                 </div>
             </div>
             <div>

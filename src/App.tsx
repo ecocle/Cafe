@@ -134,7 +134,7 @@ function App() {
                                 THIS WEBSITE IS IN EARLY BETA, WHICH MEANS THERE WILL BE ISSUES. So if you have any suggestions/bug reports etc, contact me(shawn).
                             </strong>
                         </div>
-                        <h1 className={styles.title}>My Cafe</h1>
+                        <h1 className={styles.title}>MY Cafe</h1>
                         <div className={styles.buttons}>
                             <button className={styles.button} onClick={showCoffee}>
                                 <span>Coffee</span>
