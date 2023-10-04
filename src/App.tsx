@@ -17,7 +17,7 @@ function App() {
     });
 
     useEffect(() => {
-        fetch('http://119.29.236.82/api/dataCoffee')
+        fetch('http://119.29.236.82/api/api/dataCoffee')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data. Status code: ' + response.status);
@@ -38,7 +38,7 @@ function App() {
 
 
     useEffect(() => {
-        fetch('http://119.29.236.82/api/dataCaffeineFree')
+        fetch('http://119.29.236.82/api/api/dataCaffeineFree')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data. Status code: ' + response.status);
@@ -58,7 +58,7 @@ function App() {
     }, []);
 
     useEffect(() => {
-        fetch('http://119.29.236.82/api/dataBreakfast')
+        fetch('http://119.29.236.82/api/api/dataBreakfast')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data. Status code: ' + response.status);
