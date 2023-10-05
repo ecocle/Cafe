@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import styles from './success.module.scss';
 import React, { useEffect, useState } from 'react';
 import paymentImage from '../../assets/paymentImage.jpg';
@@ -11,7 +10,7 @@ export interface SuccessProps {
     price: number;
 }
 
-export const Success = ({ className, onClose, isOrdered, userData, price}: SuccessProps) => {
+export const Success = ({ onClose, userData, price}: SuccessProps) => {
     const [payment, setPayment] = useState(false);
     useEffect(() => {
         console.log(userData);
@@ -31,14 +30,14 @@ export const Success = ({ className, onClose, isOrdered, userData, price}: Succe
                                 maxHeight: '12em',
                             }}
                         />
-                        <p>You need to pay {price}¥</p>
+                        <p>You need to pay <span style={{ fontWeight: 'bold'}}>{price}¥</span></p>
                     </div>
                 )}
                 <h2>Order Successful!</h2>
                 <p>Your order has been placed successfully.</p>
                 {!payment &&(
                     <div>
-                        <p>You have {userData!.balance - price}¥ left in your account</p>
+                        <p>You have <span style={{fontWeight: 'bold'}}>{userData!.balance - price}¥</span> left in your account</p>
                     </div>
                 )}
                 <button onClick={onClose} className={styles.closeBtn}>Go back</button>

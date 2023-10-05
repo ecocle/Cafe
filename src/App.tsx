@@ -144,10 +144,6 @@ function App() {
         .catch(error => console.error('Error:', error));
     };
 
-    const handleRegisteringSuccess = () => {
-
-    };
-
     const login = () => {
         setIsLogingIn(true);
     }
