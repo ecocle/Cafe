@@ -85,17 +85,28 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData }: OrderP
     };
 
     const handleOrder = async () => {
+        let balance: number;
+        if (!(userData && userData.balance === 0 && userData.username === '')) {
+            if (userData!.balance >= price) {
+                balance = userData!.balance - price;
+            } else {
+                balance = userData!.balance;
+            }
+        } else {
+            balance = 0;
+        }
+
         const orderData = {
-        name,
+            name,
             temperature,
             selectedSize,
             selectedToppings,
             firstName,
             lastName,
             price,
-            order_time: new Date().toISOString(),
             comments,
             useCup,
+            balance,
         };
 
         try {

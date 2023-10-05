@@ -104,7 +104,7 @@ def handle_order():
 
         username = session.get('username')
         if username:
-            cursor.execute("UPDATE Accounts SET Balance = Balance - %s WHERE User_name = %s", (data['price'], username))
+            cursor.execute("UPDATE Accounts SET Balance = %s WHERE User_name = %s", (data['balance'], username))
 
         conn.commit()
         cursor.close()
