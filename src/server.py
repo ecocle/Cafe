@@ -142,6 +142,42 @@ def handle_login():
         conn.close()
 
 
+@app.route('/api/register', methods=['POST'])
+def handle_register():
+    data = request.get_json()
+
+    username = data['username']
+    password = data['password']
+
+    createAccount = (
+        username,
+        password,
+    )
+
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
+
+    try:
+        with conn.cursor() as cursor:
+            # Check if the username already exists
+            sql = "SELECT * FROM Accounts WHERE User_name = %s"
+            cursor.execute(sql, (username,))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                return jsonify({"error": "Username already exists"}), 400
+
+            # If username doesn't exist, proceed with account creation
+            sql = "INSERT INTO Accounts (User_name, Password) values (%s, %s)"
+            cursor.execute(sql, createAccount)
+            conn.commit()
+
+            return jsonify({"message": "Account created successfully(server)"}), 201
+
+    finally:
+        conn.close()
+
+
 @app.route('/api/user_data', methods=['GET'])
 def get_user_data():
     # Assuming you have a session variable 'username' set

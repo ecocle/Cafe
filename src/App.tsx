@@ -4,11 +4,12 @@ import { Coffee, CoffeeProps } from './components/coffee/coffee';
 import { CaffeineFree, CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
 import { Breakfast, BreakfastProps } from './components/breakfast/breakfast';
 import { Login } from './components/login/login';
+import { Register } from './components/register/register';
 
 function App() {
     const [isLogedIn, setIsLogedIn] = useState(false);
     const [isLogingIn, setIsLogingIn] = useState(false);
-    const [isRegister, setIsRegister] = useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
     const [userData, setUserData] = useState<{ balance: number; username: string }>({ balance: 0, username: '' });
     const [coffeeData, setCoffeeData] = useState<CoffeeProps[]>([]);
     const [caffeineFreeData, setCaffeineFreeData] = useState<CaffeineFreeProps[]>([]);
@@ -143,22 +144,33 @@ function App() {
         .catch(error => console.error('Error:', error));
     };
 
+    const handleRegisteringSuccess = () => {
+
+    };
+
     const login = () => {
         setIsLogingIn(true);
     }
 
     const register = () => {
-        setIsRegister(true);
+        setIsRegistering(true);
     }
 
     const closeLogin = () => {
         setIsLogingIn(false)
     }
 
+    const closeRegister = () => {
+        setIsRegistering(false)
+    }
+
     return (
         <div className={styles.App}>
             {isLogingIn &&(
               <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin}/>
+            )}
+            {isRegistering &&(
+              <Register onClose={closeRegister}/>
             )}
             {isLogedIn && (
                 <div className={styles.welcome}>

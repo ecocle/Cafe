@@ -3,6 +3,10 @@ import { Register } from '../../../components/register/register';
 
 export default createBoard({
     name: 'Register',
-    Board: () => <Register />,
+    Board: () => <Register onClose={() => {}}/>,
     isSnippet: true,
+    environmentProps: {
+        canvasHeight: 444,
+        canvasWidth: 590
+    }
 });

@@ -12,11 +12,11 @@ export interface SuccessProps {
 }
 
 export const Success = ({ className, onClose, isOrdered, userData, price}: SuccessProps) => {
-    const [payment, setPayment] = useState(true);
+    const [payment, setPayment] = useState(false);
     useEffect(() => {
         console.log(userData);
         if (userData && userData.balance === 0 && userData.username === '') {
-            setPayment(false);
+            setPayment(true);
         }
     }, []);
     return (
