@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import styles from './order.module.scss';
-import React, { useState, ChangeEvent, useTransition } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Success } from '../success/success';
 
 export interface OrderProps {
@@ -9,9 +9,10 @@ export interface OrderProps {
     onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
     name: string;
     originalPrice: number;
+    userData: { username: string; balance: number } | null;
 }
 
-export const Order = ({ className, isOpen, onClose, name, originalPrice }: OrderProps) => {
+export const Order = ({ isOpen, onClose, name, originalPrice, userData }: OrderProps) => {
     const [isClosing, setIsClosing] = useState(false);
     const [isOrdered, setIsOrder] = useState(false);
     const [temperature, setTemperature] = useState('cold');
@@ -23,6 +24,12 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
     const [comments, setComments] = useState('');
     const [useCup, setUseCup] = useState(false);
 
+    useEffect(() => {
+        if (userData) {
+            setFirstName(userData.username);
+            setLastName(userData.username);
+        }
+    }, [userData]);
 
     const handleSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newSize = e.target.value;
@@ -77,7 +84,7 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
         setPrice(newPrice);
     };
 
-    const handleOrder = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleOrder = async () => {
         const orderData = {
         name,
             temperature,
@@ -92,7 +99,7 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
         };
 
         try {
-            const response = await fetch('http://192.168.3.8:8080/api/orders', {
+            const response = await fetch('http://119.29.236.82/api/api/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -126,6 +133,7 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
         onClose(e);
         window.location.href = '/';
     }
+
 
     return (
         <div className={classNames(styles.popup, { [styles.open]: isOpen, [styles.closing]: isClosing })}>

@@ -3,8 +3,13 @@ import styles from './App.module.scss';
 import { Coffee, CoffeeProps } from './components/coffee/coffee';
 import { CaffeineFree, CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
 import { Breakfast, BreakfastProps } from './components/breakfast/breakfast';
+import { Login } from './components/login/login';
 
 function App() {
+    const [isLogedIn, setIsLogedIn] = useState(false);
+    const [isLogingIn, setIsLogingIn] = useState(false);
+    const [isRegister, setIsRegister] = useState(false);
+    const [userData, setUserData] = useState<{ balance: number; username: string }>({ balance: 0, username: '' });
     const [coffeeData, setCoffeeData] = useState<CoffeeProps[]>([]);
     const [caffeineFreeData, setCaffeineFreeData] = useState<CaffeineFreeProps[]>([]);
     const [breakfastData, setBreakfastData] = useState<BreakfastProps[]>([]);
@@ -121,15 +126,60 @@ function App() {
         }));
     };
 
+    const handleLoginSuccess = ( token: string) => {
+        setIsLogedIn(true);
+
+        localStorage.setItem('token', token);
+
+        fetch('http://119.29.236.82/api/api/user_data', {
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.username && data.balance) {
+                setUserData(data);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    };
+
+    const login = () => {
+        setIsLogingIn(true);
+    }
+
+    const register = () => {
+        setIsRegister(true);
+    }
+
+    const closeLogin = () => {
+        setIsLogingIn(false)
+    }
+
     return (
         <div className={styles.App}>
+            {isLogingIn &&(
+              <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin}/>
+            )}
+            {isLogedIn && (
+                <div className={styles.welcome}>
+                    <p>Hello {userData!.username}</p>
+                    <p>You have {userData!.balance}¥ left in your account</p>
+                </div>
+            )}
             {showStates.main && (
                 <div className={styles.home}>
                     <div>
                         <div className={styles.top}>
-                            <button className={styles.button_login} name="login" type="button">
-                                login
-                            </button>
+                            { !isLogedIn && (
+                                <div>
+                                    <button className={styles.button_login} name="login" type="button" onClick={login}>
+                                        login
+                                    </button>
+                                    <button className={styles.button_register} name="create_acc" type="button" onClick={register}>
+                                        Register
+                                    </button>
+                                </div>
+                            )}
                             <strong className={styles.disclaimer}>
                                 THIS WEBSITE IS IN BETA, WHICH MEANS THERE WILL BE ISSUES. So if you have any suggestions/bug reports etc, contact me(shawn).
                             </strong>
@@ -158,7 +208,7 @@ function App() {
                     </div>
                     <div className={styles.coffeeContainer}>
                         {coffeeData.map((coffee, index) => (
-                            <Coffee key={index} Name={coffee.Name} Price={coffee.Price} />
+                            <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={userData} />
                         ))}
                     </div>
                 </div>
@@ -172,7 +222,7 @@ function App() {
                     </div>
                     <div className={styles.coffeeContainer}>
                         {caffeineFreeData.map((caffeineFree, index) => (
-                            <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price} />
+                            <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price} userData={userData} />
                         ))}
                     </div>
                 </div>
@@ -186,11 +236,12 @@ function App() {
                     </div>
                     <div className={styles.coffeeContainer}>
                         {breakfastData.map((breakfast, index) => (
-                            <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} />
+                            <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} userData={userData} />
                         ))}
                     </div>
                 </div>
-            )}</div>
+            )}
+        </div>
     );
 }
 

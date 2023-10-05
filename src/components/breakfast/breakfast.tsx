@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './breakfast.module.scss';
 import { Order } from '../order/order';
-import { Simulate } from 'react-dom/test-utils';
-import transitionEnd = Simulate.transitionEnd;
 
 export interface BreakfastProps {
     className?: string;
     Name: string;
     Price: number;
+    userData: { username: string; balance: number } | null;
 }
 
-export const Breakfast = ({ className, Name, Price }: BreakfastProps) => {
+export const Breakfast = ({ className, Name, Price, userData }: BreakfastProps) => {
     let PriceLarge = Price + 3;
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -34,7 +33,7 @@ export const Breakfast = ({ className, Name, Price }: BreakfastProps) => {
             </div>
             <div>
                 {isPopupOpen && (
-                    <Order isOpen={true} onClose={closePopup} name={Name} originalPrice={Price} />
+                    <Order isOpen={true} onClose={closePopup} name={Name} originalPrice={Price} userData={userData} />
                 )}
             </div>
         </div>

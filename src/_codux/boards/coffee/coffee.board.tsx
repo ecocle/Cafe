@@ -3,7 +3,7 @@ import { Coffee } from '../../../components/coffee/coffee';
 
 export default createBoard({
     name: 'Coffee',
-    Board: () => <Coffee Name={''} Price={0} />,
+    Board: () => <Coffee Name={''} Price={0}  userData={null}/>,
     isSnippet: true,
     environmentProps: {
         canvasHeight: 297,

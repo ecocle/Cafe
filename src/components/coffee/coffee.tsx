@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './coffee.module.scss';
 import { Order } from '../order/order';
-import { Simulate } from 'react-dom/test-utils';
-import transitionEnd = Simulate.transitionEnd;
 
 export interface CoffeeProps {
     className?: string;
     Name: string;
     Price: number;
+    userData: { username: string; balance: number } | null;
 }
 
-export const Coffee = ({ className, Name, Price }: CoffeeProps) => {
+export const Coffee = ({ className, Name, Price, userData }: CoffeeProps) => {
     let PriceLarge = Price + 3;
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -34,7 +33,7 @@ export const Coffee = ({ className, Name, Price }: CoffeeProps) => {
             </div>
             <div>
                 {isPopupOpen && (
-                    <Order isOpen={true} onClose={closePopup} name={Name} originalPrice={Price} />
+                    <Order isOpen={true} onClose={closePopup} name={Name} originalPrice={Price} userData={userData} />
                 )}
             </div>
         </div>

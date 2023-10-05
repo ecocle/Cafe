@@ -1,8 +1,10 @@
 import os
 import pymysql
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify, session
+import jwt
 
 app = Flask(__name__, static_folder='dist', static_url_path='')
+app.secret_key = os.urandom(24)
 
 
 @app.route('/', defaults={'path': ''})
@@ -74,7 +76,6 @@ def handle_order():
         data['comments'],
         data['useCup'],
         charles,
-
     )
 
     sql = """
@@ -94,15 +95,73 @@ def handle_order():
         VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s)
     """
 
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders", charset="utf8")
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
     cursor = conn.cursor()
 
-    cursor.execute(sql, values)
-    conn.commit()
-    cursor.close()
-    conn.close()
+    try:
+        cursor.execute(sql, values)
 
-    return jsonify({'message': 'Order placed successfully'}), 200
+        username = session.get('username')
+        if username:
+            cursor.execute("UPDATE Accounts SET Balance = Balance - %s WHERE User_name = %s", (data['price'], username))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return jsonify({'message': 'Order placed successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/login', methods=['POST'])
+def handle_login():
+    data = request.get_json()
+
+    username = data['username']
+    password = data['password']
+
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
+
+    try:
+        with conn.cursor() as cursor:
+            sql = "SELECT * FROM Accounts WHERE User_name=%s AND Password=%s"
+            cursor.execute(sql, (username, password))
+            user = cursor.fetchone()
+
+            if user:
+                session['username'] = username
+                token = jwt.encode({'username': username}, 'SECRET_KEY', algorithm='HS256')
+                return jsonify({'message': 'Login successful', 'username': username, 'token': token})
+            else:
+                return jsonify({'error': 'Invalid username or password'})
+
+    finally:
+        conn.close()
+
+
+@app.route('/api/user_data', methods=['GET'])
+def get_user_data():
+    # Assuming you have a session variable 'username' set
+    username = session.get('username')
+
+    if username:
+        conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                               charset="utf8")
+        cursor = conn.cursor()
+        sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
+        cursor.execute(sql, (username,))
+        user_data = cursor.fetchone()
+        conn.close()
+
+        if user_data:
+            return jsonify({'username': user_data[0], 'balance': user_data[1]})
+        else:
+            return jsonify({'error': 'User data not found'}), 404
+    else:
+        return jsonify({'error': 'User not logged in'}), 401
 
 
 if __name__ == '__main__':

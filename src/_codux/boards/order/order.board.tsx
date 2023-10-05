@@ -6,7 +6,7 @@ function close() {
 }
 export default createBoard({
     name: 'Order',
-    Board: () => <Order isOpen onClose={close} name={''} originalPrice={0} />,
+    Board: () => <Order isOpen onClose={close} name={''} originalPrice={0}  userData={null}/>,
     isSnippet: true,
     environmentProps: {
         canvasWidth: 656,
