@@ -131,7 +131,7 @@ function App() {
                                 login
                             </button>
                             <strong className={styles.disclaimer}>
-                                THIS WEBSITE IS IN EARLY BETA, WHICH MEANS THERE WILL BE ISSUES. So if you have any suggestions/bug reports etc, contact me(shawn).
+                                THIS WEBSITE IS IN BETA, WHICH MEANS THERE WILL BE ISSUES. So if you have any suggestions/bug reports etc, contact me(shawn).
                             </strong>
                         </div>
                         <h1 className={styles.title}>MY Cafe</h1>
