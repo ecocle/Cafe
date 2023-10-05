@@ -17,7 +17,7 @@ function App() {
     });
 
     useEffect(() => {
-        fetch('http://192.168.3.8:8080/api/dataCoffee')
+        fetch('http://119.29.236.82:8080/api/dataCoffee')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data. Status code: ' + response.status);
