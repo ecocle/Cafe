@@ -21,7 +21,6 @@ export const Breakfast = ({ className, Name, Price }: BreakfastProps) => {
     }
 
     const handleOrder = () => {
-        console.log(`Ordered ${Name} for $${Price}`);
         setIsPopupOpen(true);
     }
     return (

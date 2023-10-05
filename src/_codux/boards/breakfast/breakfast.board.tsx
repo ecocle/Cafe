@@ -6,7 +6,7 @@ export default createBoard({
     Board: () => <Breakfast Name={''} Price={0} />,
     isSnippet: true,
     environmentProps: {
-        canvasWidth: 404,
-        canvasHeight: 310
+        canvasWidth: 766,
+        canvasHeight: 498
     }
 });

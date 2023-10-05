@@ -1,6 +1,6 @@
 import os
 import pymysql
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request, jsonify
 
 app = Flask(__name__, static_folder='dist', static_url_path='')
 
@@ -54,6 +54,55 @@ def get_data_breakfast():
     cursor.close()
     conn.close()
     return {'data': result}
+
+
+@app.route('/api/orders', methods=['POST'])
+def handle_order():
+    data = request.get_json()
+
+    selected_toppings = ','.join(data['selectedToppings']) if data['selectedToppings'] else ''
+    charles = f"{data['name']}, {data['selectedSize']}, {selected_toppings}, {data['price']}"
+
+    values = (
+        data['firstName'],
+        data['lastName'],
+        data['name'],
+        data['temperature'],
+        data['selectedSize'],
+        selected_toppings,
+        data['price'],
+        data['comments'],
+        data['useCup'],
+        charles,
+
+    )
+
+    sql = """
+        INSERT INTO Orders (
+            First_name, 
+            Last_name, 
+            Coffee_type, 
+            Temperature, 
+            Size, 
+            Toppings, 
+            Price, 
+            Order_time, 
+            Comments, 
+            Cup, 
+            CHARLES
+        ) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s)
+    """
+
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders", charset="utf8")
+    cursor = conn.cursor()
+
+    cursor.execute(sql, values)
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({'message': 'Order placed successfully'}), 200
 
 
 if __name__ == '__main__':

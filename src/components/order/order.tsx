@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import styles from './order.module.scss';
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useTransition } from 'react';
+import { Success } from '../success/success';
 
 export interface OrderProps {
     className?: string;
@@ -11,12 +12,16 @@ export interface OrderProps {
 }
 
 export const Order = ({ className, isOpen, onClose, name, originalPrice }: OrderProps) => {
-    const [temperature, setTemperature] = useState('');
-    const [selectedSize, setSelectedSize] = useState('');
+    const [isClosing, setIsClosing] = useState(false);
+    const [isOrdered, setIsOrder] = useState(false);
+    const [temperature, setTemperature] = useState('cold');
+    const [selectedSize, setSelectedSize] = useState('medium');
     const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [price, setPrice] = useState(originalPrice);
+    const [comments, setComments] = useState('');
+    const [useCup, setUseCup] = useState(false);
 
 
     const handleSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -72,16 +77,64 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
         setPrice(newPrice);
     };
 
-    const handleOrder = () => {
-        console.log(`Ordered ${name} for $${price} with size ${selectedSize} and toppings ${selectedToppings.join(', ')}`);
-        onClose;
+    const handleOrder = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        const orderData = {
+        name,
+            temperature,
+            selectedSize,
+            selectedToppings,
+            firstName,
+            lastName,
+            price,
+            order_time: new Date().toISOString(),
+            comments,
+            useCup,
+        };
+
+        try {
+            const response = await fetch('http://192.168.3.8:8080/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const responseData = await response.json();
+            console.log('Order placed successfully:', responseData);
+            setIsOrder(true);
+            } catch (error) {
+                console.error('Error placing order:', error);
+            }
     };
 
+
+    const handleClosing = (e: React.MouseEvent<HTMLButtonElement>) => {
+        setIsClosing(true);
+        setTimeout(() => {
+            onClose(e);
+            setIsClosing(false);
+        }, 1);
+    };
+
+    const handleClosingSuccess = (e: React.MouseEvent<HTMLButtonElement>) => {
+        setIsOrder(false);
+        onClose(e);
+        window.location.href = '/';
+    }
+
     return (
-        <div className={classNames(styles.popup, { [styles.open]: isOpen, [styles.closed]: !isOpen })}>
-            <div className={styles["popup-inner"]}>
+        <div className={classNames(styles.popup, { [styles.open]: isOpen, [styles.closing]: isClosing })}>
+            <div className={classNames(styles.popupInner, { [styles.closing]: isClosing })}>
+                { isOrdered && (
+                    <Success isOrdered={true}  onClose={handleClosingSuccess}/>
+                )}
                 <div>
-                    <button className={styles["close-btn"]} onClick={onClose}>
+                    <button className={styles["close-btn"]} onClick={handleClosing}>
                         Close
                     </button>
                     <p className={styles.name}>
@@ -140,7 +193,7 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
                 <div className="option">
                     <label>
                         Last Name:
-                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                     </label>
                 </div>
                 <button onClick={handleOrder} className={styles['order-btn']}>
@@ -148,7 +201,8 @@ export const Order = ({ className, isOpen, onClose, name, originalPrice }: Order
                 </button>
                 <div>
                     <p className={styles.price}>Total price:{price}</p>
-                </div></div>
+                </div>
+            </div>
         </div>
     );
 };
