@@ -139,7 +139,7 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData }: OrderP
         <div className={classNames(styles.popup, { [styles.open]: isOpen, [styles.closing]: isClosing })}>
             <div className={classNames(styles.popupInner, { [styles.closing]: isClosing })}>
                 { isOrdered && (
-                    <Success isOrdered={true}  onClose={handleClosingSuccess}/>
+                    <Success isOrdered={true}  onClose={handleClosingSuccess} userData={userData} price={price}/>
                 )}
                 <div>
                     <button className={styles["close-btn"]} onClick={handleClosing}>
