@@ -15,7 +15,7 @@ export const Success = ({ className, onClose, isOrdered, userData, price}: Succe
     const [payment, setPayment] = useState(true);
     useEffect(() => {
         console.log(userData);
-        if (userData) {
+        if (userData && userData.balance === 0 && userData.username === '') {
             setPayment(false);
         }
     }, []);
