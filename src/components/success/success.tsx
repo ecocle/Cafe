@@ -14,6 +14,7 @@ export interface SuccessProps {
 export const Success = ({ className, onClose, isOrdered, userData, price}: SuccessProps) => {
     const [payment, setPayment] = useState(true);
     useEffect(() => {
+        console.log(userData);
         if (userData) {
             setPayment(false);
         }
