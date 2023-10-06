@@ -8,9 +8,10 @@ export interface SuccessProps {
     isOrdered: boolean;
     userData: { username: string; balance: number } | null;
     price: number;
+    selectedLanguage: string;
 }
 
-export const Success = ({ onClose, userData, price}: SuccessProps) => {
+export const Success = ({ onClose, userData, price, selectedLanguage}: SuccessProps) => {
     const [payment, setPayment] = useState(true);
     useEffect(() => {
         console.log(userData);
@@ -32,17 +33,17 @@ export const Success = ({ onClose, userData, price}: SuccessProps) => {
                                 maxHeight: '12em',
                             }}
                         />
-                        <p>You need to pay <span style={{ fontWeight: 'bold'}}>{price}¥</span></p>
+                        <p>{selectedLanguage === 'chinese' ? '你需要付' : 'You need to pay'} <span style={{ fontWeight: 'bold'}}>{price}¥</span></p>
                     </div>
                 )}
-                <h2>Order Successful!</h2>
-                <p>Your order has been placed successfully.</p>
+                <h2>{selectedLanguage === 'chinese' ? '订单成功！' : 'Order Successful!'}</h2>
+                <p>{selectedLanguage === 'chinese' ? '您的订单已成功下达。' : 'Your order has been placed successfully.'}</p>
                 {!payment &&(
                     <div>
-                        <p>You have <span style={{fontWeight: 'bold'}}>{userData!.balance - price}¥</span> left in your account</p>
+                        <p>{selectedLanguage === 'chinese' ? '你还剩' : 'You have'} <span style={{fontWeight: 'bold'}}>{userData!.balance - price}¥</span> {selectedLanguage === 'chinese' ? '在你帐号里' : 'Left in your account'}</p>
                     </div>
                 )}
-                <button onClick={onClose} className={styles.closeBtn}>Go back</button>
+                <button onClick={onClose} className={styles.closeBtn}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
             </div>
         </div>
     );

@@ -10,9 +10,10 @@ export interface OrderProps {
     name: string;
     originalPrice: number;
     userData: { username: string; balance: number } | null;
+    selectedLanguage: string;
 }
 
-export const Order = ({ isOpen, onClose, name, originalPrice, userData }: OrderProps) => {
+export const Order = ({ isOpen, onClose, name, originalPrice, userData, selectedLanguage }: OrderProps) => {
     const [isClosing, setIsClosing] = useState(false);
     const [isOrdered, setIsOrder] = useState(false);
     const [temperature, setTemperature] = useState('cold');
@@ -55,6 +56,29 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData }: OrderP
 
         setPrice(newPrice);
     };
+
+
+    const handleUseCupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const isChecked = e.target.checked;
+        setUseCup(isChecked);
+        let newPrice = originalPrice;
+        if (isChecked) {
+            newPrice -= 1;
+        }
+        selectedToppings.forEach(topping => {
+            if (topping === 'oatmilkSubstitution') {
+                newPrice += 1;
+            } else if (topping === 'boba') {
+                newPrice += 1;
+            } else if (topping === 'extraExpressoShot') {
+                newPrice += 2;
+            } else if (topping === 'redBean') {
+                newPrice += 1;
+            }
+        });
+        setPrice(newPrice);
+    };
+
 
     const handleToppingChange = (topping: string) => {
         const updatedToppings = selectedToppings.includes(topping)
@@ -145,35 +169,34 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData }: OrderP
         window.location.href = '/';
     }
 
-
     return (
         <div className={classNames(styles.popup, { [styles.open]: isOpen, [styles.closing]: isClosing })}>
             <div className={classNames(styles.popupInner, { [styles.closing]: isClosing })}>
                 { isOrdered && (
-                    <Success isOrdered={true}  onClose={handleClosingSuccess} userData={userData} price={price}/>
+                    <Success isOrdered={true}  onClose={handleClosingSuccess} userData={userData} price={price} selectedLanguage={selectedLanguage} />
                 )}
                 <div>
                     <button className={styles["close-btn"]} onClick={handleClosing}>
-                        Close
+                        {selectedLanguage === 'chinese' ? '关闭' : 'Close'}
                     </button>
                     <p className={styles.name}>
                         {name}
                     </p>
                 </div>
-                <h2>Select Options</h2>
+                <h2>{selectedLanguage === 'chinese' ? '选择选项' : 'Select Options'}</h2>
                 <div className="option">
                     <label>
-                        Temperature:
+                        {selectedLanguage === 'chinese' ? '温度:' : 'Temperature:'}
                         <select value={temperature} onChange={(e) => setTemperature(e.target.value)}>
-                            <option value="cold">Cold</option>
-                            <option value="hot">Hot</option>
-                            <option value="normal">Normal</option>
+                            <option value="cold">{selectedLanguage === 'chinese' ? '冷' : 'Cold'}</option>
+                            <option value="hot">{selectedLanguage === 'chinese' ? '热' : 'Hot'}</option>
+                            <option value="normal">{selectedLanguage === 'chinese' ? '正常' : 'Normal'}</option>
                         </select>
                     </label>
                 </div>
                 <div className="option">
                     <label>
-                        Size:
+                        {selectedLanguage === 'chinese' ? '大小:' : 'Size:'}
                         <select value={selectedSize} onChange={handleSizeChange}>
                             <option value="medium">Medium</option>
                             <option value="large">Large</option>
@@ -182,44 +205,55 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData }: OrderP
                 </div>
                 <div className="option">
                     <label>
-                        Toppings:
+                        {selectedLanguage === 'chinese' ? '配料' : 'Toppings:'}
                         <div>
                             <label>
                                 <input type="checkbox" value="oatmilkSubstitution" checked={selectedToppings.includes('oatmilkSubstitution')} onChange={() => handleToppingChange('oatmilkSubstitution')} />
-                                <span className="no-line-break">Oatmilk Substitution</span>
+                                <span className="no-line-break">{selectedLanguage === 'chinese' ? '燕麦奶更换' : 'Oat Milk Substitution'}</span>
                             </label>
                             <label>
                                 <input type="checkbox" value="boba" checked={selectedToppings.includes('boba')} onChange={() => handleToppingChange('boba')} />
-                                <span className="no-line-break">Boba</span>
+                                <span className="no-line-break">{selectedLanguage === 'chinese' ? '珍珠' : 'Boba'}</span>
                             </label>
                             <label>
                                 <input type="checkbox" value="extraExpressoShot" checked={selectedToppings.includes('extraExpressoShot')} onChange={() => handleToppingChange('extraExpressoShot')} />
-                                <span className="no-line-break">Extra Espresso Shot</span>
+                                <span className="no-line-break">{selectedLanguage === 'chinese' ? '外加一份浓缩' : 'Extra Espresso Shot'}</span>
                             </label>
                             <label>
                                 <input type="checkbox" value="redBean" checked={selectedToppings.includes('redBean')} onChange={() => handleToppingChange('redBean')} />
-                                <span className="no-line-break">Red Bean</span>
+                                <span className="no-line-break">{selectedLanguage === 'chinese' ? '红豆' : 'Red Bean'}</span>
                             </label>
                         </div>
                     </label>
                 </div>
                 <div className="option">
                     <label>
-                        First Name:
+                        {selectedLanguage === 'chinese' ? '名' : 'First Name:'}
                         <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     </label>
                 </div>
                 <div className="option">
                     <label>
-                        Last Name:
+                        {selectedLanguage === 'chinese' ? '姓' : 'Last Name:'}
                         <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
                     </label>
                 </div>
+                <div className="option">
+                    <label>
+                        <input type="checkbox" checked={useCup} onChange={handleUseCupChange} />
+                        <span className="no-line-break">{selectedLanguage === 'chinese' ? '用自己的杯子' : 'Use own cup'}</span>
+                    </label>
+                </div>
+                <div className="option">
+                    <label>
+                        <textarea value={comments} onChange={(e) => setComments(e.target.value)} placeholder={selectedLanguage === 'chinese' ? '备注' : 'Comments'}  style={{ resize: 'none' }} />
+                    </label>
+                </div>
                 <button onClick={handleOrder} className={styles['order-btn']}>
-                    Place Order
+                    {selectedLanguage === 'chinese' ? '点单' : 'Place Order'}
                 </button>
                 <div>
-                    <p className={styles.price}>Total price:{price}</p>
+                    <p className={styles.price}>{selectedLanguage === 'chinese' ? '总价' : 'Total price:'}{price}</p>
                 </div>
             </div>
         </div>

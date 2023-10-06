@@ -8,9 +8,10 @@ export interface CoffeeProps {
     Name: string;
     Price: number;
     userData: { username: string; balance: number } | null;
+    selectedLanguage: string;
 }
 
-export const Coffee = ({ className, Name, Price, userData }: CoffeeProps) => {
+export const Coffee = ({ className, Name, Price, userData, selectedLanguage }: CoffeeProps) => {
     let PriceLarge = Price + 3;
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -33,7 +34,7 @@ export const Coffee = ({ className, Name, Price, userData }: CoffeeProps) => {
             </div>
             <div>
                 {isPopupOpen && (
-                    <Order isOpen={true} onClose={closePopup} name={Name} originalPrice={Price} userData={userData} />
+                    <Order isOpen={true} onClose={closePopup} name={Name} originalPrice={Price} userData={userData} selectedLanguage={selectedLanguage} />
                 )}
             </div>
         </div>

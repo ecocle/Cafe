@@ -7,9 +7,10 @@ import { RegisterSuccess } from '../register-success/register-success';
 export interface RegisterProps {
     className?: string;
     onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    selectedLanguage: string;
 }
 
-export const Register = ({ className, onClose }: RegisterProps) => {
+export const Register = ({ className, onClose, selectedLanguage }: RegisterProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [registered, setRegistered] = useState({
@@ -77,19 +78,19 @@ export const Register = ({ className, onClose }: RegisterProps) => {
                     <>
                         {registered.success && (
                             <div>
-                                <RegisterSuccess onClose={handleClosingSuccess}/>
+                                <RegisterSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} />
                             </div>
                         )}
                         {registered.failed && (
                             <div>
-                                <RegisterFailed onClose={handleClosingFailed}/>
+                                <RegisterFailed onClose={handleClosingFailed} selectedLanguage={selectedLanguage} />
                             </div>
                         )}
                     </>
                 )}
                 <div className={styles.popupInner}>
-                    <button onClick={handleClosing} className={styles.close}>Close</button>
-                    <label>Username:</label>
+                    <button onClick={handleClosing} className={styles.close}>{selectedLanguage === 'chinese' ? '关闭' : 'Close'}</button>
+                    <label>{selectedLanguage === 'chinese' ? '用户名:' : 'Username:'}</label>
                     <br />
                     <input
                         type="text"
@@ -98,7 +99,7 @@ export const Register = ({ className, onClose }: RegisterProps) => {
                         required
                     />
                     <br />
-                    <label>Password:</label>
+                    <label>{selectedLanguage === 'chinese' ? '密码:' : 'Password:'}</label>
                     <br />
                     <input
                         type="password"
@@ -108,7 +109,7 @@ export const Register = ({ className, onClose }: RegisterProps) => {
                     />
                     <br />
                     <button className={styles.button} type="button" onClick={handleRegistration}>
-                        Register account!
+                        {selectedLanguage === 'chinese' ? '注册账号！' : 'Register account!'}
                     </button>
                 </div>
             </div>

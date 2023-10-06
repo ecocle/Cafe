@@ -9,9 +9,10 @@ export interface LoginProps {
     className?: string;
     onLoginSuccess: (username: string, token: string) => void;
     onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    selectedLanguage: string;
 }
 
-export const Login = ({ className, onLoginSuccess, onClose }: LoginProps) => {
+export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: LoginProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [login, setLogin] = useState({
@@ -88,19 +89,19 @@ export const Login = ({ className, onLoginSuccess, onClose }: LoginProps) => {
                     <>
                         {login.success && (
                             <div>
-                                <RegisterSuccess onClose={handleClosingSuccess}/>
+                                <RegisterSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} />
                             </div>
                         )}
                         {login.failed && (
                             <div>
-                                <RegisterFailed onClose={handleClosingFailed}/>
+                                <RegisterFailed onClose={handleClosingFailed} selectedLanguage={selectedLanguage} />
                             </div>
                         )}
                     </>
                 )}
                 <div className={styles.popupInner}>
-                    <button onClick={handleClosing} className={styles.close}>Close</button>
-                    <label>Username:</label>
+                    <button onClick={handleClosing} className={styles.close}>{selectedLanguage === 'chinese' ? '关闭' : 'Close'}</button>
+                    <label>{selectedLanguage === 'chinese' ? '用户名:' : 'Username:'}</label>
                     <br />
                     <input
                         type="text"
@@ -109,7 +110,7 @@ export const Login = ({ className, onLoginSuccess, onClose }: LoginProps) => {
                         required
                     />
                     <br />
-                    <label>Password:</label>
+                    <label>{selectedLanguage === 'chinese' ? '密码:' : 'Password:'}</label>
                     <br />
                     <input
                         type="password"
@@ -119,7 +120,7 @@ export const Login = ({ className, onLoginSuccess, onClose }: LoginProps) => {
                     />
                     <br />
                     <button className={styles.button} type="button" onClick={handleLogin}>
-                        Login
+                        {selectedLanguage === 'chinese' ? '登陆' : 'Login'}
                     </button>
                 </div>
             </div>
