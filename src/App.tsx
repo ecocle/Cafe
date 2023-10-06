@@ -31,65 +31,84 @@ function App() {
     }, []);
 
     useEffect(() => {
-        fetch('http://119.29.236.82/api/api/dataCoffee')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data. Status code: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const formattedData = data.data.map((item: [string, string]) => ({
-                    Name: item[0],
-                    Price: Number(item[1])
-                }));
-                setCoffeeData(formattedData);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        const token = sessionStorage.getItem('token'); // Retrieve the token from sessionStorage
+
+        fetch('http://119.29.236.82/api/api/dataCoffee', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch data. Status code: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const formattedData = data.data.map((item: [string, string]) => ({
+                Name: item[0],
+                Price: Number(item[1])
+            }));
+            setCoffeeData(formattedData);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }, []);
 
 
     useEffect(() => {
-        fetch('http://119.29.236.82/api/api/dataCaffeineFree')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data. Status code: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const formattedData = data.data.map((item: [string, string]) => ({
-                    Name: item[0],
-                    Price: Number(item[1])
-                }));
-                setCaffeineFreeData(formattedData);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        const token = sessionStorage.getItem('token'); // Retrieve the token from sessionStorage
+
+        fetch('http://119.29.236.82/api/api/dataCaffeineFree', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch data. Status code: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const formattedData = data.data.map((item: [string, string]) => ({
+                Name: item[0],
+                Price: Number(item[1])
+            }));
+            setCaffeineFreeData(formattedData);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }, []);
 
     useEffect(() => {
-        fetch('http://119.29.236.82/api/api/dataBreakfast')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data. Status code: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const formattedData = data.data.map((item: [string, string]) => ({
-                    Name: item[0],
-                    Price: Number(item[1])
-                }));
-                setBreakfastData(formattedData);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        const token = sessionStorage.getItem('token'); // Retrieve the token from sessionStorage
+
+        fetch('http://119.29.236.82/api/api/dataBreakfast', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch data. Status code: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const formattedData = data.data.map((item: [string, string]) => ({
+                Name: item[0],
+                Price: Number(item[1])
+            }));
+            setBreakfastData(formattedData);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }, []);
+
 
     const showCoffee = () => {
         setShowStates((prevState) => ({
@@ -138,9 +157,12 @@ function App() {
     const handleLoginSuccess = ( token: string) => {
         setIsLoggedIn(true);
 
-        localStorage.setItem('token', token);
+        sessionStorage.setItem('token', token);
 
         fetch('http://119.29.236.82/api/api/user_data', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
             credentials: 'include'
         })
         .then(response => response.json())
