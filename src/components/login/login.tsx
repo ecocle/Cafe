@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import styles from './login.module.scss';
 import jwt_decode from 'jwt-decode';
+import { RegisterSuccess } from '../register-success/register-success';
+import { RegisterFailed } from '../register-failed/register-failed';
 
 export interface LoginProps {
     className?: string;
@@ -12,6 +14,11 @@ export interface LoginProps {
 export const Login = ({ className, onLoginSuccess, onClose }: LoginProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [login, setLogin] = useState({
+        login: false,
+        success: false,
+        failed: false,
+    });
 
     const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         onClose(e);
@@ -36,15 +43,39 @@ export const Login = ({ className, onLoginSuccess, onClose }: LoginProps) => {
             const responseData = await response.json();
             const token = responseData.token;
             localStorage.setItem('token', token);
-            console.log('Login successful:', responseData);
+            showSuccess();
             console.log(token);
             const decodedToken: { username: string } = jwt_decode(token);
             const username = decodedToken.username;
             onLoginSuccess(username, token);
         } catch (error) {
-            console.error('Error logging in:', error);
+            showFailed();
         }
     };
+
+    const showSuccess = () => {
+        setLogin(() => ({
+            login: true,
+            success: true,
+            failed: false
+        }));
+    }
+
+    const showFailed = () => {
+        setLogin(() => ({
+            login: true,
+            failed: true,
+            success: false
+        }));
+    }
+
+    const handleClosingSuccess = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClose(e);
+    }
+
+    const handleClosingFailed = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClose(e);
+    }
 
     const handleClosing = (e: React.MouseEvent<HTMLButtonElement>) => {
         onClose(e);
@@ -53,6 +84,20 @@ export const Login = ({ className, onLoginSuccess, onClose }: LoginProps) => {
     return (
         <div className={classNames(styles.root, className)}>
             <div className={styles.popup}>
+                {login.login && (
+                    <>
+                        {login.success && (
+                            <div>
+                                <RegisterSuccess onClose={handleClosingSuccess}/>
+                            </div>
+                        )}
+                        {login.failed && (
+                            <div>
+                                <RegisterFailed onClose={handleClosingFailed}/>
+                            </div>
+                        )}
+                    </>
+                )}
                 <div className={styles.popupInner}>
                     <button onClick={handleClosing} className={styles.close}>Close</button>
                     <label>Username:</label>

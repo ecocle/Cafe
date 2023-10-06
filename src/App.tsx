@@ -7,7 +7,7 @@ import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 
 function App() {
-    const [isLogedIn, setIsLogedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLogingIn, setIsLogingIn] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
     const [userData, setUserData] = useState<{ balance: number; username: string }>({ balance: 0, username: '' });
@@ -21,6 +21,14 @@ function App() {
         main: true,
         return: false,
     });
+
+    useEffect(() => {
+        const username = getCookie('username');
+        if (username) {
+            setIsLoggedIn(true);
+            setUserData(prevState => ({ ...prevState, username }));
+        }
+    }, []);
 
     useEffect(() => {
         fetch('http://119.29.236.82/api/api/dataCoffee')
@@ -128,7 +136,7 @@ function App() {
     };
 
     const handleLoginSuccess = ( token: string) => {
-        setIsLogedIn(true);
+        setIsLoggedIn(true);
 
         localStorage.setItem('token', token);
 
@@ -160,6 +168,14 @@ function App() {
         setIsRegistering(false)
     }
 
+    const getCookie = (name: string): string | undefined => { // Add type annotations
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(';').shift();
+        return undefined; // Return a default value (undefined) if cookie isn't found
+    }
+
+
     return (
         <div className={styles.App}>
             {isLogingIn &&(
@@ -168,7 +184,7 @@ function App() {
             {isRegistering &&(
               <Register onClose={closeRegister}/>
             )}
-            {isLogedIn && (
+            {isLoggedIn && (
                 <div className={styles.welcome}>
                     <p>Hello {userData!.username}</p>
                     <p>You have {userData!.balance}¥ left in your account</p>
@@ -178,7 +194,7 @@ function App() {
                 <div className={styles.home}>
                     <div>
                         <div className={styles.top}>
-                            { !isLogedIn && (
+                            { !isLoggedIn && (
                                 <div>
                                     <button className={styles.button_login} name="login" type="button" onClick={login}>
                                         login
