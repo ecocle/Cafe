@@ -23,15 +23,26 @@ function App() {
     });
 
     useEffect(() => {
-        const username = getCookie('username');
-        if (username) {
+        const token = sessionStorage.getItem('token') || getCookie('access_token');
+        if (token) {
             setIsLoggedIn(true);
-            setUserData(prevState => ({ ...prevState, username }));
+            fetch('http://119.29.236.82/api/api/user_data', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.username && data.balance) {
+                    setUserData(data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
     }, []);
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token'); // Retrieve the token from sessionStorage
+        const token = sessionStorage.getItem('token');
 
         fetch('http://119.29.236.82/api/api/dataCoffee', {
             headers: {
