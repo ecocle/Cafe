@@ -114,6 +114,29 @@ def handle_order():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/addMoneyToAcc')
+def add_monet_to_acc():
+    data = request.get_json()
+
+    amount = data['amount']
+
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
+    cursor = conn.cursor()
+
+    try:
+        username = session.get('username')
+        if username:
+            cursor.execute("UPDATE Accounts SET Balance = Balance + %s WHERE User_name = %s;", (amount, username))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return jsonify({'message': 'Amount added to account'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
 
 @app.route('/api/login', methods=['POST'])
 def handle_login():
@@ -135,7 +158,7 @@ def handle_login():
                 session['username'] = username
                 token = jwt.encode({'username': username}, 'SECRET_KEY', algorithm='HS256')
                 response = jsonify({'message': 'Login successful', 'username': username, 'token': token})
-                response.set_cookie('access_token', token, max_age=60 * 60 * 24 * 30)  # Max age is set to 30 days
+                response.set_cookie('access_token', token, max_age=60 * 60 * 24 * 30)
                 return response
             else:
                 return jsonify({'error': 'Invalid username or password'})

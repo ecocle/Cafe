@@ -1,20 +1,19 @@
 import classNames from 'classnames';
-import styles from './register.module.scss';
+import styles from './add-money-to-acc.module.scss';
+import { AddingSuccess } from '../adding-success/adding-success';
+import { AddingFailed } from '../adding-failed/adding-failed';
 import React, { useState } from 'react';
-import { RegisterFailed } from '../register-failed/register-failed';
-import { RegisterSuccess } from '../register-success/register-success';
 
-export interface RegisterProps {
+export interface AddMoneyToAccProps {
     className?: string;
     onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
     selectedLanguage: string;
 }
 
-export const Register = ({ className, onClose, selectedLanguage }: RegisterProps) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [registered, setRegistered] = useState({
-        registered: false,
+export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoneyToAccProps) => {
+    const [amount, setAmount] = useState('');
+    const [adding, setAdding] = useState({
+        adding: false,
         success: false,
         failed: false,
     });
@@ -25,12 +24,12 @@ export const Register = ({ className, onClose, selectedLanguage }: RegisterProps
 
     const handleRegistration = async () => {
         try {
-            const response = await fetch('http://119.29.236.82/api/api/register', {
+            const response = await fetch('http://119.29.236.82/api/api/addMoneyToAcc', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                    body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ amount }),
             });
 
             if (response.ok) {
@@ -46,16 +45,16 @@ export const Register = ({ className, onClose, selectedLanguage }: RegisterProps
     };
 
     const showSuccess = () => {
-        setRegistered(() => ({
-            registered: true,
+        setAdding(() => ({
+            adding: true,
             success: true,
             failed: false,
         }));
     }
 
     const showFailed = () => {
-        setRegistered(() => ({
-            registered: true,
+        setAdding(() => ({
+            adding: true,
             success: false,
             failed: true,
         }));
@@ -74,44 +73,34 @@ export const Register = ({ className, onClose, selectedLanguage }: RegisterProps
     return (
         <div className={classNames(styles.root, className)}>
             <div className={styles.popup}>
-                {registered.registered && (
+                {adding.adding && (
                     <>
-                        {registered.success && (
+                        {adding.success && (
                             <div>
-                                <RegisterSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} />
+                                <AddingSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} />
                             </div>
                         )}
-                        {registered.failed && (
+                        {adding.failed && (
                             <div>
-                                <RegisterFailed onClose={handleClosingFailed} selectedLanguage={selectedLanguage} />
+                                <AddingFailed onClose={handleClosingFailed} selectedLanguage={selectedLanguage} />
                             </div>
                         )}
                     </>
                 )}
                 <div className={styles.popupInner}>
                     <button onClick={handleClosing} className={styles.close}>{selectedLanguage === 'chinese' ? '关闭' : 'Close'}</button>
-                    <label>{selectedLanguage === 'chinese' ? '用户名:' : 'Username:'}</label>
+                    <label>{selectedLanguage === 'chinese' ? '数量:' : 'Amount:'}</label>
                     <br />
                     <input
-                        id="username"
+                        id="amount"
                         type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                    <br />
-                    <label>{selectedLanguage === 'chinese' ? '密码:' : 'Password:'}</label>
-                    <br />
-                    <input
-                        id ="password"
-                        type="test"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
                         required
                     />
                     <br />
                     <button id="registrationButton" className={styles.button} type="button" onClick={handleRegistration}>
-                        {selectedLanguage === 'chinese' ? '注册账号！' : 'Register account!'}
+                        {selectedLanguage === 'chinese' ? '添加金额到帐户！' : 'Add amount to account!'}
                     </button>
                 </div>
             </div>

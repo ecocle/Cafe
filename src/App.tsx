@@ -1,19 +1,23 @@
 import { useState, useEffect, SetStateAction } from 'react';
 import styles from './App.module.scss';
+import { LoadingScreen } from './components/loading-screen/loading-screen';
 import { Coffee, CoffeeProps } from './components/coffee/coffee';
 import { CaffeineFree, CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
 import { Breakfast, BreakfastProps } from './components/breakfast/breakfast';
 import { Login } from './components/login/login';
 import { Register } from './components/register/register';
+import { AddMoneyToAcc } from './components/add-money-to-acc/add-money-to-acc';
 import { LanguageSelection } from './components/language-selection/language-selection';
 import { DEFAULT_LANGUAGE, LANGUAGES } from './constants/constants';
 
 
 function App() {
+    const [isLoading, setIsLoading] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLogingIn, setIsLogingIn] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
+    const [isAdding, setIsAdding] = useState(false);
     const [userData, setUserData] = useState<{ balance: number; username: string }>({ balance: 0, username: '' });
     const [coffeeData, setCoffeeData] = useState<CoffeeProps[]>([]);
     const [caffeineFreeData, setCaffeineFreeData] = useState<CaffeineFreeProps[]>([]);
@@ -99,7 +103,8 @@ function App() {
     }, [selectedLanguage]);
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token'); // Retrieve the token from sessionStorage
+        const token = sessionStorage.getItem('token');
+        setIsLoading(true);
 
         fetch('http://119.29.236.82/api/api/dataBreakfast', {
             headers: {
@@ -118,9 +123,11 @@ function App() {
                   Price: Number(item[1])
               }));
               setBreakfastData(formattedData);
+              setIsLoading(false);
           })
           .catch(error => {
               console.error('Error:', error);
+              setIsLoading(false);
           });
     }, [selectedLanguage]);
 
@@ -201,12 +208,20 @@ function App() {
         setIsRegistering(true);
     }
 
+    const add = () => {
+        setIsAdding(true);
+    }
+
     const closeLogin = () => {
         setIsLogingIn(false)
     }
 
     const closeRegister = () => {
         setIsRegistering(false)
+    }
+
+    const closeAddMoneyToAcc = () => {
+        setIsAdding(false)
     }
 
     const getCookie = (name: string): string | undefined => { // Add type annotations
@@ -218,16 +233,23 @@ function App() {
 
     return (
         <div className={styles.App}>
+            {isLoading && <LoadingScreen />}
             {isLogingIn &&(
               <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage}/>
             )}
             {isRegistering &&(
               <Register onClose={closeRegister} selectedLanguage={selectedLanguage}/>
             )}
+            {isAdding &&(
+              <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc}/>
+            )}
             {isLoggedIn && (
                 <div className={styles.welcome}>
-                    <p>Hello {userData!.username}</p>
-                    <p>You have {userData!.balance}¥ left in your account</p>
+                    <p>{selectedLanguage === 'chinese' ? '你好 {userData!.username}' : 'Hello {userData!.username}'}</p>
+                    <p>{selectedLanguage === 'chinese' ? '你还剩 ¥{userData!.balance} 在你帐号里' : 'You have ¥{userData!.balance} left in your account'}</p>
+                    <button className={styles.button_login} name="add" type="button" onClick={add}>
+                        {selectedLanguage === 'chinese' ? '向账户充值' : 'Add money to account'}
+                    </button>
                 </div>
             )}
             {showStates.main && (

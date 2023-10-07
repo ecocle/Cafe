@@ -20,8 +20,18 @@ h1 {
 }
 
 @media (prefers-color-scheme: light) {
-  body {
+  html, body {
+    height: 100%;
+    margin: 0;
     color: black;
-    background: white;
+    background: skyblue;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html, body {
+    height: 100%;
+    margin: 0;
+    color: white;
   }
 }
