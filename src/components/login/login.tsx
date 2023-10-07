@@ -29,7 +29,7 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
         };
 
         try {
-            const response = await fetch('http://119.29.236.82/api/api/login', {
+            const response = await fetch('https://119.29.236.82/api/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

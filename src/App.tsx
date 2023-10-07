@@ -33,7 +33,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token') || getCookie('access_token');
         if (token) {
-            fetch('http://119.29.236.82/api/api/user_data', {
+            fetch('https://119.29.236.82/api/api/user_data', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -52,7 +52,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://119.29.236.82/api/api/dataCoffee', {
+        fetch('https://119.29.236.82/api/api/dataCoffee', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -77,9 +77,9 @@ function App() {
 
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token'); // Retrieve the token from sessionStorage
+        const token = sessionStorage.getItem('token');
 
-        fetch('http://119.29.236.82/api/api/dataCaffeineFree', {
+        fetch('https://119.29.236.82/api/api/dataCaffeineFree', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -106,7 +106,7 @@ function App() {
         const token = sessionStorage.getItem('token');
         setIsLoading(true);
 
-        fetch('http://119.29.236.82/api/api/dataBreakfast', {
+        fetch('https://119.29.236.82/api/api/dataBreakfast', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -181,7 +181,7 @@ function App() {
 
         sessionStorage.setItem('token', token);
 
-        fetch('http://119.29.236.82/api/api/user_data', {
+        fetch('https://119.29.236.82/api/api/user_data', {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -224,7 +224,7 @@ function App() {
         setIsAdding(false)
     }
 
-    const getCookie = (name: string): string | undefined => { // Add type annotations
+    const getCookie = (name: string): string | undefined => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop()?.split(';').shift();

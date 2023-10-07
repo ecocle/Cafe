@@ -3,7 +3,7 @@ import pymysql
 from flask import Flask, send_from_directory, request, jsonify, session
 import jwt
 
-app = Flask(__name__, static_folder='dist', static_url_path='')
+app = Flask(__name__, static_folder='../dist', static_url_path='')
 app.secret_key = os.urandom(24)
 
 
@@ -114,6 +114,7 @@ def handle_order():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/addMoneyToAcc')
 def add_monet_to_acc():
     data = request.get_json()
@@ -205,7 +206,6 @@ def handle_register():
 
 @app.route('/api/user_data', methods=['GET'])
 def get_user_data():
-    # Assuming you have a session variable 'username' set
     username = session.get('username')
 
     if username:
@@ -225,5 +225,10 @@ def get_user_data():
         return jsonify({'error': 'User not logged in'}), 401
 
 
+@app.route('/api/test', methods=['POST'])
+def test():
+    return "test"
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=5000)
