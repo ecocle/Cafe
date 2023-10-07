@@ -134,7 +134,7 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
         };
 
         try {
-            const response = await fetch('https://119.29.236.82/api/api/orders', {
+            const response = await fetch('http://192.168.3.15:5000/api/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
