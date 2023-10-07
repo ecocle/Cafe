@@ -3,7 +3,7 @@ import { RegisterFailed } from '../../../components/register-failed/register-fai
 
 export default createBoard({
     name: 'RegisterFailed',
-    Board: () => <RegisterFailed onClose={() => {}}/>,
+    Board: () => <RegisterFailed onClose={() => {}} selectedLanguage={""}/>,
     isSnippet: true,
     environmentProps: {
         canvasHeight: 356,

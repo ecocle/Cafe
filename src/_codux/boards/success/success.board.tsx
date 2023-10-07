@@ -8,7 +8,7 @@ function close() {
 
 export default createBoard({
     name: 'Success',
-    Board: () => <Success isOrdered={false} onClose={close} price={1} userData={null}/>,
+    Board: () => <Success isOrdered={false} onClose={close} price={1} userData={null} selectedLanguage={""}/>,
     isSnippet: true,
     environmentProps: {
         canvasHeight: 388,

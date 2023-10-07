@@ -4,7 +4,7 @@ from flask import Flask, send_from_directory, request, jsonify, session
 import jwt
 
 app = Flask(__name__, static_folder='../dist', static_url_path='')
-app.secret_key = os.urandom(24)
+app.secret_key = os.urandom(32)
 
 
 @app.route('/', defaults={'path': ''})
@@ -225,10 +225,5 @@ def get_user_data():
         return jsonify({'error': 'User not logged in'}), 401
 
 
-@app.route('/api/test', methods=['POST'])
-def test():
-    return "test"
-
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)
