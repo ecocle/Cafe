@@ -20,7 +20,7 @@ def serve(path):
 
 @app.route('/api/dataCoffee', methods=['GET'])
 def get_data_coffee():
-    conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Coffee"
@@ -34,7 +34,7 @@ def get_data_coffee():
 
 @app.route('/api/dataCaffeineFree', methods=['GET'])
 def get_data_caffeine_free():
-    conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Caffeine_free"
@@ -48,7 +48,7 @@ def get_data_caffeine_free():
 
 @app.route('/api/dataBreakfast', methods=['GET'])
 def get_data_breakfast():
-    conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Breakfast"
@@ -97,7 +97,7 @@ def handle_order():
         VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s)
     """
 
-    conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
 
@@ -123,7 +123,7 @@ def add_monet_to_acc():
 
     amount = data['amount']
 
-    conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
 
@@ -148,7 +148,7 @@ def handle_login():
     username = data['username']
     password = data['password']
 
-    conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
 
     try:
@@ -183,7 +183,7 @@ def handle_register():
         password,
     )
 
-    conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
 
     try:
@@ -213,7 +213,7 @@ def get_user_data():
     print(username)
 
     if username:
-        conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
+        conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
                                charset="utf8")
         cursor = conn.cursor()
         sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
