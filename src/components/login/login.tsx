@@ -29,7 +29,7 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
         };
 
         try {
-            const response = await fetch('http://192.168.3.15:5000/api/login', {
+            const response = await fetch('http://172.16.13.205:5000/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -45,9 +45,9 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
             const token = responseData.token;
             localStorage.setItem('token', token);
             showSuccess();
-            console.log(token);
             const decodedToken: { username: string } = jwt_decode(token);
             const username = decodedToken.username;
+            localStorage.setItem('username', username);
             onLoginSuccess(username, token);
         } catch (error) {
             showFailed();

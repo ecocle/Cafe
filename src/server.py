@@ -5,7 +5,7 @@ from flask_cors import CORS
 import jwt
 
 app = Flask(__name__, static_folder='../dist', static_url_path='')
-CORS(app)
+CORS(app, supports_credentials=True)
 app.secret_key = os.urandom(32)
 
 
@@ -159,6 +159,7 @@ def handle_login():
 
             if user:
                 session['username'] = username
+                print(session.get('username'))
                 token = jwt.encode({'username': username}, 'SECRET_KEY', algorithm='HS256')
                 response = jsonify({'message': 'Login successful', 'username': username, 'token': token})
                 response.set_cookie('access_token', token, max_age=60 * 60 * 24 * 30)
@@ -209,6 +210,7 @@ def handle_register():
 @app.route('/api/user_data', methods=['GET'])
 def get_user_data():
     username = session.get('username')
+    print(username)
 
     if username:
         conn = pymysql.connect(host="192.168.3.15", user="root", password="Shawn090209", database="Coffee_Orders",
@@ -228,4 +230,4 @@ def get_user_data():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=5000)

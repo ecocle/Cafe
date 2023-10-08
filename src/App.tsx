@@ -32,8 +32,9 @@ function App() {
 
     useEffect(() => {
         const token = sessionStorage.getItem('token') || getCookie('access_token');
+        console.log(token);
         if (token) {
-            fetch('http://192.168.3.15:5000/api/user_data', {
+            fetch('http://172.16.13.205:5000/api/user_data', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -52,7 +53,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://192.168.3.15:5000/api/dataCoffee', {
+        fetch('http://172.16.13.205:5000/api/dataCoffee', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -79,7 +80,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://192.168.3.15:5000/api/dataCaffeineFree', {
+        fetch('http://172.16.13.205:5000/api/dataCaffeineFree', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -106,7 +107,7 @@ function App() {
         const token = sessionStorage.getItem('token');
         setIsLoading(true);
 
-        fetch('http://192.168.3.15:5000/api/dataBreakfast', {
+        fetch('http://172.16.13.205:5000/api/dataBreakfast', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -176,12 +177,12 @@ function App() {
         }));
     };
 
-    const handleLoginSuccess = (token: string) => {
+    const handleLoginSuccess = (username: string, token: string) => {
         setIsLoggedIn(true);
 
         sessionStorage.setItem('token', token);
-
-        fetch('http://192.168.3.15:5000/api/user_data', {
+        sessionStorage.setItem('username', username);
+        fetch('http://172.16.13.205:5000/api/user_data', {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -246,7 +247,7 @@ function App() {
             {isLoggedIn && (
                 <div className={styles.welcome}>
                     <p>{selectedLanguage === 'chinese' ? '你好 ' : 'Hello '}{userData!.username}</p>
-                    <p>{selectedLanguage === 'chinese' ? '你还剩 ¥' : 'You have ¥'}{userData!.balance}{selectedLanguage === 'chinese' ? '在你帐号里' : 'left in your account'}</p>
+                    <p>{selectedLanguage === 'chinese' ? '你还剩 ¥' : 'You have ¥'}{userData!.balance}{selectedLanguage === 'chinese' ? ' 在你帐号里' : ' left in your account'}</p>
                     <button name="add" type="button" onClick={add} className={styles.button_add}>
                         {selectedLanguage === 'chinese' ? '向账户充值' : 'Add money to account'}
                     </button>
