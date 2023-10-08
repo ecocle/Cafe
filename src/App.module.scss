@@ -1,4 +1,5 @@
-.button, .button_return {
+.button,
+.button_return {
     display: inline-block;
     border: none;
     color: #FFFFFF;
@@ -26,7 +27,7 @@
     }
 }
 
-.button_login, .button_register {
+.button_login, .button_register, .button_add{
     display: block;
     border-radius: 0.8vw;
     background-color: darkgreen;
@@ -44,6 +45,10 @@
 
     &.button_register {
         top: 3em;
+    }
+
+    &.button_add {
+        top: 6em;
     }
 }
 
@@ -107,7 +112,8 @@
     font-size: 5em;
 }
 
-.home, .coffee_show {
+.home,
+.coffee_show {
     position: relative;
     margin: 0.3vw;
     display: block;
@@ -135,7 +141,9 @@
 }
 
 @media (prefers-color-scheme: dark) {
-    .button, .button_return {
+
+    .button,
+    .button_return {
         background-color: blueviolet;
     }
 
@@ -146,7 +154,9 @@
 }
 
 @media (prefers-color-scheme: light) {
-    .button, .button_return {
+
+    .button,
+    .button_return {
         background-color: #6A5ACD;
     }
 

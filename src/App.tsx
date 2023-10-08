@@ -38,14 +38,14 @@ function App() {
                     Authorization: `Bearer ${token}`
                 }
             })
-              .then(response => response.json())
-              .then(data => {
-                  if (data.username && data.balance) {
-                      setUserData(data);
-                      setIsLoggedIn(true);
-                  }
-              })
-              .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.username && data.balance) {
+                        setUserData(data);
+                        setIsLoggedIn(true);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
     }, []);
 
@@ -57,22 +57,22 @@ function App() {
                 Authorization: `Bearer ${token}`
             }
         })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Failed to fetch data. Status code: ' + response.status);
-              }
-              return response.json();
-          })
-          .then(data => {
-              const formattedData = data.data.map((item: [string, string, string]) => ({
-                  Name: selectedLanguage === 'chinese' ? item[2] : item[0],
-                  Price: Number(item[1])
-              }));
-              setCoffeeData(formattedData);
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data. Status code: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const formattedData = data.data.map((item: [string, string, string]) => ({
+                    Name: selectedLanguage === 'chinese' ? item[2] : item[0],
+                    Price: Number(item[1])
+                }));
+                setCoffeeData(formattedData);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }, [selectedLanguage]);
 
 
@@ -84,22 +84,22 @@ function App() {
                 Authorization: `Bearer ${token}`
             }
         })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Failed to fetch data. Status code: ' + response.status);
-              }
-              return response.json();
-          })
-          .then(data => {
-              const formattedData = data.data.map((item: [string, string, string]) => ({
-                  Name: selectedLanguage === 'chinese' ? item[2] : item[0],
-                  Price: Number(item[1])
-              }));
-              setCaffeineFreeData(formattedData);
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data. Status code: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const formattedData = data.data.map((item: [string, string, string]) => ({
+                    Name: selectedLanguage === 'chinese' ? item[2] : item[0],
+                    Price: Number(item[1])
+                }));
+                setCaffeineFreeData(formattedData);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }, [selectedLanguage]);
 
     useEffect(() => {
@@ -111,24 +111,24 @@ function App() {
                 Authorization: `Bearer ${token}`
             }
         })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Failed to fetch data. Status code: ' + response.status);
-              }
-              return response.json();
-          })
-          .then(data => {
-              const formattedData = data.data.map((item: [string, string, string]) => ({
-                  Name: selectedLanguage === 'chinese' ? item[2] : item[0],
-                  Price: Number(item[1])
-              }));
-              setBreakfastData(formattedData);
-              setIsLoading(false);
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              setIsLoading(false);
-          });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data. Status code: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const formattedData = data.data.map((item: [string, string, string]) => ({
+                    Name: selectedLanguage === 'chinese' ? item[2] : item[0],
+                    Price: Number(item[1])
+                }));
+                setBreakfastData(formattedData);
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                setIsLoading(false);
+            });
     }, [selectedLanguage]);
 
 
@@ -187,13 +187,13 @@ function App() {
             },
             credentials: 'include'
         })
-          .then(response => response.json())
-          .then(data => {
-              if (data.username && data.balance) {
-                  setUserData(data);
-              }
-          })
-          .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => {
+                if (data.username && data.balance) {
+                    setUserData(data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
     };
 
     const handleLanguageChange = (newLanguage: SetStateAction<LANGUAGES>) => {
@@ -234,20 +234,20 @@ function App() {
     return (
         <div className={styles.App}>
             {isLoading && <LoadingScreen />}
-            {isLogingIn &&(
-              <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage}/>
+            {isLogingIn && (
+                <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage} />
             )}
-            {isRegistering &&(
-              <Register onClose={closeRegister} selectedLanguage={selectedLanguage}/>
+            {isRegistering && (
+                <Register onClose={closeRegister} selectedLanguage={selectedLanguage} />
             )}
-            {isAdding &&(
-              <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc}/>
+            {isAdding && (
+                <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc} />
             )}
             {isLoggedIn && (
                 <div className={styles.welcome}>
-                    <p>{selectedLanguage === 'chinese' ? '你好 {userData!.username}' : 'Hello {userData!.username}'}</p>
-                    <p>{selectedLanguage === 'chinese' ? '你还剩 ¥{userData!.balance} 在你帐号里' : 'You have ¥{userData!.balance} left in your account'}</p>
-                    <button className={styles.button_login} name="add" type="button" onClick={add}>
+                    <p>{selectedLanguage === 'chinese' ? '你好 ' : 'Hello '}{userData!.username}</p>
+                    <p>{selectedLanguage === 'chinese' ? '你还剩 ¥' : 'You have ¥'}{userData!.balance}{selectedLanguage === 'chinese' ? '在你帐号里' : 'left in your account'}</p>
+                    <button name="add" type="button" onClick={add} className={styles.button_add}>
                         {selectedLanguage === 'chinese' ? '向账户充值' : 'Add money to account'}
                     </button>
                 </div>
@@ -256,9 +256,9 @@ function App() {
                 <div className={styles.home}>
                     <div>
                         <div className={styles.top}>
-                            { !isLoggedIn && (
+                            {!isLoggedIn && (
                                 <div>
-                                    <button className={styles.button_login} name="login" type="button" onClick={login}>
+                                    <button name="login" type="button" onClick={login} className={styles.button_login}>
                                         {selectedLanguage === 'chinese' ? '登陆' : 'Login'}
                                     </button>
                                     <button className={styles.button_register} name="create_acc" type="button" onClick={register}>
@@ -269,7 +269,7 @@ function App() {
                             <strong className={styles.disclaimer}>
                                 {selectedLanguage === 'chinese' ? '本网站在测试阶段，可能会有问题。如有任何建议，请联系我（Shawn)' : 'THIS WEBSITE IS IN BETA, WHICH MEANS THERE WILL BE ISSUES. So if you have any suggestions/bug reports etc, contact me(shawn).'}
                             </strong>
-                            <LanguageSelection onLanguageChange={handleLanguageChange} selectedLanguage={selectedLanguage}  />
+                            <LanguageSelection onLanguageChange={handleLanguageChange} selectedLanguage={selectedLanguage} />
                         </div>
                         <h1 className={styles.title}>
                             {selectedLanguage === 'chinese' ? '摸鱼咖啡厅' : 'MY Cafe'}

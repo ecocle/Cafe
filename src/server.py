@@ -1,9 +1,11 @@
 import os
 import pymysql
 from flask import Flask, send_from_directory, request, jsonify, session
+from flask_cors import CORS
 import jwt
 
 app = Flask(__name__, static_folder='../dist', static_url_path='')
+CORS(app)
 app.secret_key = os.urandom(32)
 
 
