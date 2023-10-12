@@ -190,7 +190,7 @@ function App() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data.username && data.balance) {
+                if (data.username) {
                     setUserData(data);
                 }
             })
@@ -248,9 +248,6 @@ function App() {
                 <div className={styles.welcome}>
                     <p>{selectedLanguage === 'chinese' ? '你好 ' : 'Hello '}{userData!.username}</p>
                     <p>{selectedLanguage === 'chinese' ? '你还剩 ¥' : 'You have ¥'}{userData!.balance}{selectedLanguage === 'chinese' ? ' 在你帐号里' : ' left in your account'}</p>
-                    <button name="add" type="button" onClick={add} className={styles.button_add}>
-                        {selectedLanguage === 'chinese' ? '向账户充值' : 'Add money to account'}
-                    </button>
                 </div>
             )}
             {showStates.main && (
