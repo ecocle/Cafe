@@ -190,7 +190,7 @@ function App() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data.username ) {
+                if (data.username) {
                     setUserData(data);
                 }
             })
