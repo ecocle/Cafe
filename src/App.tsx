@@ -276,15 +276,48 @@ function App() {
                             {selectedLanguage === 'chinese' ? '摸鱼咖啡厅' : 'MY Cafe'}
                         </h1>
                         <div className={styles.buttons}>
-                            <button className={styles.button_disabled} onClick={showCoffee} disabled>
-                                <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
-                            </button>
-                            <button className={styles.button} onClick={showCaffeineFree}>
-                                <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
-                            </button>
-                            <button className={styles.button} onClick={showBreakfast}>
-                                <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
-                            </button>
+                            {isLoggedIn && (
+                                <div>
+                                    <button className={styles.button_disabled} onClick={showCoffee} disabled>
+                                        <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
+                                    </button>
+                                </div>
+                            )}
+                            {!isLoggedIn && (
+                                <div>
+                                    <button className={styles.button_disabled} onClick={login} disabled>
+                                        <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
+                                    </button>
+                                </div>
+                            )}
+                            {isLoggedIn && (
+                                <div>
+                                    <button className={styles.button} onClick={showCaffeineFree}>
+                                        <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
+                                    </button>
+                                </div>
+                            )}
+                            {!isLoggedIn && (
+                                <div>
+                                    <button className={styles.button} onClick={login}>
+                                        <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
+                                    </button>
+                              </div>
+                            )}
+                            {isLoggedIn && (
+                                <div>
+                                    <button className={styles.button} onClick={showBreakfast}>
+                                        <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
+                                    </button>
+                                </div>
+                            )}
+                            {!isLoggedIn && (
+                                <div>
+                                    <button className={styles.button} onClick={login}>
+                                        <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
