@@ -276,7 +276,7 @@ function App() {
                             {selectedLanguage === 'chinese' ? '摸鱼咖啡厅' : 'MY Cafe'}
                         </h1>
                         <div className={styles.buttons}>
-                            <button className={styles.button_disabled} onClick={showCoffee}>
+                            <button className={styles.button_disabled} onClick={showCoffee} disabled>
                                 <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
                             </button>
                             <button className={styles.button} onClick={showCaffeineFree}>

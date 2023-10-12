@@ -24,7 +24,11 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
     const [price, setPrice] = useState(originalPrice);
     const [comments, setComments] = useState('');
     const [useCup, setUseCup] = useState(false);
-
+    const noSize = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Classic flavored Porridge', 'Chocolate flavored Porridge'];
+    const noToppings = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Classic flavored Porridge', 'Chocolate flavored Porridge'];
+    const noHot = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Cocoa', 'Matcha milk', 'Matcha boba', 'Tai Red Tea', 'Coconut Water', 'Milk tea', 'Jasmine Milktea', 'Boba', 'Refreshing babyblue drink', 'Pure milk'];
+    const noCold = ['Classic flavored Porridge', 'Chocolate flavored Porridge'];
+    const noNormal = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Classic flavored Porridge', 'Chocolate flavored Porridge'];
     useEffect(() => {
         if (userData) {
             setFirstName(userData.username);
@@ -187,45 +191,56 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
                 <div className="option">
                     <label>
                         {selectedLanguage === 'chinese' ? '温度:' : 'Temperature:'}
+
                         <select value={temperature} onChange={(e) => setTemperature(e.target.value)}>
-                            <option value="cold">{selectedLanguage === 'chinese' ? '冷' : 'Cold'}</option>
-                            <option value="hot">{selectedLanguage === 'chinese' ? '热' : 'Hot'}</option>
-                            <option value="normal">{selectedLanguage === 'chinese' ? '正常' : 'Normal'}</option>
+                            {!noHot.includes(name) && (
+                                <option value="hot">{selectedLanguage === 'chinese' ? '热' : 'Hot'}</option>
+                            )}
+                            {!noCold.includes(name) && (
+                                <option value="cold">{selectedLanguage === 'chinese' ? '冷' : 'Cold'}</option>
+                            )}
+                            {!noNormal.includes(name) && (
+                                <option value="normal">{selectedLanguage === 'chinese' ? '正常' : 'Normal'}</option>
+                            )}
                         </select>
                     </label>
                 </div>
-                <div className="option">
-                    <label>
-                        {selectedLanguage === 'chinese' ? '大小:' : 'Size:'}
-                        <select value={selectedSize} onChange={handleSizeChange}>
-                            <option value="medium">Medium</option>
-                            <option value="large">Large</option>
-                        </select>
-                    </label>
-                </div>
-                <div className="option">
-                    <label>
-                        {selectedLanguage === 'chinese' ? '配料' : 'Toppings:'}
-                        <div>
-                            <label>
-                                <input type="checkbox" value="oatmilkSubstitution" checked={selectedToppings.includes('oatmilkSubstitution')} onChange={() => handleToppingChange('oatmilkSubstitution')} />
-                                <span className="no-line-break">{selectedLanguage === 'chinese' ? '燕麦奶更换' : 'Oat Milk Substitution'}</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" value="boba" checked={selectedToppings.includes('boba')} onChange={() => handleToppingChange('boba')} />
-                                <span className="no-line-break">{selectedLanguage === 'chinese' ? '珍珠' : 'Boba'}</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" value="extraExpressoShot" checked={selectedToppings.includes('extraExpressoShot')} onChange={() => handleToppingChange('extraExpressoShot')} />
-                                <span className="no-line-break">{selectedLanguage === 'chinese' ? '外加一份浓缩' : 'Extra Espresso Shot'}</span>
-                            </label>
-                            <label>
-                                <input type="checkbox" value="redBean" checked={selectedToppings.includes('redBean')} onChange={() => handleToppingChange('redBean')} />
-                                <span className="no-line-break">{selectedLanguage === 'chinese' ? '红豆' : 'Red Bean'}</span>
-                            </label>
-                        </div>
-                    </label>
-                </div>
+                {!noSize.includes(name) && (
+                    <div className="option">
+                        <label>
+                            {selectedLanguage === 'chinese' ? '大小:' : 'Size:'}
+                            <select value={selectedSize} onChange={handleSizeChange}>
+                                <option value="medium">{selectedLanguage === 'chinese' ? '中' : 'Medium'}</option>
+                                <option value="large">{selectedLanguage === 'chinese' ? '大' : 'Large'}</option>
+                            </select>
+                        </label>
+                    </div>
+                )}
+                {!noToppings.includes(name) && (
+                    <div className="option">
+                        <label>
+                            {selectedLanguage === 'chinese' ? '配料' : 'Toppings:'}
+                            <div>
+                                <label>
+                                    <input type="checkbox" value="oatmilkSubstitution" checked={selectedToppings.includes('oatmilkSubstitution')} onChange={() => handleToppingChange('oatmilkSubstitution')} />
+                                    <span className="no-line-break">{selectedLanguage === 'chinese' ? '燕麦奶更换' : 'Oat Milk Substitution'}</span>
+                                </label>
+                          fi      <label>
+                                    <input type="checkbox" value="boba" checked={selectedToppings.includes('boba')} onChange={() => handleToppingChange('boba')} />
+                                    <span className="no-line-break">{selectedLanguage === 'chinese' ? '珍珠' : 'Boba'}</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" value="extraExpressoShot" checked={selectedToppings.includes('extraExpressoShot')} onChange={() => handleToppingChange('extraExpressoShot')} disabled />
+                                    <span className="no-line-break"><s>{selectedLanguage === 'chinese' ? '外加一份浓缩' : 'Extra Espresso Shot'}</s></span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" value="redBean" checked={selectedToppings.includes('redBean')} onChange={() => handleToppingChange('redBean')} />
+                                    <span className="no-line-break">{selectedLanguage === 'chinese' ? '红豆' : 'Red Bean'}</span>
+                                </label>
+                            </div>
+                        </label>
+                    </div>
+                )}
                 <div className="option">
                     <label>
                         {selectedLanguage === 'chinese' ? '名' : 'First Name:'}
