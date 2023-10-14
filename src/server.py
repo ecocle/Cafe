@@ -237,15 +237,14 @@ def get_user_data():
             return jsonify({'error': 'User data not found'}), 404
     else:
         return jsonify({'error': 'User not logged in'}), 401
-    
+
 
 @app.route('/api/admin/orders', methods=['GET'])
 def get_admin_orders():
-
     conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8") 
+                           charset="utf8")
     cursor = conn.cursor()
-    sql = "SELECT * FROM Orders"
+    sql = "SELECT * FROM Orders ORDER BY order_time DESC"
     cursor.execute(sql)
     orders_data = cursor.fetchall()
     conn.close()
@@ -255,13 +254,12 @@ def get_admin_orders():
 
 @app.route('/api/admin/ordersNormal', methods=['GET'])
 def get_normal_orders():
-
     username = session.get('username')
 
     conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
-    sql = "SELECT * FROM Orders Where First_name=%s"
+    sql = "SELECT * FROM Orders Where First_name=%s ORDER BY order_time DESC"
     cursor.execute(sql, username)
     orders_data = cursor.fetchall()
     conn.close()
@@ -334,6 +332,5 @@ def update_order():
         conn.close()
 
 
-
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0", port="5000")

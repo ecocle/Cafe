@@ -86,8 +86,7 @@ export const ViewOrdersNormal = ({ className }: ViewOrdersNormalProps) => {
 
     const renderRows = () => {
         return ordersData.map((order, index) => (
-            <tr key={order.id} onClick={() => handleEditClick(index)}>
-                <td>{order.id}</td>
+            <tr key={order.id}>
                 <td>
                     {editRowId === index ?
                         <input
@@ -168,19 +167,6 @@ export const ViewOrdersNormal = ({ className }: ViewOrdersNormalProps) => {
                         />
                         : order.cup}
                 </td>
-                <td>
-                    {editRowId === index ?
-                        <input
-                            value={order.charles}
-                            onChange={(e) => handleFieldChange(e, 'charles', index)}
-                        />
-                        : order.charles}
-                </td>
-                <td>
-                    {editRowId === index ? (
-                        <button onClick={(e) => { e.stopPropagation(); setEditRowId(null); }}>Cancel</button>
-                    ) : null}
-                </td>
             </tr>
         ));
     };
@@ -191,7 +177,6 @@ export const ViewOrdersNormal = ({ className }: ViewOrdersNormalProps) => {
             <table className={styles['orders-table']}>
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Order Time</th>
                         <th>First Name</th>
                         <th>Last Name</th>
@@ -202,8 +187,6 @@ export const ViewOrdersNormal = ({ className }: ViewOrdersNormalProps) => {
                         <th>Price</th>
                         <th>Comments</th>
                         <th>Cup</th>
-                        <th>CHARLES</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>{renderRows()}</tbody>

@@ -73,7 +73,7 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
                     <>
                         {adding.success && (
                             <div>
-                                <AddingSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} />
+                                <AddingSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} amount={amount}/>
                             </div>
                         )}
                         {adding.failed && (

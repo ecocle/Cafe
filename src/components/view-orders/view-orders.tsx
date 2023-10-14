@@ -176,11 +176,6 @@ export const ViewOrders = ({ className }: ViewOrdersProps) => {
                         />
                         : order.charles}
                 </td>
-                <td>
-                    {editRowId === index ? (
-                        <button onClick={(e) => { e.stopPropagation(); setEditRowId(null); }}>Cancel</button>
-                    ) : null}
-                </td>
             </tr>
         ));
     };
@@ -203,7 +198,6 @@ export const ViewOrders = ({ className }: ViewOrdersProps) => {
                         <th>Comments</th>
                         <th>Cup</th>
                         <th>CHARLES</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>{renderRows()}</tbody>

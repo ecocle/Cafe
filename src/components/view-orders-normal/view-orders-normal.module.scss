@@ -1,4 +1,3 @@
-/* Styling for the table container */
 .orders-table-container {
     font-family: Arial, sans-serif;
     color: #242424;
@@ -11,7 +10,6 @@
     overflow: auto;
 }
 
-/* Styling for the table */
 .orders-table {
     width: 100%;
     border-collapse: collapse;
@@ -19,9 +17,9 @@
     background-color: #fff;
     border-radius: 10px;
     overflow: visible;
+    table-layout: auto;
 }
 
-/* Styling for table header */
 .orders-table th {
     position: sticky;
     top: 0;
@@ -32,10 +30,9 @@
     text-align: left;
     padding: 12px;
     border-bottom: 2px solid #ddd;
-    min-width: 15em;
+    white-space: nowrap;
 }
 
-/* Styling for table rows */
 .orders-table tr {
     transition: background-color 0.2s;
     position: relative;
@@ -45,26 +42,50 @@
     background-color: #f2f2f2;
 }
 
-/* Hover effect for table rows */
 .orders-table tr:hover {
-    cursor: pointer;
     background-color: #e0e0e0;
 }
 
-/* Styling for table cells (td) */
 .orders-table td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-}
-
-/* Styling for table footer (if needed) */
-.orders-table tfoot {
-    background-color: #007bff;
-    color: #fff;
-    font-weight: bold;
+    white-space: nowrap;
 }
 
 textarea {
     width: 20em;
+}
+
+@media (prefers-color-scheme: dark) {
+    .orders-table-container {
+        color: #f4f4f4;
+        background-color: #333;
+    }
+
+    .orders-table {
+        background-color: #222;
+    }
+
+    .orders-table th {
+        background-color: #222;
+        border-bottom: 1px solid #333;
+    }
+
+    .orders-table tr {
+        background-color: #444;
+    }
+
+    .orders-table tr:nth-child(even) {
+        background-color: #555;
+    }
+
+    .orders-table tr:hover {
+        background-color: #666;
+    }
+
+    .orders-table td {
+        color: #fff;
+        border-bottom: 1px solid #333;
+    }
 }
