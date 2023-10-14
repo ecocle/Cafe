@@ -3,6 +3,7 @@ import pymysql
 from flask import Flask, send_from_directory, request, jsonify, session
 from flask_cors import CORS
 import jwt
+import bcrypt
 
 app = Flask(__name__, static_folder='../dist', static_url_path='')
 CORS(app, supports_credentials=True)
@@ -20,7 +21,7 @@ def serve(path):
 
 @app.route('/api/dataCoffee', methods=['GET'])
 def get_data_coffee():
-    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Coffee"
@@ -34,7 +35,7 @@ def get_data_coffee():
 
 @app.route('/api/dataCaffeineFree', methods=['GET'])
 def get_data_caffeine_free():
-    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Caffeine_free"
@@ -48,7 +49,7 @@ def get_data_caffeine_free():
 
 @app.route('/api/dataBreakfast', methods=['GET'])
 def get_data_breakfast():
-    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Breakfast"
@@ -97,7 +98,7 @@ def handle_order():
         VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s)
     """
 
-    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
 
@@ -117,18 +118,20 @@ def handle_order():
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/addMoneyToAcc')
+@app.route('/api/addMoneyToAcc', methods=['POST'])
 def add_monet_to_acc():
     data = request.get_json()
 
+    username = session.get('username')
     amount = data['amount']
 
-    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
+    print(amount, username)
+
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
 
     try:
-        username = session.get('username')
         if username:
             cursor.execute("UPDATE Accounts SET Balance = Balance + %s WHERE User_name = %s;", (amount, username))
 
@@ -146,24 +149,29 @@ def handle_login():
     data = request.get_json()
 
     username = data['username']
-    password = data['password']
+    password = data['password'].encode('utf-8')
 
-    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                            charset="utf8")
 
     try:
         with conn.cursor() as cursor:
-            sql = "SELECT * FROM Accounts WHERE User_name=%s AND Password=%s"
-            cursor.execute(sql, (username, password))
-            user = cursor.fetchone()
+            # Fetch the hashed password for the provided username
+            sql = "SELECT Password FROM Accounts WHERE User_name=%s"
+            cursor.execute(sql, username)
+            result = cursor.fetchone()
 
-            if user:
-                session['username'] = username
-                print(session.get('username'))
-                token = jwt.encode({'username': username}, 'SECRET_KEY', algorithm='HS256')
-                response = jsonify({'message': 'Login successful', 'username': username, 'token': token})
-                response.set_cookie('access_token', token, max_age=60 * 60 * 24 * 30)
-                return response
+            if result:
+                storedHashedPassword = result[0].encode('utf-8')
+
+                if bcrypt.checkpw(password, storedHashedPassword):
+                    session['username'] = username
+                    token = jwt.encode({'username': username}, 'SECRET_KEY', algorithm='HS256')
+                    response = jsonify({'message': 'Login successful', 'username': username, 'token': token})
+                    response.set_cookie('access_token', token, max_age=60 * 60 * 24 * 30)
+                    return response
+                else:
+                    return jsonify({'error': 'Invalid username or password'})
             else:
                 return jsonify({'error': 'Invalid username or password'})
 
@@ -176,14 +184,17 @@ def handle_register():
     data = request.get_json()
 
     username = data['username']
-    password = data['password']
+    password = data['password'].encode('utf-8')
+
+    salt = bcrypt.gensalt()
+    hashedPassword = bcrypt.hashpw(password, salt)
 
     createAccount = (
         username,
-        password,
+        hashedPassword,
     )
 
-    conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                            charset="utf8")
 
     try:
@@ -210,10 +221,9 @@ def handle_register():
 @app.route('/api/user_data', methods=['GET'])
 def get_user_data():
     username = session.get('username')
-    print(username)
 
     if username:
-        conn = pymysql.connect(host="172.16.13.205", user="root", password="Shawn090209", database="Coffee_Orders",
+        conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
                                charset="utf8")
         cursor = conn.cursor()
         sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
@@ -227,6 +237,102 @@ def get_user_data():
             return jsonify({'error': 'User data not found'}), 404
     else:
         return jsonify({'error': 'User not logged in'}), 401
+    
+
+@app.route('/api/admin/orders', methods=['GET'])
+def get_admin_orders():
+
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8") 
+    cursor = conn.cursor()
+    sql = "SELECT * FROM Orders"
+    cursor.execute(sql)
+    orders_data = cursor.fetchall()
+    conn.close()
+
+    return jsonify({'data': orders_data})
+
+
+@app.route('/api/admin/ordersNormal', methods=['GET'])
+def get_normal_orders():
+
+    username = session.get('username')
+
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
+    cursor = conn.cursor()
+    sql = "SELECT * FROM Orders Where First_name=%s"
+    cursor.execute(sql, username)
+    orders_data = cursor.fetchall()
+    conn.close()
+
+    return jsonify({'data': orders_data})
+
+
+@app.route('/api/admin/updateOrder', methods=['PUT'])
+def update_order():
+    updated_order = request.json
+
+    # Extract the ID of the updated order
+    updated_order_id = updated_order['id']
+
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+                           charset="utf8")
+    cursor = conn.cursor()
+
+    try:
+        # Check if the order with the given ID exists in the database
+        sql = "SELECT * FROM Orders WHERE id = %s"
+        cursor.execute(sql, (updated_order_id,))
+        existing_order = cursor.fetchone()
+
+        if existing_order:
+            # Update the order in the database with the new data
+            sql = """
+                UPDATE Orders
+                SET 
+                    Order_time = %s,
+                    First_name = %s,
+                    Last_name = %s,
+                    Coffee_type = %s,
+                    Temperature = %s,
+                    Toppings = %s,
+                    Size = %s,
+                    Price = %s,
+                    Comments = %s,
+                    Cup = %s,
+                    CHARLES = %s,
+                WHERE ID = %s
+            """
+
+            cursor.execute(
+                sql,
+                (
+                    updated_order['order_time'],
+                    updated_order['first_name'],
+                    updated_order['last_name'],
+                    updated_order['coffee_type'],
+                    updated_order['temperature'],
+                    updated_order['toppings'],
+                    updated_order['size'],
+                    updated_order['price'],
+                    updated_order['comments'],
+                    updated_order['cup'],
+                    updated_order['charles'],
+                    updated_order_id,
+                ),
+            )
+            conn.commit()
+
+            return jsonify({'status': 'success', 'message': 'Order updated successfully'}), 200
+        else:
+            return jsonify({'status': 'error', 'message': 'Order not found'}), 404
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
 
 
 if __name__ == '__main__':

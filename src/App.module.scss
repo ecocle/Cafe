@@ -26,7 +26,7 @@
   }
 }
 
-.button_login, .button_register, .button_add {
+.button_login, .button_register, .button_add, .button_view {
   display: block;
   border-radius: 0.8vw;
   background-color: darkgreen;
@@ -47,7 +47,13 @@
   }
 
   &.button_add {
+    z-index: 999;
     top: 6em;
+  }
+
+  &.button_view {
+    z-index: 999;
+    top: 9em;
   }
 }
 
@@ -99,6 +105,15 @@
   text-align: right;
 }
 
+.greeting {
+  margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
+.balance {
+  margin-top: 0; /* Reset top margin if needed */
+  margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
 .buttons {
   width: 100%;
   text-align: center;
@@ -132,7 +147,6 @@
 }
 
 .return {
-  position: sticky;
   top: 0;
   left: 0;
   width: 100%;

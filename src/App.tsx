@@ -8,12 +8,15 @@ import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 import { AddMoneyToAcc } from './components/add-money-to-acc/add-money-to-acc';
 import { LanguageSelection } from './components/language-selection/language-selection';
+import { ViewOrders } from './components/view-orders/view-orders';
+import { ViewOrdersNormal } from './components/view-orders-normal/view-orders-normal';
 import { DEFAULT_LANGUAGE, LANGUAGES } from './constants/constants';
 
 
 function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLogingIn, setIsLogingIn] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
@@ -27,14 +30,19 @@ function App() {
         caffeineFree: false,
         breakfast: false,
         main: true,
-        return: false
+        return: false,
+        admin: false,
+        normal: false,
     });
 
     useEffect(() => {
+        checkAdmin();
+    }, [userData]);
+
+    useEffect(() => {
         const token = sessionStorage.getItem('token') || getCookie('access_token');
-        console.log(token);
         if (token) {
-            fetch('http://172.16.13.205:5000/api/user_data', {
+            fetch('http://127.0.0.1:5000/api/user_data', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -53,7 +61,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://172.16.13.205:5000/api/dataCoffee', {
+        fetch('http://127.0.0.1:5000/api/dataCoffee', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -80,7 +88,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://172.16.13.205:5000/api/dataCaffeineFree', {
+        fetch('http://127.0.0.1:5000/api/dataCaffeineFree', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -107,7 +115,7 @@ function App() {
         const token = sessionStorage.getItem('token');
         setIsLoading(true);
 
-        fetch('http://172.16.13.205:5000/api/dataBreakfast', {
+        fetch('http://127.0.0.1:5000/api/dataBreakfast', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -140,7 +148,9 @@ function App() {
             caffeineFree: false,
             breakfast: false,
             main: false,
-            return: true
+            return: true,
+            admin: false,
+            normal: false,
         }));
     };
 
@@ -151,7 +161,9 @@ function App() {
             caffeineFree: !prevState.caffeineFree,
             breakfast: false,
             main: false,
-            return: true
+            return: true,
+            admin: false,
+            normal: false,
         }));
     };
 
@@ -162,7 +174,9 @@ function App() {
             caffeineFree: false,
             breakfast: !prevState.breakfast,
             main: false,
-            return: true
+            return: true,
+            admin: false,
+            normal: false,
         }));
     }
 
@@ -173,16 +187,50 @@ function App() {
             caffeineFree: false,
             breakfast: false,
             main: true,
-            return: false
+            return: false,
+            admin: false,
+            normal: false,
         }));
     };
+
+    const showAdmin = () => {
+        setShowStates((prevState) => ({
+            ...prevState,
+            coffee: false,
+            caffeineFree: false,
+            breakfast: false,
+            main: false,
+            return: false,
+            admin: true,
+            normal: false,
+        }));
+    };
+
+    const showNormal = () => {
+        setShowStates((prevState) => ({
+            ...prevState,
+            coffee: false,
+            caffeineFree: false,
+            breakfast: false,
+            main: false,
+            return: false,
+            admin: false,
+            normal: true,
+        }));
+    };
+
+    const checkAdmin = () => {
+        if (userData && userData.username === "Admin"){
+            setIsAdmin(true);
+        }
+    }
 
     const handleLoginSuccess = (username: string, token: string) => {
         setIsLoggedIn(true);
 
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('username', username);
-        fetch('http://172.16.13.205:5000/api/user_data', {
+        fetch('http://127.0.0.1:5000/api/user_data', {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -244,10 +292,55 @@ function App() {
             {isAdding && (
                 <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc} />
             )}
-            {isLoggedIn && (
+            {showStates.admin && (
+                <div>
+                    <div className={styles.return}>
+                        <button className={styles.button_return} onClick={showMain}>
+                            <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
+                        </button>
+                    </div>
+                    <div>
+                        <ViewOrders />
+                    </div>
+                </div>
+            )}
+            {showStates.normal && (
+                <div>
+                    <div className={styles.return}>
+                        <button className={styles.button_return} onClick={showMain}>
+                            <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
+                        </button>
+                    </div>
+                    <div>
+                        <ViewOrdersNormal />
+                    </div>
+                </div>
+            )}
+            {isLoggedIn && showStates.main && (
                 <div className={styles.welcome}>
-                    <p>{selectedLanguage === 'chinese' ? '你好 ' : 'Hello '}{userData!.username}</p>
-                    <p>{selectedLanguage === 'chinese' ? '你还剩 ¥' : 'You have ¥'}{userData!.balance}{selectedLanguage === 'chinese' ? ' 在你帐号里' : ' left in your account'}</p>
+                    <p className={styles.greeting}>
+                        {selectedLanguage === 'chinese' ? '你好 ' : 'Hello '}{userData!.username}
+                    </p>
+                    <p className={styles.balance}>
+                        {selectedLanguage === 'chinese' ? '你还剩 ¥' : 'You have ¥'}{userData!.balance}{selectedLanguage === 'chinese' ? ' 在你帐号里' : ' left in your account'}
+                    </p>
+                    <button className={styles.button_add} onClick={add}>
+                        Add money to account
+                    </button>
+                    {isAdmin && (
+                        <div>
+                            <button className={styles.button_view} onClick={showAdmin}>
+                                View Orders
+                            </button>
+                        </div>
+                    )}
+                    {!isAdmin && (
+                        <div>
+                            <button className={styles.button_view} onClick={showNormal}>
+                                View Orders
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
             {showStates.main && (

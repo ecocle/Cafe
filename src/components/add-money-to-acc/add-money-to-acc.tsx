@@ -22,25 +22,21 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
         onClose(e);
     };
 
-    const handleRegistration = async () => {
-        try {
-            const response = await fetch('http://172.16.13.205:5000/api/addMoneyToAcc', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ amount }),
-            });
+    const handleAdd = async () => {
+        const response = await fetch('http://127.0.0.1:5000/api/addMoneyToAcc', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amount }),
+        });
 
-            if (response.ok) {
-                showSuccess();
-            } else if (response.status === 400) {
-                showFailed();
-            } else {
-                console.error(`Error: ${response.statusText}`);
-            }
-        } finally {
-
+        if (response.ok) {
+            showSuccess();
+        } else if (response.status === 400) {
+            showFailed();
+        } else {
+            console.error(`Error: ${response.statusText}`);
         }
     };
 
@@ -99,7 +95,7 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
                         required
                     />
                     <br />
-                    <button id="registrationButton" className={styles.button} type="button" onClick={handleRegistration}>
+                    <button id="registrationButton" className={styles.button} type="button" onClick={handleAdd}>
                         {selectedLanguage === 'chinese' ? '添加金额到帐户！' : 'Add amount to account!'}
                     </button>
                 </div>
