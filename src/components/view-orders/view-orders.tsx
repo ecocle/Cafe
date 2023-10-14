@@ -31,7 +31,7 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
 
     const fetchOrderData = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/admin/orders');
+            const response = await fetch('http://172.16.13.250:5000/api/admin/orders');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -69,7 +69,7 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
 
     const handleSave = async (editedOrder: Order) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/admin/updateOrder', {
+            const response = await fetch('http://172.16.13.250:5000/api/admin/updateOrder', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -89,14 +89,7 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
         return ordersData.map((order, index) => (
             <tr key={order.id} onClick={() => handleEditClick(index)}>
                 <td>{order.id}</td>
-                <td>
-                    {editRowId === index ?
-                        <input
-                            value={order.order_time}
-                            onChange={(e) => handleFieldChange(e, 'order_time', index)}
-                        />
-                        : order.order_time}
-                </td>
+                <td>{order.order_time}</td>
                 <td>
                     {editRowId === index ?
                         <input
@@ -148,10 +141,10 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
                 <td>
                     {editRowId === index ?
                         <input
-                            value={String(order.price)}
+                            value={order.price || ''}
                             onChange={(e) => handleFieldChange(e, 'price', index)}
                         />
-                        : `¥${order.price.toFixed(2)}`}
+                        : order.price}
                 </td>
                 <td>
                     {editRowId === index ?

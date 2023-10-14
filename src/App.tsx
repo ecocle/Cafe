@@ -42,7 +42,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token') || getCookie('access_token');
         if (token) {
-            fetch('http://127.0.0.1:5000/api/user_data', {
+            fetch('http://172.16.13.250:5000/api/user_data', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -61,7 +61,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://127.0.0.1:5000/api/dataCoffee', {
+        fetch('http://172.16.13.250:5000/api/dataCoffee', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -88,7 +88,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://127.0.0.1:5000/api/dataCaffeineFree', {
+        fetch('http://172.16.13.250:5000/api/dataCaffeineFree', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -115,7 +115,7 @@ function App() {
         const token = sessionStorage.getItem('token');
         setIsLoading(true);
 
-        fetch('http://127.0.0.1:5000/api/dataBreakfast', {
+        fetch('http://172.16.13.250:5000/api/dataBreakfast', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -236,7 +236,7 @@ function App() {
 
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('username', username);
-        fetch('http://127.0.0.1:5000/api/user_data', {
+        fetch('http://172.16.13.250:5000/api/user_data', {
             headers: {
                 Authorization: `Bearer ${token}`
             },

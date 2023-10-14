@@ -31,7 +31,7 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
 
     const fetchOrderData = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/admin/ordersNormal');
+            const response = await fetch('http://172.16.13.250:5000/api/admin/ordersNormal');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -69,7 +69,7 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
 
     const handleSave = async (editedOrder: Order) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/admin/updateOrder', {
+            const response = await fetch('http://172.16.13.250:5000/api/admin/updateOrder', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,15 +87,8 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
 
     const renderRows = () => {
         return ordersData.map((order, index) => (
-            <tr key={order.id}>
-                <td>
-                    {editRowId === index ?
-                        <input
-                            value={order.order_time}
-                            onChange={(e) => handleFieldChange(e, 'order_time', index)}
-                        />
-                        : order.order_time}
-                </td>
+            <tr key={order.id} onClick={() => handleEditClick(index)}>
+                <td>{order.order_time}</td>
                 <td>
                     {editRowId === index ?
                         <input
@@ -112,14 +105,7 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
                         />
                         : order.last_name}
                 </td>
-                <td>
-                    {editRowId === index ?
-                        <input
-                            value={order.coffee_type}
-                            onChange={(e) => handleFieldChange(e, 'coffee_type', index)}
-                        />
-                        : order.coffee_type}
-                </td>
+                <td>{order.coffee_type}</td>
                 <td>
                     {editRowId === index ?
                         <input
@@ -128,30 +114,9 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
                         />
                         : order.temperature}
                 </td>
-                <td>
-                    {editRowId === index ?
-                        <input
-                            value={order.toppings || ''}
-                            onChange={(e) => handleFieldChange(e, 'toppings', index)}
-                        />
-                        : order.toppings}
-                </td>
-                <td>
-                    {editRowId === index ?
-                        <input
-                            value={order.size}
-                            onChange={(e) => handleFieldChange(e, 'size', index)}
-                        />
-                        : order.size}
-                </td>
-                <td>
-                    {editRowId === index ?
-                        <input
-                            value={String(order.price)}
-                            onChange={(e) => handleFieldChange(e, 'price', index)}
-                        />
-                        : `¥${order.price.toFixed(2)}`}
-                </td>
+                <td>{order.toppings}</td>
+                <td>{order.size}</td>
+                <td>{order.price}</td>
                 <td>
                     {editRowId === index ?
                         <input

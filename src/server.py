@@ -21,7 +21,7 @@ def serve(path):
 
 @app.route('/api/dataCoffee', methods=['GET'])
 def get_data_coffee():
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Coffee"
@@ -35,7 +35,7 @@ def get_data_coffee():
 
 @app.route('/api/dataCaffeineFree', methods=['GET'])
 def get_data_caffeine_free():
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Caffeine_free"
@@ -49,7 +49,7 @@ def get_data_caffeine_free():
 
 @app.route('/api/dataBreakfast', methods=['GET'])
 def get_data_breakfast():
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Breakfast"
@@ -98,7 +98,7 @@ def handle_order():
         VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s)
     """
 
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
 
@@ -127,7 +127,7 @@ def add_monet_to_acc():
 
     print(amount, username)
 
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
 
@@ -151,12 +151,11 @@ def handle_login():
     username = data['username']
     password = data['password'].encode('utf-8')
 
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
 
     try:
         with conn.cursor() as cursor:
-            # Fetch the hashed password for the provided username
             sql = "SELECT Password FROM Accounts WHERE User_name=%s"
             cursor.execute(sql, username)
             result = cursor.fetchone()
@@ -194,7 +193,7 @@ def handle_register():
         hashedPassword,
     )
 
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
 
     try:
@@ -223,7 +222,7 @@ def get_user_data():
     username = session.get('username')
 
     if username:
-        conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+        conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                                charset="utf8")
         cursor = conn.cursor()
         sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
@@ -241,7 +240,7 @@ def get_user_data():
 
 @app.route('/api/admin/orders', methods=['GET'])
 def get_admin_orders():
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Orders ORDER BY order_time DESC"
@@ -256,7 +255,7 @@ def get_admin_orders():
 def get_normal_orders():
     username = session.get('username')
 
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders",
                            charset="utf8")
     cursor = conn.cursor()
     sql = "SELECT * FROM Orders Where First_name=%s ORDER BY order_time DESC"
@@ -272,7 +271,7 @@ def update_order():
     updated_order = request.json
     updated_order_id = updated_order['id']
 
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders", charset="utf8")
+    conn = pymysql.connect(host="172.16.13.250", user="root", password="Shawn090209", database="Coffee_Orders", charset="utf8")
     cursor = conn.cursor()
 
     try:
@@ -284,7 +283,6 @@ def update_order():
             sql = """
                 UPDATE Orders
                 SET 
-                    Order_time = %s,
                     First_name = %s,
                     Last_name = %s,
                     Coffee_type = %s,
@@ -301,7 +299,6 @@ def update_order():
             cursor.execute(
                 sql,
                 (
-                    updated_order['order_time'],
                     updated_order['first_name'],
                     updated_order['last_name'],
                     updated_order['coffee_type'],
@@ -321,6 +318,7 @@ def update_order():
         else:
             return jsonify({'status': 'error', 'message': 'Order not found'}), 404
     except Exception as e:
+        print(e)
         return jsonify({'status': 'error', 'message': str(e)}), 500
     finally:
         cursor.close()
@@ -328,4 +326,4 @@ def update_order():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port="5000")
+    app.run(host="0.0.0.0", port="5000", debug=True)

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import styles from './language-selection.module.scss';
 import { LANGUAGES, DEFAULT_LANGUAGE } from '../../constants/constants';
-import { useState } from 'react';
 
 export interface LanguageSelectionProps {
     className?: string;
@@ -16,9 +15,9 @@ export const LanguageSelection = ({ className, onLanguageChange, selectedLanguag
     };
 
     return (
-        <select value={selectedLanguage} onChange={handleChange}>
-            <option value={LANGUAGES.ENGLISH}>English</option>
-            <option value={LANGUAGES.CHINESE}>Chinese</option>
+        <select className={styles.select} value={selectedLanguage} onChange={handleChange}>
+            <option className={styles.option} value={LANGUAGES.ENGLISH}>English</option>
+            <option className={styles.option} value={LANGUAGES.CHINESE}>Chinese</option>
         </select>
     );
 };
