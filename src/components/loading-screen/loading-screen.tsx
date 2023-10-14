@@ -12,7 +12,7 @@ export const LoadingScreen = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setLoadingText(prevText => {
-                return prevText === 'Loading...' ? 'Loading' : prevText + '.';
+                return prevText === 'Loading....' ? 'Loading' : prevText + '.';
             });
         }, 300);
 

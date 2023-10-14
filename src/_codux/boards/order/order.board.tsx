@@ -6,10 +6,10 @@ function close() {
 }
 export default createBoard({
     name: 'Order',
-    Board: () => <Order isOpen onClose={close} name={''} originalPrice={0}  userData={null} selectedLanguage={""}/>,
+    Board: () => <Order isOpen onClose={close} name={''} originalPrice={0} userData={null} selectedLanguage={""} />,
     isSnippet: true,
     environmentProps: {
-        canvasWidth: 656,
-        canvasHeight: 362
+        canvasWidth: 602,
+        canvasHeight: 506
     }
 });

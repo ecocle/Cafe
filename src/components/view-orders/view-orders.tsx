@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 export interface ViewOrdersProps {
     className?: string;
+    selectedLanguage: string;
 }
 
 interface Order {
@@ -20,7 +21,7 @@ interface Order {
     charles: string;
 }
 
-export const ViewOrders = ({ className }: ViewOrdersProps) => {
+export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => {
     const [ordersData, setOrdersData] = useState<Order[]>([]);
     const [editRowId, setEditRowId] = useState<number | null>(null);
 

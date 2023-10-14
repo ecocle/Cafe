@@ -6,6 +6,10 @@ export default createBoard({
     name: 'AddingSuccess',
     Board: () => <AddingSuccess onClose={function(onclose): void {
         throw new Error('Function not implemented.');
-    } } selectedLanguage={''} />,
+    }} selectedLanguage={''} />,
     isSnippet: true,
+    environmentProps: {
+        canvasHeight: 530,
+        canvasWidth: 612
+    }
 });

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 export interface ViewOrdersNormalProps {
     className?: string;
+    selectedLanguage: string;
 }
 
 interface Order {
@@ -20,7 +21,7 @@ interface Order {
     charles: string;
 }
 
-export const ViewOrdersNormal = ({ className }: ViewOrdersNormalProps) => {
+export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNormalProps) => {
     const [ordersData, setOrdersData] = useState<Order[]>([]);
     const [editRowId, setEditRowId] = useState<number | null>(null);
 
@@ -173,20 +174,20 @@ export const ViewOrdersNormal = ({ className }: ViewOrdersNormalProps) => {
 
     return (
         <div className={styles['orders-table-container']}>
-            <h2 className='header'>Orders Data</h2>
+            <h2 className='header'>{selectedLanguage === 'chinese' ? '' : 'Orders Data'}</h2>
             <table className={styles['orders-table']}>
                 <thead>
                     <tr>
-                        <th>Order Time</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Type</th>
-                        <th>Temperature</th>
-                        <th>Toppings</th>
-                        <th>Size</th>
-                        <th>Price</th>
-                        <th>Comments</th>
-                        <th>Cup</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Order Time'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'First Name'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Last Name'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Type'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Temperature'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Toppings'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Size'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Price'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Comments'}</th>
+                        <th>{selectedLanguage === 'chinese' ? '' : 'Cup'}</th>
                     </tr>
                 </thead>
                 <tbody>{renderRows()}</tbody>

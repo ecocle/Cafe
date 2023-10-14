@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './login.module.scss';
 import jwt_decode from 'jwt-decode';

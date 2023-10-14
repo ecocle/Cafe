@@ -6,10 +6,10 @@ export default createBoard({
     name: 'LoginSuccess',
     Board: () => <LoginSuccess onClose={function(onclose): void {
         throw new Error('Function not implemented.');
-    } } selectedLanguage={''} />,
+    }} selectedLanguage={''} />,
     isSnippet: true,
     environmentProps: {
-        canvasWidth: 419,
-        canvasHeight: 326
+        canvasWidth: 323,
+        canvasHeight: 268
     }
 });

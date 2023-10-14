@@ -4,16 +4,16 @@ import { LanguageSelection } from '../../../components/language-selection/langua
 import { LANGUAGES } from '../../../constants/constants';
 
 export default createBoard({
-  name: 'LanguageSelection',
-  Board: (props) => (
-    <LanguageSelection
-      selectedLanguage={props.selectedLanguage}
-      onLanguageChange={props.onLanguageChange}
-    />
-  ),
-  isSnippet: true,
-  environmentProps: {
-    canvasWidth: 413,
-    canvasHeight: 290
-  }
+    name: 'LanguageSelection',
+    Board: (props) => (
+        <LanguageSelection
+            selectedLanguage={props.selectedLanguage}
+            onLanguageChange={props.onLanguageChange}
+        />
+    ),
+    isSnippet: true,
+    environmentProps: {
+        canvasWidth: 93,
+        canvasHeight: 42
+    }
 });

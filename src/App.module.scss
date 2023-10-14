@@ -1,36 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
+
 .button, .button_return, .button_disabled {
   display: inline-block;
   border: none;
   color: #FFFFFF;
   text-align: center;
-  font-family: Georgia, serif;
+  font-family: 'Cardo', serif;
   font-size: 1.8em;
-  padding: 1em;
+  padding: 1em 1.5em;
   width: auto;
-  transition: all 0.5s;
+  transition: all 0.3s;
   cursor: pointer;
   margin: 8px;
-  box-shadow: 5.2px 3px 15px black;
-  opacity: 1;
   border-radius: 0.6em;
-
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+  
   &.button_return {
     font-size: 1.4em;
     padding: 0.6em;
+  }
+
+  &.button_return:hover {
+    color: #FFFFFF;
+    background-color: #7029b6;
+    transform: translateY(-2px);
+    transition: 0.3s;
+  }
+
+  &.button_return:active {
+    transform: scale(0.95);
+    transition: 0.2s;
   }
 
   &.button_disabled {
     background-color: dimgray;
     cursor: not-allowed;
     opacity: 0.6;
+    color: #FFFFFF;
   }
 }
 
 .button_login, .button_register, .button_add, .button_view {
   display: block;
+  border-color: transparent;
   border-radius: 0.8vw;
-  background-color: darkgreen;
-  font-family: Times, "Times New Roman", serif;
+  background-color: #006400;
+  font-family: 'Cardo', serif;
   font-size: 0.8em;
   padding: 0.6em;
   width: auto;
@@ -41,18 +57,28 @@
   float: right;
   direction: ltr;
   position: absolute;
+  transition: 0.3s;
+  
+  &:hover {
+    background-color: #005400;
+  }
+
+  &:active {
+    transform: scale(0.9);
+    transition: 0.3s;
+  }
 
   &.button_register {
     top: 3em;
   }
 
   &.button_add {
-    z-index: 999;
+    z-index: 1;
     top: 6em;
   }
 
   &.button_view {
-    z-index: 999;
+    z-index: 1;
     top: 9em;
   }
 }
@@ -87,7 +113,7 @@
 }
 
 .disclaimer {
-  font-family: Tahoma, sans-serif;
+  font-family: 'Cardo', serif;
   font-size: 1vw;
   overflow: hidden;
   white-space: nowrap;
@@ -96,7 +122,7 @@
 
 .welcome {
   position: absolute;
-  font-family: Tahoma, sans-serif;
+  font-family: 'Cardo', serif;
   font-size: 0.8em;
   display: block;
   right: 0.3em;
@@ -106,12 +132,12 @@
 }
 
 .greeting {
-  margin-bottom: 5px; /* Adjust the margin as needed */
+  margin-bottom: 1px;
 }
 
 .balance {
-  margin-top: 0; /* Reset top margin if needed */
-  margin-bottom: 5px; /* Adjust the margin as needed */
+  margin-top: 0;
+  margin-bottom: px; 
 }
 
 .buttons {
@@ -120,10 +146,11 @@
 }
 
 .title {
-  font-family: "URW Chancery L", cursive;
+  font-family: 'Dancing Script', cursive;
   width: 100%;
   text-align: center;
   font-size: 5em;
+  font-weight: 100;
 }
 
 .home,
@@ -176,5 +203,9 @@
   .button_return {
     font-size: 1.4em;
     padding: 0.6em;
+  }
+
+  .button_return:hover {
+    background-color: #7C72E5;
   }
 }

@@ -6,7 +6,7 @@ export default createBoard({
     Board: () => <LoadingScreen />,
     isSnippet: true,
     environmentProps: {
-        canvasHeight: 250,
-        canvasWidth: 409
+        canvasHeight: 538,
+        canvasWidth: 869
     }
 });

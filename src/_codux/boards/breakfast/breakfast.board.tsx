@@ -3,10 +3,10 @@ import { Breakfast } from '../../../components/breakfast/breakfast';
 
 export default createBoard({
     name: 'Breakfast',
-    Board: () => <Breakfast Name={''} Price={0}  userData={null} selectedLanguage={""}/>,
+    Board: () => <Breakfast Name={''} Price={0} userData={null} selectedLanguage={""} />,
     isSnippet: true,
     environmentProps: {
-        canvasWidth: 766,
-        canvasHeight: 498
+        canvasWidth: 100,
+        canvasHeight: 128
     }
 });

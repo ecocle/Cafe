@@ -7,10 +7,10 @@ function log() {
 
 export default createBoard({
     name: 'Login',
-    Board: () => <Login  onLoginSuccess={log} onClose={log}/>,
+    Board: () => <Login onLoginSuccess={log} onClose={log} />,
     isSnippet: true,
     environmentProps: {
-        canvasHeight: 352,
-        canvasWidth: 463
+        canvasHeight: 290,
+        canvasWidth: 347
     }
 });

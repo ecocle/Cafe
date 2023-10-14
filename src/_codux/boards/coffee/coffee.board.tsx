@@ -3,10 +3,10 @@ import { Coffee } from '../../../components/coffee/coffee';
 
 export default createBoard({
     name: 'Coffee',
-    Board: () => <Coffee Name={''} Price={0}  userData={null} selectedLanguage={""}/>,
+    Board: () => <Coffee Name={''} Price={0} userData={null} selectedLanguage={""} />,
     isSnippet: true,
     environmentProps: {
-        canvasHeight: 297,
-        canvasWidth: 300
+        canvasHeight: 103,
+        canvasWidth: 82
     }
 });

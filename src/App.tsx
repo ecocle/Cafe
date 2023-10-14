@@ -181,42 +181,48 @@ function App() {
     }
 
     const showMain = () => {
-        setShowStates((prevState) => ({
-            ...prevState,
-            coffee: false,
-            caffeineFree: false,
-            breakfast: false,
-            main: true,
-            return: false,
-            admin: false,
-            normal: false,
-        }));
+        setTimeout(function() {
+            setShowStates((prevState) => ({
+                ...prevState,
+                coffee: false,
+                caffeineFree: false,
+                breakfast: false,
+                main: true,
+                return: false,
+                admin: false,
+                normal: false,
+            }));
+        }, 300);
     };
 
     const showAdmin = () => {
-        setShowStates((prevState) => ({
-            ...prevState,
-            coffee: false,
-            caffeineFree: false,
-            breakfast: false,
-            main: false,
-            return: false,
-            admin: true,
-            normal: false,
-        }));
+        setTimeout(function() {
+            setShowStates((prevState) => ({
+                ...prevState,
+                coffee: false,
+                caffeineFree: false,
+                breakfast: false,
+                main: false,
+                return: false,
+                admin: true,
+                normal: false,
+            }));
+        }, 300);
     };
 
     const showNormal = () => {
-        setShowStates((prevState) => ({
-            ...prevState,
-            coffee: false,
-            caffeineFree: false,
-            breakfast: false,
-            main: false,
-            return: false,
-            admin: false,
-            normal: true,
-        }));
+        setTimeout(function() {
+            setShowStates((prevState) => ({
+                ...prevState,
+                coffee: false,
+                caffeineFree: false,
+                breakfast: false,
+                main: false,
+                return: false,
+                admin: false,
+                normal: true,
+            }));
+        }, 300);
     };
 
     const checkAdmin = () => {
@@ -300,7 +306,7 @@ function App() {
                         </button>
                     </div>
                     <div>
-                        <ViewOrders />
+                        <ViewOrders selectedLanguage={selectedLanguage} />
                     </div>
                 </div>
             )}
@@ -312,7 +318,7 @@ function App() {
                         </button>
                     </div>
                     <div>
-                        <ViewOrdersNormal />
+                        <ViewOrdersNormal selectedLanguage={selectedLanguage} />
                     </div>
                 </div>
             )}

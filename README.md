@@ -8,7 +8,7 @@ To use the HuaLang School Cafe website, simply follow these steps:
 
 1. **Visit the Website**: Open your web browser and go to [HuaLang Cafe](http://172.16.13.205:5000).
 
-2. **Log In**: If you have an account, you can log in to access the features of the website, and if you dont, you can register one by clicking the register button.
+2. **Log In**: If you have an account, you can log in to access the features of the website, and if you dont, you can register one by clicking on the register button.
 
 3. **Explore the Menu**: Browse our diverse menu to discover a wide range of delicious items.
 
