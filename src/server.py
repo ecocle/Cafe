@@ -270,22 +270,17 @@ def get_normal_orders():
 @app.route('/api/admin/updateOrder', methods=['PUT'])
 def update_order():
     updated_order = request.json
-
-    # Extract the ID of the updated order
     updated_order_id = updated_order['id']
 
-    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host="119.29.236.82", user="root", password="Shawn090209!", database="Coffee_Orders", charset="utf8")
     cursor = conn.cursor()
 
     try:
-        # Check if the order with the given ID exists in the database
         sql = "SELECT * FROM Orders WHERE id = %s"
         cursor.execute(sql, (updated_order_id,))
         existing_order = cursor.fetchone()
 
         if existing_order:
-            # Update the order in the database with the new data
             sql = """
                 UPDATE Orders
                 SET 
@@ -299,7 +294,7 @@ def update_order():
                     Price = %s,
                     Comments = %s,
                     Cup = %s,
-                    CHARLES = %s,
+                    CHARLES = %s
                 WHERE ID = %s
             """
 
