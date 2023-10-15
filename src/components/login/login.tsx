@@ -29,7 +29,7 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
         };
 
         try {
-            const response = await fetch('http://172.16.13.250:5000/api/login', {
+            const response = await fetch('http://172.16.13.205:5000/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,14 +37,18 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
                 body: JSON.stringify(loginData)
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (response.ok) {
+                showSuccess();
+            } else if (response.status === 404) {
+                showFailed();
+            } else {
+                showFailed();
+                console.error(`Error: ${response.statusText}`);
             }
 
             const responseData = await response.json();
             const token = responseData.token;
             localStorage.setItem('token', token);
-            showSuccess();
             const decodedToken: { username: string } = jwt_decode(token);
             const username = decodedToken.username;
             localStorage.setItem('username', username);

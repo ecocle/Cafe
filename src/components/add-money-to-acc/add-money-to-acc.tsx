@@ -23,7 +23,7 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
     };
 
     const handleAdd = async () => {
-        const response = await fetch('http://172.16.13.250:5000/api/addMoneyToAcc', {
+        const response = await fetch('http://172.16.13.205:5000/api/addMoneyToAcc', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,6 +36,7 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
         } else if (response.status === 400) {
             showFailed();
         } else {
+            showFailed();
             console.error(`Error: ${response.statusText}`);
         }
     };

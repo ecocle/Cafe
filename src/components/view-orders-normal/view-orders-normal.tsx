@@ -1,5 +1,6 @@
 import styles from './view-orders-normal.module.scss';
 import React, { useEffect, useState } from 'react';
+import { LoadingScreen } from '../loading-screen/loading-screen';
 
 export interface ViewOrdersNormalProps {
     className?: string;
@@ -24,14 +25,16 @@ interface Order {
 export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNormalProps) => {
     const [ordersData, setOrdersData] = useState<Order[]>([]);
     const [editRowId, setEditRowId] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchOrderData();
     }, []);
 
     const fetchOrderData = async () => {
+        setIsLoading(true);
         try {
-            const response = await fetch('http://172.16.13.250:5000/api/admin/ordersNormal');
+            const response = await fetch('http://172.16.13.205:5000/api/admin/ordersNormal');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -51,7 +54,9 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
                 charles: order[11]
             }));
             setOrdersData(transformedData);
+            setIsLoading(false);
         } catch (error) {
+            setIsLoading(false);
             console.error('Error fetching order data:', error);
         }
     };
@@ -69,7 +74,7 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
 
     const handleSave = async (editedOrder: Order) => {
         try {
-            const response = await fetch('http://172.16.13.250:5000/api/admin/updateOrder', {
+            const response = await fetch('http://172.16.13.205:5000/api/admin/updateOrder', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -139,6 +144,7 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
 
     return (
         <div className={styles['orders-table-container']}>
+            {isLoading && <LoadingScreen />}
             <h2 className='header'>{selectedLanguage === 'chinese' ? '' : 'Orders Data'}</h2>
             <table className={styles['orders-table']}>
                 <thead>

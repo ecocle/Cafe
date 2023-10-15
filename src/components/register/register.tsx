@@ -25,7 +25,7 @@ export const Register = ({ className, onClose, selectedLanguage }: RegisterProps
 
     const handleRegistration = async () => {
         try {
-            const response = await fetch('http://172.16.13.250:5000/api/register', {
+            const response = await fetch('http://172.16.13.205:5000/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,6 +38,7 @@ export const Register = ({ className, onClose, selectedLanguage }: RegisterProps
             } else if (response.status === 400) {
                 showFailed();
             } else {
+                showFailed();
                 console.error(`Error: ${response.statusText}`);
             }
         } finally {

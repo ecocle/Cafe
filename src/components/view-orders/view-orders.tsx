@@ -1,5 +1,6 @@
 import styles from './view-orders.module.scss';
 import React, { useEffect, useState } from 'react';
+import { LoadingScreen } from '../loading-screen/loading-screen';
 
 export interface ViewOrdersProps {
     className?: string;
@@ -24,14 +25,16 @@ interface Order {
 export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => {
     const [ordersData, setOrdersData] = useState<Order[]>([]);
     const [editRowId, setEditRowId] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchOrderData();
     }, []);
 
     const fetchOrderData = async () => {
+        setIsLoading(true);
         try {
-            const response = await fetch('http://172.16.13.250:5000/api/admin/orders');
+            const response = await fetch('http://172.16.13.205:5000/api/admin/orders');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -50,8 +53,10 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
                 cup: order[10],
                 charles: order[11]
             }));
+            setIsLoading(false);
             setOrdersData(transformedData);
         } catch (error) {
+            setIsLoading(false);
             console.error('Error fetching order data:', error);
         }
     };
@@ -69,7 +74,7 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
 
     const handleSave = async (editedOrder: Order) => {
         try {
-            const response = await fetch('http://172.16.13.250:5000/api/admin/updateOrder', {
+            const response = await fetch('http://172.16.13.205:5000/api/admin/updateOrder', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -176,6 +181,7 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
 
     return (
         <div className={styles['orders-table-container']}>
+            {isLoading && <LoadingScreen />}
             <h2 className='header'>Orders Data</h2>
             <table className={styles['orders-table']}>
                 <thead>
