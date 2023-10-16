@@ -171,7 +171,7 @@ def handle_login():
                     session['username'] = username
                     token = jwt.encode({'username': username}, 'SECRET_KEY', algorithm='HS256')
                     response = jsonify({'message': 'Login successful', 'username': username, 'token': token})
-                    response.set_cookie('access_token', token, max_age=60 * 60 * 24 * 30)
+                    response.set_cookie('access_token', token, secure=True, max_age=60 * 60 * 24 * 30)
                     return response
                 else:
                     return jsonify({'error': 'Invalid username or password'}), 404
