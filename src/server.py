@@ -10,6 +10,9 @@ app = Flask(__name__, static_folder='../dist', static_url_path='')
 CORS(app, supports_credentials=True)
 app.secret_key = os.urandom(32)
 
+cert_file = os.path.abspath('cert.pem')
+key_file = os.path.abspath('key.pem')
+
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -328,4 +331,4 @@ def update_order():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=True, ssl_context=(cert_file, key_file))
