@@ -331,4 +331,4 @@ def update_order():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True, ssl_context=(cert_file, key_file))
+    app.run(host="0.0.0.0", debug=True,)
