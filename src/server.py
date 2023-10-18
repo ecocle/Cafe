@@ -1,5 +1,5 @@
 import os
-
+from decimal import Decimal
 import bcrypt
 import jwt
 import pymysql
@@ -31,10 +31,14 @@ def get_data_coffee():
     sql = "SELECT * FROM Coffee"
     cursor.execute(sql)
     result = cursor.fetchall()
+    converted_result = []
+    for row in result:
+        converted_row = [float(val) if isinstance(val, Decimal) else val for val in row]
+        converted_result.append(converted_row)
     conn.commit()
     cursor.close()
     conn.close()
-    return {'data': result}
+    return {'data': converted_result}
 
 
 @app.route('/api/dataCaffeineFree', methods=['GET'])
@@ -45,10 +49,14 @@ def get_data_caffeine_free():
     sql = "SELECT * FROM Caffeine_free"
     cursor.execute(sql)
     result = cursor.fetchall()
+    converted_result = []
+    for row in result:
+        converted_row = [float(val) if isinstance(val, Decimal) else val for val in row]
+        converted_result.append(converted_row)
     conn.commit()
     cursor.close()
     conn.close()
-    return {'data': result}
+    return {'data': converted_result}
 
 
 @app.route('/api/dataBreakfast', methods=['GET'])
