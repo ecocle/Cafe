@@ -34,7 +34,7 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
     const fetchOrderData = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/admin/orders');
+            const response = await fetch('/api/admin/orders');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -74,7 +74,7 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
 
     const handleSave = async (editedOrder: Order) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/admin/updateOrder', {
+            const response = await fetch('/api/admin/updateOrder', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
