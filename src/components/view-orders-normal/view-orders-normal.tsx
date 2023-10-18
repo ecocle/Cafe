@@ -34,7 +34,7 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
     const fetchOrderData = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('http://119.29.236.82/api/api/admin/ordersNormal');
+            const response = await fetch('http://119.29.236.82/api/admin/ordersNormal');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -74,7 +74,7 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
 
     const handleSave = async (editedOrder: Order) => {
         try {
-            const response = await fetch('http://119.29.236.82/api/api/admin/updateOrder', {
+            const response = await fetch('http://119.29.236.82/api/admin/updateOrder', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

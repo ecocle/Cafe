@@ -23,7 +23,7 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
     };
 
     const handleAdd = async () => {
-        const response = await fetch('http://119.29.236.82/api/api/addMoneyToAcc', {
+        const response = await fetch('http://119.29.236.82/api/addMoneyToAcc', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

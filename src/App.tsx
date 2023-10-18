@@ -42,7 +42,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token') || getCookie('access_token');
         if (token) {
-            fetch('http://119.29.236.82/api/api/user_data', {
+            fetch('http://119.29.236.82/api/user_data', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -61,7 +61,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://119.29.236.82/api/api/dataCoffee', {
+        fetch('http://119.29.236.82/api/dataCoffee', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -88,7 +88,7 @@ function App() {
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
-        fetch('http://119.29.236.82/api/api/dataCaffeineFree', {
+        fetch('http://119.29.236.82/api/dataCaffeineFree', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -115,7 +115,7 @@ function App() {
         const token = sessionStorage.getItem('token');
         setIsLoading(true);
 
-        fetch('http://119.29.236.82/api/api/dataBreakfast', {
+        fetch('http://119.29.236.82/api/dataBreakfast', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -236,7 +236,7 @@ function App() {
 
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('username', username);
-        fetch('http://119.29.236.82/api/api/user_data', {
+        fetch('http://119.29.236.82/api/user_data', {
             headers: {
                 Authorization: `Bearer ${token}`
             },
