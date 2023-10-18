@@ -169,7 +169,7 @@ def handle_login():
 
                 if bcrypt.checkpw(password, storedHashedPassword):
                     session['username'] = username
-                    token = jwt.encode({'username': username}, algorithm='HS256')
+                    token = jwt.encode({'username': username}, 'SECRET_KEY', algorithm='HS256')
                     response = jsonify({'message': 'Login successful', 'username': username, 'token': token})
                     response.set_cookie('access_token', token, max_age=60 * 60 * 24 * 30)
                     return response
