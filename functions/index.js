@@ -6,7 +6,7 @@ const app = express();
 const port = 8080;
 
 const dbConfig = {
-  host: "192.168.3.15",
+  host: "172.16.13.205",
   user: "root",
   password: "Shawn090209",
   database: "Coffee_Orders",

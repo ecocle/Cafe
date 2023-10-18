@@ -18,6 +18,6 @@ To use the HuaLang School Cafe website, simply follow these steps:
 
 ## Contact
 
-For any questions or support inquiries, please feel free to contact me at [my email](mailto:ecocle.sh@gmail.com).
+For any questions or support inquiries, please feel free to contact me at [my e-mail](mailto:ecocle.sh@gmail.com).
 
 Thank you for using the HuaLang School Cafe. We hope you have a delightful experience with us!
