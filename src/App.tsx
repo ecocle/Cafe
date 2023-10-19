@@ -17,7 +17,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [isLogingIn, setIsLogingIn] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
@@ -267,6 +267,10 @@ function App() {
         setIsAdding(true);
     }
 
+    const logOut = () => {
+        setIsLoggedIn(false)
+    }
+
     const closeLogin = () => {
         setIsLogingIn(false)
     }
@@ -347,6 +351,9 @@ function App() {
                             </button>
                         </div>
                     )}
+                    <button className={styles.button_out} onClick={logOut}>
+                        Log out
+                    </button>
                 </div>
             )}
             {showStates.main && (

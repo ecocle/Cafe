@@ -39,12 +39,13 @@
     .popupInner {
         position: absolute;
         background-color: slategrey;
-        padding: 20px;
+        padding: 30px;
         border-radius: 10px;
         text-align: center;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        width: auto;
-        height: auto;
+        width: 15%;
+        max-width: 500px;
+        height: 20%;
         animation: slide-in 0.3s, fade-in 0.5s;
         top: 50%;
         left: 50%;

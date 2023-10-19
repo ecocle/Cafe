@@ -29,6 +29,7 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
     const noHot = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Cocoa', 'Matcha milk', 'Matcha boba', 'Tai Red Tea', 'Coconut Water', 'Milk tea', 'Jasmine Milktea', 'Boba', 'Refreshing babyblue drink', 'Pure milk'];
     const noCold = ['Classic flavored Porridge', 'Chocolate flavored Porridge'];
     const noNormal = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Classic flavored Porridge', 'Chocolate flavored Porridge'];
+
     useEffect(() => {
         if (userData) {
             setFirstName(userData.username);
@@ -164,7 +165,7 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
         setTimeout(() => {
             onClose(e);
             setIsClosing(false);
-        }, 800);
+        }, 300);
     };
 
     const handleClosingSuccess = (e: React.MouseEvent<HTMLButtonElement>) => {
