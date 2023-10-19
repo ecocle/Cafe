@@ -96,18 +96,12 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
                 <td>{order.id}</td>
                 <td>{order.order_time}</td>
                 <td>
-                    {editRowId === index ? <button>Save</button> : ''}
-                </td>
-                <td>
                     {editRowId === index ?
                         <input
                             value={order.first_name}
                             onChange={(e) => handleFieldChange(e, 'first_name', index)}
                         />
                         : order.first_name}
-                </td>
-                <td>
-                    {editRowId === index ? <button>Save</button> : ''}
                 </td>
                 <td>
                     {editRowId === index ?
@@ -118,18 +112,12 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
                         : order.last_name}
                 </td>
                 <td>
-                    {editRowId === index ? <button>Save</button> : ''}
-                </td>
-                <td>
                     {editRowId === index ?
                         <input
                             value={order.coffee_type}
                             onChange={(e) => handleFieldChange(e, 'coffee_type', index)}
                         />
                         : order.coffee_type}
-                </td>
-                <td>
-                    {editRowId === index ? <button>Save</button> : ''}
                 </td>
                 <td>
                     {editRowId === index ?
@@ -140,18 +128,12 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
                         : order.temperature}
                 </td>
                 <td>
-                    {editRowId === index ? <button>Save</button> : ''}
-                </td>
-                <td>
                     {editRowId === index ?
                         <input
                             value={order.toppings || ''}
                             onChange={(e) => handleFieldChange(e, 'toppings', index)}
                         />
                         : order.toppings}
-                </td>
-                <td>
-                    {editRowId === index ? <button>Save</button> : ''}
                 </td>
                 <td>
                     {editRowId === index ?
@@ -162,18 +144,12 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
                         : order.size}
                 </td>
                 <td>
-                    {editRowId === index ? <button>Save</button> : ''}
-                </td>
-                <td>
                     {editRowId === index ?
                         <input
                             value={order.price || ''}
                             onChange={(e) => handleFieldChange(e, 'price', index)}
                         />
                         : order.price}
-                </td>
-                <td>
-                    {editRowId === index ? <button>Save</button> : ''}
                 </td>
                 <td>
                     {editRowId === index ?
@@ -184,18 +160,12 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
                         : order.comments}
                 </td>
                 <td>
-                    {editRowId === index ? <button>Save</button> : ''}
-                </td>
-                <td>
                     {editRowId === index ?
                         <input
                             value={order.cup || ''}
                             onChange={(e) => handleFieldChange(e, 'cup', index)}
                         />
                         : order.cup}
-                </td>
-                <td>
-                    {editRowId === index ? <button>Save</button> : ''}
                 </td>
                 <td>
                     {editRowId === index ?
