@@ -6,7 +6,7 @@ export default createBoard({
     Board: () => <CaffeineFree Name={''} Price={0} userData={null} selectedLanguage={""} />,
     isSnippet: true,
     environmentProps: {
-        canvasWidth: 90,
-        canvasHeight: 120
+        canvasWidth: 102,
+        canvasHeight: 108
     }
 });

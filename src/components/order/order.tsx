@@ -164,7 +164,7 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
         setTimeout(() => {
             onClose(e);
             setIsClosing(false);
-        }, 1);
+        }, 800);
     };
 
     const handleClosingSuccess = (e: React.MouseEvent<HTMLButtonElement>) => {

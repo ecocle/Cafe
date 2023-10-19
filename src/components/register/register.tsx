@@ -3,6 +3,7 @@ import styles from './register.module.scss';
 import React, { useState } from 'react';
 import { RegisterFailed } from '../register-failed/register-failed';
 import { RegisterSuccess } from '../register-success/register-success';
+import { LoadingScreen } from '../loading-screen/loading-screen';
 
 export interface RegisterProps {
     className?: string;
@@ -13,6 +14,7 @@ export interface RegisterProps {
 export const Register = ({ className, onClose, selectedLanguage }: RegisterProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [registered, setRegistered] = useState({
         registered: false,
         success: false,
@@ -24,6 +26,7 @@ export const Register = ({ className, onClose, selectedLanguage }: RegisterProps
     };
 
     const handleRegistration = async () => {
+        setIsLoading(true);
         try {
             const response = await fetch('/api/register', {
                 method: 'POST',
@@ -34,10 +37,13 @@ export const Register = ({ className, onClose, selectedLanguage }: RegisterProps
             });
 
             if (response.ok) {
+                setIsLoading(false);
                 showSuccess();
             } else if (response.status === 400) {
+                setIsLoading(false);
                 showFailed();
             } else {
+                setIsLoading(false);
                 showFailed();
                 console.error(`Error: ${response.statusText}`);
             }
@@ -74,6 +80,7 @@ export const Register = ({ className, onClose, selectedLanguage }: RegisterProps
 
     return (
         <div className={classNames(styles.root, className)}>
+            {isLoading && <LoadingScreen />}
             <div className={styles.popup}>
                 {registered.registered && (
                     <>
