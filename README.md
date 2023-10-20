@@ -20,7 +20,7 @@ To use the HuaLang School Cafe website, simply follow these steps:
 
 For any questions or support inquiries, please feel free to contact us:
 
-- **Email**: [ecocle.sh@gmail.com](mailto:ecocle.sh@gmail.com)
+- **Email**: [My(shawn)'s e-mail](mailto:ecocle.sh@gmail.com)
 
 We value your feedback and are here to assist you.
 
@@ -29,4 +29,3 @@ We value your feedback and are here to assist you.
 The HuaLang School Cafe is owned and operated by Abby and Anja. While this website and its contents were developed by Shawn, we are proud to represent the cafe's offerings to our local school community.
 
 Thank you for choosing the HuaLang School Cafe. We hope you have a delightful experience with us!
-
