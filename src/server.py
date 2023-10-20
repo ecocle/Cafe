@@ -261,7 +261,6 @@ def get_user_data():
     conn.close()
 
     if user_data:
-        print(user_data)
         return jsonify({'username': user_data[0], 'balance': user_data[1]})
     else:
         return jsonify({'error': 'User data not found'}), 404
