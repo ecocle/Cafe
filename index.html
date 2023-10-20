@@ -24,15 +24,15 @@
 </head>
 <body>
     <div id="openDaysInfo">
-        <h2>Open Days</h2>
+        <h2>Sorry, we are closed today</h2>
         <p>Please note that the HuaLang School Cafe is open on the following days:</p>
         <ul>
             <li>Tuesday</li>
             <li>Thursday</li>
             <li>Friday</li>
         </ul>
-    </div>
-
+    </div id="main">
+    <div>
     <h1>Welcome to the HuaLang School Cafe's Official Website!</h1>
 
     <section>
@@ -63,6 +63,7 @@
     <footer>
         <p>Thank you for choosing the HuaLang School Cafe. We hope you have a delightful experience with us!</p>
     </footer>
+    </div>
     
     <script>
         // Get the current day of the week (0 = Sunday, 1 = Monday, etc.)
@@ -75,9 +76,11 @@
         if (openDays.includes(currentDay)) {
             // Today is an open day, so display the open days info
             document.getElementById('openDaysInfo').style.display = 'block';
+            document.getElementById('main').style.display = 'none';
         } else {
             // Today is a closed day, so hide the open days info
             document.getElementById('openDaysInfo').style.display = 'none';
+            document.getElementById('main').style.display = 'block';
         }
     </script>
 </body>
