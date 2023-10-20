@@ -361,3 +361,9 @@ def update_order():
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
+
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    response = jsonify(message="Logged out successfully")
+    response.delete_cookie('access_token')
+    return response
