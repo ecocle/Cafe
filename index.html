@@ -1,87 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HuaLang School Cafe</title>
-    <style>
-        /* Add your CSS styles here */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        h2 {
-            color: #555;
-        }
-        p {
-            color: #777;
-        }
-        /* Customize your styles further as needed */
-    </style>
+    <title>Your GitHub-Styled README</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
 </head>
 <body>
-    <div id="openDaysInfo">
-        <h2>Sorry, we are closed today</h2>
-        <p>Please note that the HuaLang School Cafe is open on the following days:</p>
-        <ul>
-            <li>Tuesday</li>
-            <li>Thursday</li>
-            <li>Friday</li>
-        </ul>
-    </div id="main">
-    <div>
-    <h1>Welcome to the HuaLang School Cafe's Official Website!</h1>
+    <article class="markdown-body" id="readme">
+        <!-- Markdown content will be inserted here using JavaScript -->
+    </article>
 
-    <section>
-        <h2>How to Use</h2>
-        <ol>
-            <li><strong>Visit the Website:</strong> Open your web browser and go to <a href="https://hualangcafe.com" target="_blank">HuaLang Cafe</a>. (If it doesn't open in WeChat, copy this address and paste it in your preferred browser.)</li>
-            <li><strong>Log In:</strong> If you have an account, you can log in to access the features of the website. If you don't have an account, you can register one by clicking on the "Register" button.</li>
-            <li><strong>Explore the Menu:</strong> Browse our diverse menu to discover a wide range of delicious items.</li>
-            <li><strong>Place an Order:</strong> To place an order, click on your desired item, customize it if needed, and click the "Place Order" button. If the order is placed successfully, you will receive a confirmation message.</li>
-            <li><strong>Enjoy Your Meal:</strong> Your order will be prepared and ready for pickup at our cafe between 7:00 AM and 7:30 AM. Enjoy your meal!</li>
-        </ol>
-    </section>
-
-    <section>
-        <h2>Contact Us</h2>
-        <p>For any questions or support inquiries, please feel free to contact us:</p>
-        <ul>
-            <li><strong>Email:</strong> <a href="mailto:ecocle.sh@gmail.com">ecocle.sh@gmail.com</a></li>
-        </ul>
-        <p>We value your feedback and are here to assist you.</p>
-    </section>
-
-    <section>
-        <h2>About Us</h2>
-        <p>The HuaLang School Cafe is owned and operated by Abby and Anja. While this website and its contents were developed by Shawn, we are proud to represent the cafe's offerings to our local school community.</p>
-    </section>
-
-    <footer>
-        <p>Thank you for choosing the HuaLang School Cafe. We hope you have a delightful experience with us!</p>
-    </footer>
-    </div>
-    
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@12.0.6/dist/markdown-it.min.js"></script>
     <script>
-        // Get the current day of the week (0 = Sunday, 1 = Monday, etc.)
-        const currentDay = new Date().getDay();
-
-        // Days when the cafe is open (0 = Sunday, 1 = Monday, etc.)
-        const openDays = [2, 4, 5]; // Tuesday, Thursday, Friday
-
-        // Check if today is an open day
-        if (openDays.includes(currentDay)) {
-            // Today is an open day, so display the open days info
-            document.getElementById('openDaysInfo').style.display = 'block';
-            document.getElementById('main').style.display = 'none';
-        } else {
-            // Today is a closed day, so hide the open days info
-            document.getElementById('openDaysInfo').style.display = 'none';
-            document.getElementById('main').style.display = 'block';
-        }
+        fetch('README.md')
+            .then(response => response.text())
+            .then(text => {
+                const markdown = new markdownit();
+                const html = markdown.render(text);
+                document.getElementById('readme').innerHTML = html;
+            })
+            .catch(error => console.error(error));
     </script>
 </body>
 </html>
