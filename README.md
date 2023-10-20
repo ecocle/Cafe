@@ -2,7 +2,7 @@
 
 Welcome to the HuaLang School Cafe's official website! This page provides information on how to use the website and how to contact us.
 
-## How to Use
+## [How to Use](https://hualangcafe.com)
 
 To use the HuaLang School Cafe website, simply follow these steps:
 
