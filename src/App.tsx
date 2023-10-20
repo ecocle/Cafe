@@ -40,7 +40,7 @@ function App() {
     }, [userData]);
 
     useEffect(() => {
-        const token = localStorage.getItem('token') || getCookie('access_token');
+        const token = getCookie('access_token');
         if (token) {
             fetch('/api/user_data', {
                 headers: {
@@ -250,11 +250,20 @@ function App() {
         setIsAdding(true);
     }
 
-    const logOut = () => {
-        localStorage.removeItem('token');
-        localStorage.clear();
-        setIsLoggedIn(false)
+    function logOut() {
+        fetch('/api/logout', {
+            method: 'POST'
+        })
+        .then(res => res.json())
+        .then(data => {
+            setIsLoggedIn(false);
+            setUserData(data);
+        })
+        .catch(err => {
+            console.error("Error during logout:", err);
+        });
     }
+    
 
     const closeLogin = async () => {
         setisLoggingIn(false)

@@ -241,34 +241,30 @@ def get_user_data():
     auth_header = request.headers.get('Authorization')
     username = session.get('username')
 
-    if auth_header and auth_header.startswith('Bearer '):
+    if not username and auth_header and auth_header.startswith('Bearer '):
         token = auth_header.split('Bearer ')[1]
 
         try:
             decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
             username = decoded_token.get('username')
-
-            if username:
-                conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
-                                       charset=DB_CHARSET)
-                cursor = conn.cursor()
-                sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
-                cursor.execute(sql, (username,))
-                user_data = cursor.fetchone()
-                conn.close()
-
-                if user_data:
-                    return jsonify({'username': user_data[0], 'balance': user_data[1]})
-                else:
-                    return jsonify({'error': 'User data not found'}), 404
-            else:
-                return jsonify({'error': 'Invalid token'}), 401
-        except jwt.ExpiredSignatureError:
-            return jsonify({'error': 'Token has expired'}), 401
         except jwt.InvalidTokenError:
             return jsonify({'error': 'Invalid token'}), 401
-    else:
+
+    if not username:
         return jsonify({'error': 'Authentication required'}), 401
+
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME, charset=DB_CHARSET)
+    cursor = conn.cursor()
+    sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
+    cursor.execute(sql, (username,))
+    user_data = cursor.fetchone()
+    conn.close()
+
+    if user_data:
+        return jsonify({'username': user_data[0], 'balance': user_data[1]})
+    else:
+        return jsonify({'error': 'User data not found'}), 404
+
 
 
 @app.route('/api/admin/orders', methods=['GET'])
