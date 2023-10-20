@@ -26,7 +26,7 @@ We value your feedback and are here to assist you.
 
 ## About Us
 
-The HuaLang School Cafe is exclusively dedicated to serving our local school community. We take pride in providing delicious meals to our students and staff.
+The HuaLang School Cafe is owned and operated by Abby and Anja. While this website and its contents were developed by Shawn, we are proud to represent the cafe's offerings to our local school community.
 
 Thank you for choosing the HuaLang School Cafe. We hope you have a delightful experience with us!
 
