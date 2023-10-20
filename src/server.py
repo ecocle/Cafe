@@ -256,11 +256,12 @@ def get_user_data():
     conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME, charset=DB_CHARSET)
     cursor = conn.cursor()
     sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
-    cursor.execute(sql, (username,))
+    cursor.execute(sql, username)
     user_data = cursor.fetchone()
     conn.close()
 
     if user_data:
+        print(user_data)
         return jsonify({'username': user_data[0], 'balance': user_data[1]})
     else:
         return jsonify({'error': 'User data not found'}), 404

@@ -43,12 +43,14 @@ function App() {
         const token = getCookie('access_token');
         if (token) {
             fetch('/api/user_data', {
+                credentials: 'include',
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     if (data.username && data.balance) {
                         setUserData(data);
                         setIsLoggedIn(true);
