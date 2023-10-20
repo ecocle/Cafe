@@ -51,7 +51,10 @@ function App() {
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    if (data.username && data.balance) {
+                    console.log(data.username);
+                    console.log(data.balance);
+                    if (data.username && typeof data.balance !== 'undefined') {
+                        console.log(data.username);
                         setUserData(data);
                         setIsLoggedIn(true);
                     }
