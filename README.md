@@ -1,4 +1,4 @@
-# [HuaLang School Cafe](https://hualangcafe.com)
+# HuaLang School Cafe
 
 Welcome to the HuaLang School Cafe's official website! This page provides information on how to use the website and how to contact us.
 
