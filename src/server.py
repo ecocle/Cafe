@@ -5,13 +5,20 @@ import jwt
 import pymysql
 from flask import Flask, send_from_directory, request, jsonify, session
 from flask_cors import CORS
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_HOST = os.getenv("DB_HOST")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_NAME = os.getenv("DB_NAME")
+DB_CHARSET = os.getenv("DB_CHARSET", "utf8")
+secret_key = os.getenv("SECRET_KEY")
 
 app = Flask(__name__, static_folder='../dist', static_url_path='')
 CORS(app, supports_credentials=True)
-app.secret_key = os.urandom(32)
-
-cert_file = os.path.abspath('cert.pem')
-key_file = os.path.abspath('key.pem')
+app.secret_key = secret_key
 
 
 @app.route('/', defaults={'path': ''})
@@ -25,8 +32,8 @@ def serve(path):
 
 @app.route('/api/dataCoffee', methods=['GET'])
 def get_data_coffee():
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
     cursor = conn.cursor()
     sql = "SELECT * FROM Coffee"
     cursor.execute(sql)
@@ -43,8 +50,8 @@ def get_data_coffee():
 
 @app.route('/api/dataCaffeineFree', methods=['GET'])
 def get_data_caffeine_free():
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
     cursor = conn.cursor()
     sql = "SELECT * FROM Caffeine_free"
     cursor.execute(sql)
@@ -61,8 +68,8 @@ def get_data_caffeine_free():
 
 @app.route('/api/dataBreakfast', methods=['GET'])
 def get_data_breakfast():
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
     cursor = conn.cursor()
     sql = "SELECT * FROM Breakfast"
     cursor.execute(sql)
@@ -110,8 +117,8 @@ def handle_order():
         VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s)
     """
 
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
     cursor = conn.cursor()
 
     try:
@@ -139,8 +146,8 @@ def add_monet_to_acc():
 
     print(amount, username)
 
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
     cursor = conn.cursor()
 
     try:
@@ -163,8 +170,8 @@ def handle_login():
     username = data['username']
     password = data['password'].encode('utf-8')
 
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
 
     try:
         with conn.cursor() as cursor:
@@ -177,7 +184,7 @@ def handle_login():
 
                 if bcrypt.checkpw(password, storedHashedPassword):
                     session['username'] = username
-                    token = jwt.encode({'username': username}, 'SECRET_KEY', algorithm='HS256')
+                    token = jwt.encode({'username': username}, secret_key, algorithm='HS256')
                     response = jsonify({'message': 'Login successful', 'username': username, 'token': token})
                     response.set_cookie('access_token', token, max_age=60 * 60 * 24 * 30)
                     return response
@@ -205,8 +212,8 @@ def handle_register():
         hashedPassword,
     )
 
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
 
     try:
         with conn.cursor() as cursor:
@@ -231,29 +238,43 @@ def handle_register():
 
 @app.route('/api/user_data', methods=['GET'])
 def get_user_data():
+    auth_header = request.headers.get('Authorization')
     username = session.get('username')
 
-    if username:
-        conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                               charset="utf8")
-        cursor = conn.cursor()
-        sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
-        cursor.execute(sql, (username,))
-        user_data = cursor.fetchone()
-        conn.close()
+    if auth_header and auth_header.startswith('Bearer '):
+        token = auth_header.split('Bearer ')[1]
 
-        if user_data:
-            return jsonify({'username': user_data[0], 'balance': user_data[1]})
-        else:
-            return jsonify({'error': 'User data not found'}), 404
+        try:
+            decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
+            username = decoded_token.get('username')
+
+            if username:
+                conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                                       charset=DB_CHARSET)
+                cursor = conn.cursor()
+                sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=%s"
+                cursor.execute(sql, (username,))
+                user_data = cursor.fetchone()
+                conn.close()
+
+                if user_data:
+                    return jsonify({'username': user_data[0], 'balance': user_data[1]})
+                else:
+                    return jsonify({'error': 'User data not found'}), 404
+            else:
+                return jsonify({'error': 'Invalid token'}), 401
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Token has expired'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': 'Invalid token'}), 401
     else:
-        return jsonify({'error': 'User not logged in'}), 401
+        return jsonify({'error': 'Authentication required'}), 401
 
 
 @app.route('/api/admin/orders', methods=['GET'])
 def get_admin_orders():
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
     cursor = conn.cursor()
     sql = "SELECT * FROM Orders ORDER BY order_time DESC"
     cursor.execute(sql)
@@ -267,8 +288,8 @@ def get_admin_orders():
 def get_normal_orders():
     username = session.get('username')
 
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
     cursor = conn.cursor()
     sql = "SELECT * FROM Orders Where First_name=%s ORDER BY order_time DESC"
     cursor.execute(sql, username)
@@ -283,8 +304,8 @@ def update_order():
     updated_order = request.json
     updated_order_id = updated_order['id']
 
-    conn = pymysql.connect(host="43.156.250.188", user="root", password="Shawn090209!", database="Coffee_Orders",
-                           charset="utf8")
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME,
+                           charset=DB_CHARSET)
     cursor = conn.cursor()
 
     try:
@@ -339,4 +360,4 @@ def update_order():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True,)
+    app.run(host="0.0.0.0")

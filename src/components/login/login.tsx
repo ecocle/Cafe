@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './login.module.scss';
 import jwt_decode from 'jwt-decode';
-import { RegisterSuccess } from '../register-success/register-success';
-import { RegisterFailed } from '../register-failed/register-failed';
+import { LoginSuccess } from '../login-success/login-success';
+import { LoginFailed } from '../login-failed/login-failed';
+import { LoadingScreen } from '../loading-screen/loading-screen';
 
 export interface LoginProps {
     className?: string;
@@ -13,6 +14,7 @@ export interface LoginProps {
 }
 
 export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: LoginProps) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [login, setLogin] = useState({
@@ -21,12 +23,16 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
         failed: false,
     });
 
-    const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClosing = (e: React.MouseEvent<HTMLButtonElement>) => {
         onClose(e);
+    };
+
+    const handleLogin = async () => {
         const loginData = {
             username,
             password,
         };
+        setIsLoading(true);
 
         try {
             const response = await fetch('/api/login', {
@@ -38,11 +44,14 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
             });
 
             if (response.ok) {
+                setIsLoading(false);
                 showSuccess();
             } else if (response.status === 404) {
+                setIsLoading(false);
                 showFailed();
             } else {
                 showFailed();
+                setIsLoading(false);
                 console.error(`Error: ${response.statusText}`);
             }
 
@@ -54,6 +63,7 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
             localStorage.setItem('username', username);
             onLoginSuccess(username, token);
         } catch (error) {
+            setIsLoading(false);
             showFailed();
         }
     };
@@ -82,23 +92,20 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
         onClose(e);
     }
 
-    const handleClosing = (e: React.MouseEvent<HTMLButtonElement>) => {
-        onClose(e);
-    };
-
     return (
         <div className={classNames(styles.root, className)}>
+            {isLoading && <LoadingScreen />}
             <div className={styles.popup}>
                 {login.login && (
                     <>
                         {login.success && (
                             <div>
-                                <RegisterSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} />
+                                <LoginSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} />
                             </div>
                         )}
                         {login.failed && (
                             <div>
-                                <RegisterFailed onClose={handleClosingFailed} selectedLanguage={selectedLanguage} />
+                                <LoginFailed onClose={handleClosingFailed} selectedLanguage={selectedLanguage} />
                             </div>
                         )}
                     </>

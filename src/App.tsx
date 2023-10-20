@@ -18,7 +18,7 @@ function App() {
     const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLogingIn, setIsLogingIn] = useState(false);
+    const [isLoggingIn, setisLoggingIn] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
     const [userData, setUserData] = useState<{ balance: number; username: string }>({ balance: 0, username: '' });
@@ -40,7 +40,7 @@ function App() {
     }, [userData]);
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token') || getCookie('access_token');
+        const token = localStorage.getItem('token') || getCookie('access_token');
         if (token) {
             fetch('/api/user_data', {
                 headers: {
@@ -59,13 +59,7 @@ function App() {
     }, []);
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token');
-
-        fetch('/api/dataCoffee', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+        fetch('/api/dataCoffee')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data. Status code: ' + response.status);
@@ -86,13 +80,7 @@ function App() {
 
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token');
-
-        fetch('/api/dataCaffeineFree', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+        fetch('/api/dataCaffeineFree')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data. Status code: ' + response.status);
@@ -112,14 +100,9 @@ function App() {
     }, [selectedLanguage]);
 
     useEffect(() => {
-        const token = sessionStorage.getItem('token');
         setIsLoading(true);
 
-        fetch('/api/dataBreakfast', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+        fetch('/api/dataBreakfast')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data. Status code: ' + response.status);
@@ -232,10 +215,9 @@ function App() {
     }
 
     const handleLoginSuccess = (username: string, token: string) => {
-        setIsLoggedIn(true);
+        localStorage.setItem('token', token);
+        localStorage.setItem('username', username);
 
-        sessionStorage.setItem('token', token);
-        sessionStorage.setItem('username', username);
         fetch('/api/user_data', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -246,6 +228,7 @@ function App() {
             .then(data => {
                 if (data.username) {
                     setUserData(data);
+                    setIsLoggedIn(true);
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -256,7 +239,7 @@ function App() {
     };
 
     const login = () => {
-        setIsLogingIn(true);
+        setisLoggingIn(true);
     }
 
     const register = () => {
@@ -268,13 +251,15 @@ function App() {
     }
 
     const logOut = () => {
+        localStorage.removeItem('token');
+        localStorage.clear();
         setIsLoggedIn(false)
     }
 
-    const closeLogin = () => {
-        setIsLogingIn(false)
+    const closeLogin = async () => {
+        setisLoggingIn(false)
     }
-
+    
     const closeRegister = () => {
         setIsRegistering(false)
     }
@@ -293,7 +278,7 @@ function App() {
     return (
         <div className={styles.App}>
             {isLoading && <LoadingScreen />}
-            {isLogingIn && (
+            {isLoggingIn && (
                 <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage} />
             )}
             {isRegistering && (
