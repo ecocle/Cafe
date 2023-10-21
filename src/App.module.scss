@@ -197,6 +197,10 @@
 
 @media (prefers-color-scheme: light) {
 
+  .button_login, .button_register, .button_add, .button_view, .button_out {
+      color: #f5f5f5;
+  }
+
   .button,
   .button_return {
     background-color: #6A5ACD;
