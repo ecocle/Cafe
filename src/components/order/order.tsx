@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import styles from './order.module.scss';
-import React, { useState, useEffect } from 'react';
-import { Success } from '../success/success';
+import React, {useState, useEffect} from 'react';
+import {Success} from '../success/success';
 
 export interface OrderProps {
     className?: string;
@@ -13,9 +13,9 @@ export interface OrderProps {
     selectedLanguage: string;
 }
 
-export const Order = ({ isOpen, onClose, name, originalPrice, userData, selectedLanguage }: OrderProps) => {
+export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedLanguage}: OrderProps) => {
     const [isClosing, setIsClosing] = useState(false);
-    const [isOrdered, setIsOrder] = useState(false);
+    const [isOrdered, setIsOrdered] = useState(false);
     const [temperature, setTemperature] = useState('cold');
     const [selectedSize, setSelectedSize] = useState('medium');
     const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
@@ -139,10 +139,14 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
         };
 
         try {
+            const token = getCookie('access_token');
+            console.log(orderData)
             const response = await fetch('/api/orders', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(orderData)
             });
@@ -153,10 +157,10 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
 
             const responseData = await response.json();
             console.log('Order placed successfully:', responseData);
-            setIsOrder(true);
-            } catch (error) {
-                console.error('Error placing order:', error);
-            }
+            setIsOrdered(true);
+        } catch (error) {
+            console.error('Error placing order:', error);
+        }
     };
 
 
@@ -169,16 +173,24 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
     };
 
     const handleClosingSuccess = (e: React.MouseEvent<HTMLButtonElement>) => {
-        setIsOrder(false);
+        setIsOrdered(false);
         onClose(e);
         window.location.href = '/';
     }
 
+    const getCookie = (name: string): string | undefined => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(';').shift();
+        return undefined;
+    }
+
     return (
-        <div className={classNames(styles.popup, { [styles.open]: isOpen, [styles.closing]: isClosing })}>
-            <div className={classNames(styles.popupInner, { [styles.closing]: isClosing })}>
-                { isOrdered && (
-                    <Success isOrdered={true}  onClose={handleClosingSuccess} userData={userData} price={price} selectedLanguage={selectedLanguage} />
+        <div className={classNames(styles.popup, {[styles.open]: isOpen, [styles.closing]: isClosing})}>
+            <div className={classNames(styles.popupInner, {[styles.closing]: isClosing})}>
+                {isOrdered && (
+                    <Success isOrdered={true} onClose={handleClosingSuccess} userData={userData} price={price}
+                             selectedLanguage={selectedLanguage}/>
                 )}
                 <div>
                     <button className={styles["close-btn"]} onClick={handleClosing}>
@@ -223,20 +235,31 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
                             {selectedLanguage === 'chinese' ? '配料' : 'Toppings:'}
                             <div>
                                 <label>
-                                    <input type="checkbox" value="oatmilkSubstitution" checked={selectedToppings.includes('oatmilkSubstitution')} onChange={() => handleToppingChange('oatmilkSubstitution')} />
-                                    <span className="no-line-break">{selectedLanguage === 'chinese' ? '燕麦奶更换' : 'Oat Milk Substitution'}</span>
+                                    <input type="checkbox" value="oatmilkSubstitution"
+                                           checked={selectedToppings.includes('oatmilkSubstitution')}
+                                           onChange={() => handleToppingChange('oatmilkSubstitution')}/>
+                                    <span
+                                        className="no-line-break">{selectedLanguage === 'chinese' ? '燕麦奶更换' : 'Oat Milk Substitution'}</span>
                                 </label>
-                          fi      <label>
-                                    <input type="checkbox" value="boba" checked={selectedToppings.includes('boba')} onChange={() => handleToppingChange('boba')} />
-                                    <span className="no-line-break">{selectedLanguage === 'chinese' ? '珍珠' : 'Boba'}</span>
+                                fi <label>
+                                <input type="checkbox" value="boba" checked={selectedToppings.includes('boba')}
+                                       onChange={() => handleToppingChange('boba')}/>
+                                <span
+                                    className="no-line-break">{selectedLanguage === 'chinese' ? '珍珠' : 'Boba'}</span>
+                            </label>
+                                <label>
+                                    <input type="checkbox" value="extraExpressoShot"
+                                           checked={selectedToppings.includes('extraExpressoShot')}
+                                           onChange={() => handleToppingChange('extraExpressoShot')} disabled/>
+                                    <span
+                                        className="no-line-break"><s>{selectedLanguage === 'chinese' ? '外加一份浓缩' : 'Extra Espresso Shot'}</s></span>
                                 </label>
                                 <label>
-                                    <input type="checkbox" value="extraExpressoShot" checked={selectedToppings.includes('extraExpressoShot')} onChange={() => handleToppingChange('extraExpressoShot')} disabled />
-                                    <span className="no-line-break"><s>{selectedLanguage === 'chinese' ? '外加一份浓缩' : 'Extra Espresso Shot'}</s></span>
-                                </label>
-                                <label>
-                                    <input type="checkbox" value="redBean" checked={selectedToppings.includes('redBean')} onChange={() => handleToppingChange('redBean')} />
-                                    <span className="no-line-break">{selectedLanguage === 'chinese' ? '红豆' : 'Red Bean'}</span>
+                                    <input type="checkbox" value="redBean"
+                                           checked={selectedToppings.includes('redBean')}
+                                           onChange={() => handleToppingChange('redBean')}/>
+                                    <span
+                                        className="no-line-break">{selectedLanguage === 'chinese' ? '红豆' : 'Red Bean'}</span>
                                 </label>
                             </div>
                         </label>
@@ -245,7 +268,7 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
                 <div className="option">
                     <label>
                         {selectedLanguage === 'chinese' ? '名' : 'First Name:'}
-                        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
                     </label>
                 </div>
                 <div className="option">
@@ -256,13 +279,16 @@ export const Order = ({ isOpen, onClose, name, originalPrice, userData, selected
                 </div>
                 <div className="option">
                     <label>
-                        <input type="checkbox" checked={useCup} onChange={handleUseCupChange} />
-                        <span className="no-line-break">{selectedLanguage === 'chinese' ? '用自己的杯子' : 'Use own cup'}</span>
+                        <input type="checkbox" checked={useCup} onChange={handleUseCupChange}/>
+                        <span
+                            className="no-line-break">{selectedLanguage === 'chinese' ? '用自己的杯子' : 'Use own cup'}</span>
                     </label>
                 </div>
                 <div className="option">
                     <label>
-                        <textarea value={comments} onChange={(e) => setComments(e.target.value)} placeholder={selectedLanguage === 'chinese' ? '备注' : 'Comments'}  style={{ resize: 'none' }} />
+                        <textarea value={comments} onChange={(e) => setComments(e.target.value)}
+                                  placeholder={selectedLanguage === 'chinese' ? '备注' : 'Comments'}
+                                  style={{resize: 'none'}}/>
                     </label>
                 </div>
                 <button onClick={handleOrder} className={styles['order-btn']}>

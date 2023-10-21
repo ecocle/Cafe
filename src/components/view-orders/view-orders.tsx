@@ -1,6 +1,6 @@
 import styles from './view-orders.module.scss';
-import React, { useEffect, useState } from 'react';
-import { LoadingScreen } from '../loading-screen/loading-screen';
+import React, {useEffect, useState} from 'react';
+import {LoadingScreen} from '../loading-screen/loading-screen';
 
 export interface ViewOrdersProps {
     className?: string;
@@ -22,7 +22,7 @@ interface Order {
     charles: string;
 }
 
-export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => {
+export const ViewOrders = ({className, selectedLanguage}: ViewOrdersProps) => {
     const [ordersData, setOrdersData] = useState<Order[]>([]);
     const [editRowId, setEditRowId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -39,19 +39,19 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
                 throw new Error('Network response was not ok');
             }
             const rawData = await response.json();
-            const transformedData = rawData.data.map((order: any[]) => ({
-                id: order[0],
-                order_time: order[1],
-                first_name: order[2],
-                last_name: order[3],
-                coffee_type: order[4],
-                temperature: order[5],
-                toppings: order[6],
-                size: order[7],
-                price: parseFloat(order[8]),
-                comments: order[9],
-                cup: order[10],
-                charles: order[11]
+            const transformedData = rawData.data.map((order: any) => ({
+                id: order.ID,
+                order_time: order.Order_time,
+                first_name: order.First_name,
+                last_name: order.Last_name,
+                coffee_type: order.Coffee_type,
+                temperature: order.Temperature,
+                toppings: order.Toppings,
+                size: order.Size,
+                price: parseFloat(order.Price),
+                comments: order.Comments,
+                cup: order.Cup,
+                charles: order.Charles
             }));
             setIsLoading(false);
             setOrdersData(transformedData);
@@ -60,6 +60,7 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
             console.error('Error fetching order data:', error);
         }
     };
+
 
     const handleEditClick = (rowIndex: number) => {
         setEditRowId(rowIndex);
@@ -181,24 +182,24 @@ export const ViewOrders = ({ className, selectedLanguage }: ViewOrdersProps) => 
 
     return (
         <div className={styles['orders-table-container']}>
-            {isLoading && <LoadingScreen />}
+            {isLoading && <LoadingScreen/>}
             <h2 className='header'>Orders Data</h2>
             <table className={styles['orders-table']}>
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Order Time</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Type</th>
-                        <th>Temperature</th>
-                        <th>Toppings</th>
-                        <th>Size</th>
-                        <th>Price</th>
-                        <th>Comments</th>
-                        <th>Cup</th>
-                        <th>CHARLES</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Order Time</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Type</th>
+                    <th>Temperature</th>
+                    <th>Toppings</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>Comments</th>
+                    <th>Cup</th>
+                    <th>CHARLES</th>
+                </tr>
                 </thead>
                 <tbody>{renderRows()}</tbody>
             </table>

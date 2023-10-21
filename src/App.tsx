@@ -1,16 +1,16 @@
-import { useState, useEffect, SetStateAction } from 'react';
+import {useState, useEffect, SetStateAction} from 'react';
 import styles from './App.module.scss';
-import { LoadingScreen } from './components/loading-screen/loading-screen';
-import { Coffee, CoffeeProps } from './components/coffee/coffee';
-import { CaffeineFree, CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
-import { Breakfast, BreakfastProps } from './components/breakfast/breakfast';
-import { Login } from './components/login/login';
-import { Register } from './components/register/register';
-import { AddMoneyToAcc } from './components/add-money-to-acc/add-money-to-acc';
-import { LanguageSelection } from './components/language-selection/language-selection';
-import { ViewOrders } from './components/view-orders/view-orders';
-import { ViewOrdersNormal } from './components/view-orders-normal/view-orders-normal';
-import { DEFAULT_LANGUAGE, LANGUAGES } from './constants/constants';
+import {LoadingScreen} from './components/loading-screen/loading-screen';
+import {Coffee, CoffeeProps} from './components/coffee/coffee';
+import {CaffeineFree, CaffeineFreeProps} from './components/caffeine-free/caffeine-free';
+import {Breakfast, BreakfastProps} from './components/breakfast/breakfast';
+import {Login} from './components/login/login';
+import {Register} from './components/register/register';
+import {AddMoneyToAcc} from './components/add-money-to-acc/add-money-to-acc';
+import {LanguageSelection} from './components/language-selection/language-selection';
+import {ViewOrders} from './components/view-orders/view-orders';
+import {ViewOrdersNormal} from './components/view-orders-normal/view-orders-normal';
+import {DEFAULT_LANGUAGE, LANGUAGES} from './constants/constants';
 
 
 function App() {
@@ -18,10 +18,10 @@ function App() {
     const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoggingIn, setisLoggingIn] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
-    const [userData, setUserData] = useState<{ balance: number; username: string }>({ balance: 0, username: '' });
+    const [userData, setUserData] = useState<{ balance: number; username: string }>({balance: 0, username: ''});
     const [coffeeData, setCoffeeData] = useState<CoffeeProps[]>([]);
     const [caffeineFreeData, setCaffeineFreeData] = useState<CaffeineFreeProps[]>([]);
     const [breakfastData, setBreakfastData] = useState<BreakfastProps[]>([]);
@@ -34,6 +34,12 @@ function App() {
         admin: false,
         normal: false,
     });
+
+    interface DataItem {
+        Name: string;
+        Price: string;
+        "Name(ch)": string;
+    }
 
     useEffect(() => {
         checkAdmin();
@@ -67,10 +73,12 @@ function App() {
                 }
                 return response.json();
             })
-            .then(data => {
-                const formattedData = data.data.map((item: [string, string, string]) => ({
-                    Name: selectedLanguage === 'chinese' ? item[2] : item[0],
-                    Price: Number(item[1])
+            .then((data: DataItem[]) => {
+                const formattedData = data.map(item => ({
+                    Name: selectedLanguage === 'chinese' ? item['Name(ch)'] : item.Name,
+                    Price: Number(item.Price),
+                    userData: userData,
+                    selectedLanguage: selectedLanguage
                 }));
                 setCoffeeData(formattedData);
             })
@@ -88,10 +96,12 @@ function App() {
                 }
                 return response.json();
             })
-            .then(data => {
-                const formattedData = data.data.map((item: [string, string, string]) => ({
-                    Name: selectedLanguage === 'chinese' ? item[2] : item[0],
-                    Price: Number(item[1])
+            .then((data: DataItem[]) => {
+                const formattedData = data.map(item => ({
+                    Name: selectedLanguage === 'chinese' ? item['Name(ch)'] : item.Name,
+                    Price: Number(item.Price),
+                    userData: userData,
+                    selectedLanguage: selectedLanguage
                 }));
                 setCaffeineFreeData(formattedData);
             })
@@ -110,10 +120,12 @@ function App() {
                 }
                 return response.json();
             })
-            .then(data => {
-                const formattedData = data.data.map((item: [string, string, string]) => ({
-                    Name: selectedLanguage === 'chinese' ? item[2] : item[0],
-                    Price: Number(item[1])
+            .then((data: DataItem[]) => {
+                const formattedData = data.map(item => ({
+                    Name: selectedLanguage === 'chinese' ? item['Name(ch)'] : item.Name,
+                    Price: Number(item.Price),
+                    userData: userData,
+                    selectedLanguage: selectedLanguage
                 }));
                 setBreakfastData(formattedData);
                 setIsLoading(false);
@@ -165,7 +177,7 @@ function App() {
     }
 
     const showMain = () => {
-        setTimeout(function() {
+        setTimeout(function () {
             setShowStates((prevState) => ({
                 ...prevState,
                 coffee: false,
@@ -180,7 +192,7 @@ function App() {
     };
 
     const showAdmin = () => {
-        setTimeout(function() {
+        setTimeout(function () {
             setShowStates((prevState) => ({
                 ...prevState,
                 coffee: false,
@@ -195,7 +207,7 @@ function App() {
     };
 
     const showNormal = () => {
-        setTimeout(function() {
+        setTimeout(function () {
             setShowStates((prevState) => ({
                 ...prevState,
                 coffee: false,
@@ -210,7 +222,7 @@ function App() {
     };
 
     const checkAdmin = () => {
-        if (userData && userData.username === "Admin"){
+        if (userData && userData.username === "Admin") {
             setIsAdmin(true);
         }
     }
@@ -240,7 +252,7 @@ function App() {
     };
 
     const login = () => {
-        setisLoggingIn(true);
+        setIsLoggingIn(true);
     }
 
     const register = () => {
@@ -255,21 +267,21 @@ function App() {
         fetch('/api/logout', {
             method: 'POST'
         })
-        .then(res => res.json())
-        .then(data => {
-            setIsLoggedIn(false);
-            setUserData(data);
-        })
-        .catch(err => {
-            console.error("Error during logout:", err);
-        });
+            .then(res => res.json())
+            .then(data => {
+                setIsLoggedIn(false);
+                setUserData(data);
+            })
+            .catch(err => {
+                console.error("Error during logout:", err);
+            });
     }
-    
+
 
     const closeLogin = async () => {
-        setisLoggingIn(false)
+        setIsLoggingIn(false)
     }
-    
+
     const closeRegister = () => {
         setIsRegistering(false)
     }
@@ -287,15 +299,15 @@ function App() {
 
     return (
         <div className={styles.App}>
-            {isLoading && <LoadingScreen />}
+            {isLoading && <LoadingScreen/>}
             {isLoggingIn && (
-                <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage} />
+                <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage}/>
             )}
             {isRegistering && (
-                <Register onClose={closeRegister} selectedLanguage={selectedLanguage} />
+                <Register onClose={closeRegister} selectedLanguage={selectedLanguage}/>
             )}
             {isAdding && (
-                <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc} />
+                <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc}/>
             )}
             {showStates.admin && (
                 <div>
@@ -305,7 +317,7 @@ function App() {
                         </button>
                     </div>
                     <div>
-                        <ViewOrders selectedLanguage={selectedLanguage} />
+                        <ViewOrders selectedLanguage={selectedLanguage}/>
                     </div>
                 </div>
             )}
@@ -317,7 +329,7 @@ function App() {
                         </button>
                     </div>
                     <div>
-                        <ViewOrdersNormal selectedLanguage={selectedLanguage} />
+                        <ViewOrdersNormal selectedLanguage={selectedLanguage}/>
                     </div>
                 </div>
             )}
@@ -360,7 +372,8 @@ function App() {
                                     <button name="login" type="button" onClick={login} className={styles.button_login}>
                                         {selectedLanguage === 'chinese' ? '登陆' : 'Login'}
                                     </button>
-                                    <button className={styles.button_register} name="create_acc" type="button" onClick={register}>
+                                    <button className={styles.button_register} name="create_acc" type="button"
+                                            onClick={register}>
                                         {selectedLanguage === 'chinese' ? '注册' : 'Register'}
                                     </button>
                                 </div>
@@ -368,7 +381,8 @@ function App() {
                             <strong className={styles.disclaimer}>
                                 {selectedLanguage === 'chinese' ? '本网站在测试阶段，可能会有问题。如有任何建议，请联系我（Shawn)' : 'THIS WEBSITE IS IN BETA, WHICH MEANS THERE WILL BE ISSUES. So if you have any suggestions/bug reports etc, contact me(shawn).'}
                             </strong>
-                            <LanguageSelection onLanguageChange={handleLanguageChange} selectedLanguage={selectedLanguage} />
+                            <LanguageSelection onLanguageChange={handleLanguageChange}
+                                               selectedLanguage={selectedLanguage}/>
                         </div>
                         <h1 className={styles.title}>
                             {selectedLanguage === 'chinese' ? '摸鱼咖啡厅' : 'MY Cafe'}
@@ -400,7 +414,7 @@ function App() {
                                     <button className={styles.button} onClick={login}>
                                         <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
                                     </button>
-                              </div>
+                                </div>
                             )}
                             {isLoggedIn && (
                                 <div>
@@ -429,7 +443,8 @@ function App() {
                     </div>
                     <div className={styles.coffeeContainer}>
                         {coffeeData.map((coffee, index) => (
-                            <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={userData} selectedLanguage={selectedLanguage} />
+                            <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={userData}
+                                    selectedLanguage={selectedLanguage}/>
                         ))}
                     </div>
                 </div>
@@ -443,7 +458,8 @@ function App() {
                     </div>
                     <div className={styles.coffeeContainer}>
                         {caffeineFreeData.map((caffeineFree, index) => (
-                            <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price} userData={userData} selectedLanguage={selectedLanguage} />
+                            <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price}
+                                          userData={userData} selectedLanguage={selectedLanguage}/>
                         ))}
                     </div>
                 </div>
@@ -457,7 +473,8 @@ function App() {
                     </div>
                     <div className={styles.coffeeContainer}>
                         {breakfastData.map((breakfast, index) => (
-                            <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} userData={userData} selectedLanguage={selectedLanguage} />
+                            <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} userData={userData}
+                                       selectedLanguage={selectedLanguage}/>
                         ))}
                     </div>
                 </div>

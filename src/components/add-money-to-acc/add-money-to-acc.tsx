@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import styles from './add-money-to-acc.module.scss';
-import { AddingSuccess } from '../adding-success/adding-success';
-import { AddingFailed } from '../adding-failed/adding-failed';
-import React, { useState } from 'react';
+import {AddingSuccess} from '../adding-success/adding-success';
+import {AddingFailed} from '../adding-failed/adding-failed';
+import React, {useState} from 'react';
 
 export interface AddMoneyToAccProps {
     className?: string;
@@ -10,7 +10,7 @@ export interface AddMoneyToAccProps {
     selectedLanguage: string;
 }
 
-export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoneyToAccProps) => {
+export const AddMoneyToAcc = ({className, onClose, selectedLanguage}: AddMoneyToAccProps) => {
     const [amount, setAmount] = useState('');
     const [adding, setAdding] = useState({
         adding: false,
@@ -23,12 +23,15 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
     };
 
     const handleAdd = async () => {
+        const token = getCookie('access_token');
         const response = await fetch('/api/addMoneyToAcc', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ amount }),
+            credentials: 'include',
+            body: JSON.stringify({amount}),
         });
 
         if (response.ok) {
@@ -67,6 +70,13 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
         window.location.href = '/';
     }
 
+    const getCookie = (name: string): string | undefined => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(';').shift();
+        return undefined;
+    }
+
     return (
         <div className={classNames(styles.root, className)}>
             <div className={styles.popup}>
@@ -74,20 +84,22 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
                     <>
                         {adding.success && (
                             <div>
-                                <AddingSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage} amount={amount}/>
+                                <AddingSuccess onClose={handleClosingSuccess} selectedLanguage={selectedLanguage}
+                                               amount={amount}/>
                             </div>
                         )}
                         {adding.failed && (
                             <div>
-                                <AddingFailed onClose={handleClosingFailed} selectedLanguage={selectedLanguage} />
+                                <AddingFailed onClose={handleClosingFailed} selectedLanguage={selectedLanguage}/>
                             </div>
                         )}
                     </>
                 )}
                 <div className={styles.popupInner}>
-                    <button onClick={handleClosing} className={styles.close}>{selectedLanguage === 'chinese' ? '关闭' : 'Close'}</button>
+                    <button onClick={handleClosing}
+                            className={styles.close}>{selectedLanguage === 'chinese' ? '关闭' : 'Close'}</button>
                     <label>{selectedLanguage === 'chinese' ? '数量:' : 'Amount:'}</label>
-                    <br />
+                    <br/>
                     <input
                         id="amount"
                         type="text"
@@ -95,7 +107,7 @@ export const AddMoneyToAcc = ({ className, onClose, selectedLanguage }: AddMoney
                         onChange={(e) => setAmount(e.target.value)}
                         required
                     />
-                    <br />
+                    <br/>
                     <button id="registrationButton" className={styles.button} type="button" onClick={handleAdd}>
                         {selectedLanguage === 'chinese' ? '添加金额到帐户！' : 'Add amount to account!'}
                     </button>

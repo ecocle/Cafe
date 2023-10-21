@@ -1,226 +1,384 @@
 const express = require("express");
+const session = require('express-session');
+const os = require('os');
 const jwt = require("jsonwebtoken");
-const mysql = require("mysql");
+const mysql = require('mysql2/promise');
+const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const app = express();
-const port = 8080;
+const port = 5000;
+const host = '0.0.0.0'
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.json());
 
-const dbConfig = {
-  host: "172.16.13.205",
-  user: "root",
-  password: "Shawn090209",
-  database: "Coffee_Orders",
-  charset: "utf8",
-};
+require('dotenv').config({path: '../src/.env'});
 
-const conn = mysql.createConnection(dbConfig);
+const secret_key = process.env.SECRET_KEY;
 
-conn.connect((err) => {
-  if (err) throw err;
-  console.log("Connected to MySQL database");
+app.use(session({
+    secret: secret_key,
+    resave: false,
+    saveUninitialized: true,
+}));
+
+const conn = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
 });
 
 app.use(express.json());
 app.use(express.static("../dist"));
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods",
-        "GET, POST, PUT, PATCH, DELETE");
-    return res.status(200).json({});
-  }
-  next();
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    if (req.method === "OPTIONS") {
+        res.header("Access-Control-Allow-Methods",
+            "GET, POST, PUT, PATCH, DELETE");
+        return res.status(200).json({});
+    }
+    next();
 });
 
 app.get("/", (req, res) => {
-  res.sendFile("index.html", {root: "../dist"});
-});
-/**
- * Handles the request for coffee-related data.
- * @param {string} sql - The SQL query for retrieving data.
- * @param {object} res - The response object.
- */
-function handleCoffeeRequest(sql, res) {
-  conn.query(sql, (err, result) => {
-    if (err) throw err;
-    res.json({data: result});
-  });
-}
-
-app.get("/api/dataCoffee", (req, res) => {
-  const sql = "SELECT * FROM Coffee";
-  handleCoffeeRequest(sql, res);
+    res.sendFile("index.html", {root: "../dist"});
 });
 
-app.get("/api/dataCaffeineFree", (req, res) => {
-  const sql = "SELECT * FROM Caffeine_free";
-  handleCoffeeRequest(sql, res);
+app.get("/api/dataCoffee", async (req, res) => {
+    try {
+        const [rows] = await conn.query('SELECT * FROM Coffee');
+        res.json(rows || []);
+    } catch (err) {
+        console.error('Error fetching coffee data:', err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-app.get("/api/dataBreakfast", (req, res) => {
-  const sql = "SELECT * FROM Breakfast";
-  handleCoffeeRequest(sql, res);
+app.get("/api/dataCaffeineFree", async (req, res) => {
+    try {
+        const [rows] = await conn.query('SELECT * FROM Caffeine_free');
+        res.json(rows);
+    } catch (err) {
+        console.error('Error fetching coffee data:', err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-app.post("/api/orders", (req, res) => {
-  const data = req.body;
+app.get("/api/dataBreakfast", async (req, res) => {
+    try {
+        const [rows] = await conn.query('SELECT * FROM Breakfast');
+        res.json(rows);
+    } catch (err) {
+        console.error('Error fetching coffee data:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
-  const selectedToppings = data.selectedToppings ?
-    data.selectedToppings.join(",") : "";
-  const charles = `${data.name}, ${data.selectedSize}, ${selectedToppings}, 
-  ${data.price}`;
+app.post('/api/orders', async (req, res) => {
+    const data = req.body;
 
-  const values = [
-    data.firstName,
-    data.lastName,
-    data.name,
-    data.temperature,
-    data.selectedSize,
-    selectedToppings,
-    data.price,
-    data.comments,
-    data.useCup,
-    charles,
-  ];
-
-  const sql = `
-      INSERT INTO Orders (First_name,
-                          Last_name,
-                          Coffee_type,
-                          Temperature,
-                          Size,
-                          Toppings,
-                          Price,
-                          Order_time,
-                          Comments,
-                          Cup,
-                          CHARLES)
-      VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)
-  `;
-
-  conn.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("Error placing order:", err);
-      return res.status(500).json({error: "Error placing order"});
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).json({error: 'Authorization header not found'});
     }
 
-    const username = req.cookies.access_token;
-    if (username) {
-      const updateSql = "UPDATE Accounts SET Balance = ? WHERE User_name = ?";
-      const updateValues = [data.balance, username];
-      conn.query(updateSql, updateValues, (err, result) => {
-        if (err) console.error("Error updating balance:", err);
-      });
+    const token = authHeader.split('Bearer ')[1];
+    let username;
+    try {
+        const decodedToken = jwt.verify(token, secret_key);
+        username = decodedToken.username;
+        console.log('Token verified, username:', username);
+    } catch (error) {
+        console.error('Error verifying token:', error);
+        return res.status(401).json({error: 'Invalid token'});
     }
 
-    res.json({message: "Order placed successfully", responseData: result});
-  });
+    try {
+        const result = await orderResult(data, username, conn);
+        console.log('Order placed successfully:', result);
+        res.json({message: 'Order placed successfully', result});
+    } catch (error) {
+        console.error('Error placing order:', error);
+        res.status(500).json({error: 'Error placing order'});
+    }
+
 });
 
-app.get("/api/addMoneyToAcc", (req, res) => {
-  const data = req.body;
+const orderResult = async (data, username) => {
+    let connection;
+    try {
+        connection = await conn.getConnection();
+        const selectedToppings = data.selectedToppings ? data.selectedToppings.join(',') : '';
+        const charles = `${data.name}, ${data.selectedSize}, ${selectedToppings}, ${data.price}`;
+        const values = [
+            data.firstName,
+            data.lastName,
+            data.name,
+            data.temperature,
+            data.selectedSize,
+            selectedToppings,
+            data.price,
+            data.comments,
+            data.useCup,
+            charles,
+        ];
 
-  const amount = data.amount;
+        const sql = `
+            INSERT INTO Orders (First_name,
+                                Last_name,
+                                Coffee_type,
+                                Temperature,
+                                Size,
+                                Toppings,
+                                Price,
+                                Order_time,
+                                Comments,
+                                Cup,
+                                CHARLES)
+            VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)
+        `;
 
-  const username = req.cookies.access_token;
-  if (username) {
-    const updateSql = "UPDATE Accounts SET Balance = Balance + ? " +
-      "WHERE User_name = ?";
-    const updateValues = [amount, username];
-    conn.query(updateSql, updateValues, (err, result) => {
-      if (err) {
-        console.error("Error adding money to account:", err);
-        return res.status(500).json({error: "Error adding money to account"});
-      }
-      res.json({message: "Amount added to account"});
-    });
-  } else {
-    res.status(401).json({error: "User not logged in"});
-  }
-});
+        const [result] = await conn.query(sql, values);
 
-app.post("/api/login", (req, res) => {
-  const data = req.body;
+        const updateSql = 'UPDATE Accounts SET Balance = ? WHERE User_name = ?';
+        const updateValues = [data.balance, username];
 
-  const username = data.username;
-  const password = data.password;
+        await conn.query(updateSql, updateValues);
 
-  const sql = "SELECT * FROM Accounts WHERE User_name=? AND Password=?";
-  conn.query(sql, [username, password], (err, result) => {
-    if (err) {
-      console.error("Error logging in:", err);
-      return res.status(500).json({error: "Error logging in"});
-    }
-    const user = result[0];
-    if (user) {
-      const token = jwt.sign({username: username}, "SECRET_KEY",
-          {expiresIn: "30d"});
-      const response = {
-        message: "Login successful",
-        username: username,
-        token: token,
-      };
-      res.cookie("access_token", token, {maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true});
-      res.json(response);
-    } else {
-      res.status(401).json({error: "Invalid username or password"});
-    }
-  });
-});
-
-app.post("/api/register", (req, res) => {
-  const data = req.body;
-
-  const username = data.username;
-  const password = data.password;
-
-  const sql = "SELECT * FROM Accounts WHERE User_name=?";
-  conn.query(sql, [username], (err, result) => {
-    if (err) {
-      console.error("Error registering user:", err);
-      return res.status(500).json({error: "Error registering user"});
-    }
-    if (result.length > 0) {
-      return res.status(400).json({error: "Username already exists"});
-    } else {
-      const insertSql = "INSERT INTO Accounts (User_name, Password) " +
-        "VALUES (?, ?)";
-      conn.query(insertSql, [username, password], (err, result) => {
-        if (err) {
-          console.error("Error creating account:", err);
-          return res.status(500).json({error: "Error creating account"});
+        return result;
+    } catch (error) {
+        console.error('Error in SQL execution or balance update:', error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.release();
         }
-        res.json({message: "Account created successfully"});
-      });
     }
-  });
+};
+
+app.post("/api/addMoneyToAcc", async (req, res) => {
+    const data = req.body;
+    const authHeader = req.headers.authorization;
+    let username = req.session.username;
+
+    if (!username && authHeader && authHeader.startsWith("Bearer ")) {
+        const token = authHeader.split("Bearer ")[1];
+        try {
+            const decodedToken = jwt.verify(token, secret_key);
+            username = decodedToken.username;
+        } catch (error) {
+            return res.status(401).json({error: "Invalid token"});
+        }
+    }
+
+    if (!username) {
+        return res.status(401).json({error: "Authentication required"});
+    }
+
+    // Convert 'amount' to a number
+    const amount = parseFloat(data.amount);
+
+    if (username) {
+        const updateSql =
+            "UPDATE Accounts SET Balance = Balance + ? " + "WHERE User_name = ?";
+        const updateValues = [amount, username];
+        await conn.query(updateSql, updateValues)
+        res.json({message: "Amount added to account"});
+    } else {
+        res.status(401).json({error: "User not logged in"});
+    }
 });
 
-app.get("/api/userData", (req, res) => {
-  const username = req.cookies.access_token;
-  if (username) {
-    const sql = "SELECT User_name, Balance FROM Accounts WHERE User_name=?";
-    conn.query(sql, [username], (err, result) => {
-      if (err) {
-        console.error("Error getting user data:", err);
-        return res.status(500).json({error: "Error getting user data"});
-      }
-      const userData = result[0];
-      if (userData) {
-        res.json({username: userData.User_name, balance: userData.Balance});
-      } else {
-        res.status(404).json({error: "User data not found"});
-      }
-    });
-  } else {
-    res.status(401).json({error: "User not logged in"});
-  }
+
+app.post("/api/login", async (req, res) => {
+    const {username, password} = req.body;
+
+    try {
+        const [rows] = await conn.execute("SELECT * FROM Accounts WHERE User_name = ?", [username]);
+        const user = rows[0];
+
+        if (!user) {
+            return res.status(401).json({error: "Invalid username or password"});
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.Password);
+        if (!isPasswordValid) {
+            return res.status(401).json({error: "Invalid username or password"});
+        }
+
+        const token = jwt.sign({username}, secret_key, {expiresIn: "30d"});
+        res.cookie("access_token", token, {maxAge: 30 * 24 * 60 * 60 * 1000});
+        return res.json({message: "Login successful", username, token});
+
+    } catch (err) {
+        console.error("Error logging in:", err);
+        return res.status(500).json({error: "Error logging in"});
+    }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.post('/api/register', async (req, res) => {
+    const {username, password} = req.body;
+
+    try {
+        // Check if the username already exists
+        const checkUserSql = 'SELECT * FROM Accounts WHERE User_name = ?';
+        const [existingUser] = await conn.execute(checkUserSql, [username]);
+
+        if (existingUser.length > 0) {
+            return res.status(400).json({error: 'Username already exists'});
+        }
+
+        // Insert the new user into the database
+        const insertUserSql = 'INSERT INTO Accounts (User_name, Password) VALUES (?, ?)';
+        await conn.execute(insertUserSql, [username, password]);
+
+        res.json({message: 'Account created successfully'});
+    } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).json({error: 'Error registering user'});
+    }
 });
+
+
+app.get('/api/user_data', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    let username = req.session.username;
+
+    if (!username && authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split('Bearer ')[1];
+        try {
+            const decodedToken = jwt.verify(token, secret_key);
+            username = decodedToken.username;
+        } catch (error) {
+            return res.status(401).json({error: 'Invalid token'});
+        }
+    }
+
+    if (!username) {
+        return res.status(401).json({error: 'Authentication required'});
+    }
+
+    try {
+        const [rows] = await conn.query('SELECT User_name, Balance FROM Accounts WHERE User_name = ?', [username]);
+        if (rows.length > 0) {
+            const userData = rows[0];
+            res.json({username: userData.User_name, balance: userData.Balance});
+        } else {
+            res.status(404).json({error: 'User data not found'});
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).json({error: 'Internal server error'});
+    }
+});
+
+app.get('/api/admin/orders', async (req, res) => {
+    try {
+        const [results] = await conn.query('SELECT * FROM Orders ORDER BY order_time DESC');
+        res.json({data: results});
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.get('/api/admin/ordersNormal', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    let username = req.session.username;
+
+    if (!username && authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split('Bearer ')[1];
+        try {
+            const decodedToken = jwt.verify(token, secret_key);
+            username = decodedToken.username;
+        } catch (error) {
+            return res.status(401).json({error: 'Invalid token'});
+        }
+    }
+
+    if (!username) {
+        return res.status(401).json({error: 'Authentication required'});
+    }
+
+    try {
+        const [results] = await conn.query('SELECT * FROM Orders WHERE First_name = ? ORDER BY order_time DESC', [username]);
+        res.json({data: results});
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.put('/api/admin/updateOrder', async (req, res) => {
+    const updatedOrder = req.body;
+    const updatedOrderId = updatedOrder.id;
+
+    try {
+        const [existingOrder] = await conn.query('SELECT * FROM Orders WHERE id = ?', [updatedOrderId]);
+        if (existingOrder.length === 0) {
+            return res.status(404).json({status: 'error', message: 'Order not found'});
+        }
+
+        const sql = `
+            UPDATE Orders
+            SET First_name  = ?,
+                Last_name   = ?,
+                Coffee_type = ?,
+                Temperature = ?,
+                Toppings    = ?,
+                Size        = ?,
+                Price       = ?,
+                Comments    = ?,
+                Cup         = ?,
+                CHARLES     = ?
+            WHERE ID = ?
+        `;
+        const values = [
+            updatedOrder.first_name,
+            updatedOrder.last_name,
+            updatedOrder.coffee_type,
+            updatedOrder.temperature,
+            updatedOrder.toppings,
+            updatedOrder.size,
+            updatedOrder.price,
+            updatedOrder.comments,
+            updatedOrder.cup,
+            updatedOrder.charles,
+            updatedOrderId,
+        ];
+
+        await conn.query(sql, values);
+        res.json({status: 'success', message: 'Order updated successfully'});
+    } catch (error) {
+        res.status(500).json({status: 'error', message: error.message});
+    }
+});
+
+app.post('/api/logout', (req, res) => {
+    res.clearCookie('access_token').json({message: 'Logged out successfully'});
+});
+
+app.listen(port, host, () => {
+    if (host === '0.0.0.0') {
+        console.log(`Server is accessible from any network interface`);
+        console.log(`- Local: http://localhost:${port}`);
+
+        const interfaces = os.networkInterfaces();
+        for (const iface of Object.values(interfaces)) {
+            for (const alias of iface) {
+                if ('IPv4' !== alias.family || alias.internal !== false) continue;
+                console.log(`- Network: http://${alias.address}:${port}`);
+            }
+        }
+    } else {
+        console.log(`Server running at http://${host}:${port}/`);
+    }
+});
+

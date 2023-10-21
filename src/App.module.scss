@@ -57,7 +57,6 @@
   border-radius: 0.8vw;
   background-color: #006400;
   font-family: 'Cardo', serif;
-  font-size: 0.8em;
   padding: 0.6em;
   cursor: pointer;
   margin: 0.3em;
@@ -68,6 +67,7 @@
   position: absolute;
   transition: 0.3s;
   color: black;
+  font-size: 1em;
 
   &:hover {
     background-color: #005400;
@@ -80,29 +80,29 @@
 
   &.button_register {
     top: 3em;
-    width: 6vw;
+    width: 6em;
   }
 
   &.button_login {
-    width: 6vw;
+    width: 6em;
   }
 
   &.button_add {
     z-index: 1;
     top: 6em;
-    width: 11vw;
+    width: 11em;
   }
 
   &.button_view {
     z-index: 1;
     top: 9em;
-    width: 11vw;
+    width: 11em;
   }
 
   &.button_out {
     z-index: 1;
     top: 12em;
-    width: 11vw;
+    width: 11em;
   }
 }
 
@@ -213,5 +213,12 @@
 
   .button_return:hover {
     background-color: #7C72E5;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .button_login, .button_register, .button_add, .button_view, .button_out {
+    font-size: 0.8em;
+    padding: 0.5em;
   }
 }

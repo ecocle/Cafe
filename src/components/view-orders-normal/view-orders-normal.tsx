@@ -1,6 +1,6 @@
 import styles from './view-orders-normal.module.scss';
-import React, { useEffect, useState } from 'react';
-import { LoadingScreen } from '../loading-screen/loading-screen';
+import React, {useEffect, useState} from 'react';
+import {LoadingScreen} from '../loading-screen/loading-screen';
 
 export interface ViewOrdersNormalProps {
     className?: string;
@@ -22,7 +22,7 @@ interface Order {
     charles: string;
 }
 
-export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNormalProps) => {
+export const ViewOrdersNormal = ({className, selectedLanguage}: ViewOrdersNormalProps) => {
     const [ordersData, setOrdersData] = useState<Order[]>([]);
     const [editRowId, setEditRowId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -34,27 +34,35 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
     const fetchOrderData = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('/api/admin/ordersNormal');
+            const token = getCookie('access_token');
+            const response = await fetch('/api/admin/ordersNormal', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                credentials: 'include',
+            });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             const rawData = await response.json();
-            const transformedData = rawData.data.map((order: any[]) => ({
-                id: order[0],
-                order_time: order[1],
-                first_name: order[2],
-                last_name: order[3],
-                coffee_type: order[4],
-                temperature: order[5],
-                toppings: order[6],
-                size: order[7],
-                price: parseFloat(order[8]),
-                comments: order[9],
-                cup: order[10],
-                charles: order[11]
+            const transformedData = rawData.data.map((order: any) => ({
+                id: order.ID,
+                order_time: order.Order_time,
+                first_name: order.First_name,
+                last_name: order.Last_name,
+                coffee_type: order.Coffee_type,
+                temperature: order.Temperature,
+                toppings: order.Toppings,
+                size: order.Size,
+                price: parseFloat(order.Price),
+                comments: order.Comments,
+                cup: order.Cup,
+                charles: order.Charles
             }));
-            setOrdersData(transformedData);
             setIsLoading(false);
+            setOrdersData(transformedData);
         } catch (error) {
             setIsLoading(false);
             console.error('Error fetching order data:', error);
@@ -89,6 +97,13 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
             console.error('Error updating order:', error);
         }
     };
+
+    const getCookie = (name: string): string | undefined => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(';').shift();
+        return undefined;
+    }
 
     const renderRows = () => {
         return ordersData.map((order, index) => (
@@ -144,22 +159,22 @@ export const ViewOrdersNormal = ({ className, selectedLanguage }: ViewOrdersNorm
 
     return (
         <div className={styles['orders-table-container']}>
-            {isLoading && <LoadingScreen />}
+            {isLoading && <LoadingScreen/>}
             <h2 className='header'>{selectedLanguage === 'chinese' ? '' : 'Orders Data'}</h2>
             <table className={styles['orders-table']}>
                 <thead>
-                    <tr>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Order Time'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'First Name'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Last Name'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Type'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Temperature'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Toppings'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Size'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Price'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Comments'}</th>
-                        <th>{selectedLanguage === 'chinese' ? '' : 'Cup'}</th>
-                    </tr>
+                <tr>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Order Time'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'First Name'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Last Name'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Type'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Temperature'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Toppings'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Size'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Price'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Comments'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '' : 'Cup'}</th>
+                </tr>
                 </thead>
                 <tbody>{renderRows()}</tbody>
             </table>
