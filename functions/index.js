@@ -6,6 +6,7 @@ const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const { genSalt } = require('bcrypt');
 
 const app = express();
 const port = 5000;
@@ -237,9 +238,9 @@ app.post('/api/register', async (req, res) => {
             return res.status(400).json({error: 'Username already exists'});
         }
 
-        // Insert the new user into the database
+        const encryptedPassword = bcrypt.hash(password, genSalt())
         const insertUserSql = 'INSERT INTO Accounts (User_name, Password) VALUES (?, ?)';
-        await conn.execute(insertUserSql, [username, password]);
+        await conn.execute(insertUserSql, [username, encryptedPassword]);
 
         res.json({message: 'Account created successfully'});
     } catch (error) {

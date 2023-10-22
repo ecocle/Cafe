@@ -2,10 +2,6 @@ import classNames from 'classnames';
 import styles from './loading-screen.module.scss';
 import { useState, useEffect } from 'react';
 
-export interface LoadingScreenProps {
-    className?: string;
-}
-
 export const LoadingScreen = () => {
     const [loadingText, setLoadingText] = useState('Loading');
 

@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import styles from './language-selection.module.scss';
-import { LANGUAGES, DEFAULT_LANGUAGE } from '../../constants/constants';
+import { LANGUAGES } from '../../constants/constants';
+import React from 'react';
 
 export interface LanguageSelectionProps {
     className?: string;
@@ -8,7 +8,7 @@ export interface LanguageSelectionProps {
     selectedLanguage: LANGUAGES;
 }
 
-export const LanguageSelection = ({ className, onLanguageChange, selectedLanguage }: LanguageSelectionProps) => {
+export const LanguageSelection = ({ onLanguageChange, selectedLanguage }: LanguageSelectionProps) => {
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newLanguage = event.target.value as LANGUAGES;
         onLanguageChange(newLanguage);

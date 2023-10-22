@@ -22,7 +22,7 @@ interface Order {
     charles: string;
 }
 
-export const ViewOrders = ({className, selectedLanguage}: ViewOrdersProps) => {
+export const ViewOrders = ({}: ViewOrdersProps) => {
     const [ordersData, setOrdersData] = useState<Order[]>([]);
     const [editRowId, setEditRowId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +36,7 @@ export const ViewOrders = ({className, selectedLanguage}: ViewOrdersProps) => {
         try {
             const response = await fetch('/api/admin/orders');
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                console.error('Network response was not ok');
             }
             const rawData = await response.json();
             const transformedData = rawData.data.map((order: any) => ({
@@ -84,7 +84,7 @@ export const ViewOrders = ({className, selectedLanguage}: ViewOrdersProps) => {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                console.error('Network response was not ok');
             }
         } catch (error) {
             console.error('Error updating order:', error);

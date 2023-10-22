@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import styles from './adding-success.module.scss';
 import React from 'react';
 import paymentImage from '../../assets/paymentImage.jpg';
@@ -10,7 +9,7 @@ export interface AddingSuccessProps {
     amount:string;
 }
 
-export const AddingSuccess = ({ className, selectedLanguage, onClose, amount }: AddingSuccessProps) => {
+export const AddingSuccess = ({ selectedLanguage, onClose, amount }: AddingSuccessProps) => {
     return (
         <div className={styles.popup}>
             <div className={styles.popupInner}>

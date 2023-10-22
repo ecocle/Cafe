@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import styles from './adding-failed.module.scss';
 import React from 'react';
 
@@ -8,7 +7,7 @@ export interface AddingFailedProps {
     selectedLanguage: string;
 }
 
-export const AddingFailed = ({ className, onClose, selectedLanguage }: AddingFailedProps) => {
+export const AddingFailed = ({ onClose, selectedLanguage }: AddingFailedProps) => {
     return (
         <div className={styles.popup}>
             <div className={styles.popupInner}>

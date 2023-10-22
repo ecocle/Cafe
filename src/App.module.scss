@@ -2,227 +2,227 @@
 @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
 
 .button, .button_return, .button_disabled {
-  display: inline-block;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-family: 'Cardo', serif;
-  font-size: 1.8em;
-  padding: 1em 1.5em;
-  width: auto;
-  transition: all 0.3s;
-  cursor: pointer;
-  margin: 8px;
-  border-radius: 0.6em;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
-
-  &.button:hover {
-    transform: scale(1.1);
-    background-color: blueviolet;
-  }
-
-  &.button:active {
-    background-color: rebeccapurple;
-    transform: scale(0.9);
-  }
-  
-  &.button_return {
-    font-size: 1.4em;
-    padding: 0.6em;
-  }
-
-  &.button_return:hover {
+    display: inline-block;
+    border: none;
     color: #FFFFFF;
-    background-color: #7029b6;
-    transform: translateY(-2px);
-    transition: 0.3s;
-  }
-
-  &.button_return:active {
-    transform: scale(0.95);
-    transition: 0.2s;
-  }
-
-  &.button_disabled {
-    background-color: dimgray;
-    cursor: not-allowed;
-    opacity: 0.6;
-    color: #FFFFFF;
-  }
+    text-align: center;
+    font-family: 'Cardo', serif;
+    font-size: 1.8em;
+    padding: 1em 1.5em;
+    width: auto;
+    transition: all 0.3s;
+    cursor: pointer;
+    margin: 8px;
+    border-radius: 0.6em;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    
+    &.button:hover {
+        transform: scale(1.1);
+        background-color: blueviolet;
+    }
+    
+    &.button:active {
+        background-color: rebeccapurple;
+        transform: scale(0.9);
+    }
+    
+    &.button_return {
+        font-size: 1.4em;
+        padding: 0.6em;
+    }
+    
+    &.button_return:hover {
+        color: #FFFFFF;
+        background-color: #7029b6;
+        transform: translateY(-2px);
+        transition: 0.3s;
+    }
+    
+    &.button_return:active {
+        transform: scale(0.95);
+        transition: 0.2s;
+    }
+    
+    &.button_disabled {
+        background-color: dimgray;
+        cursor: not-allowed;
+        opacity: 0.6;
+        color: #FFFFFF;
+    }
 }
 
 .button_login, .button_register, .button_add, .button_view, .button_out {
-  display: block;
-  border-color: transparent;
-  border-radius: 0.8vw;
-  background-color: #006400;
-  font-family: 'Cardo', serif;
-  padding: 0.6em;
-  cursor: pointer;
-  margin: 0.3em;
-  top: 0;
-  right: 0;
-  float: right;
-  direction: ltr;
-  position: absolute;
-  transition: 0.3s;
-  color: black;
-  font-size: 1em;
-
-  &:hover {
-    background-color: #005400;
-  }
-
-  &:active {
-    transform: scale(0.9);
+    display: block;
+    border-color: transparent;
+    border-radius: 0.8vw;
+    background-color: #006400;
+    font-family: 'Cardo', serif;
+    padding: 0.6em;
+    cursor: pointer;
+    margin: 0.3em;
+    top: 0;
+    right: 0;
+    float: right;
+    direction: ltr;
+    position: absolute;
     transition: 0.3s;
-  }
-
-  &.button_register {
-    top: 3em;
-    width: 6em;
-  }
-
-  &.button_login {
-    width: 6em;
-  }
-
-  &.button_add {
-    z-index: 1;
-    top: 6em;
-    width: 11em;
-  }
-
-  &.button_view {
-    z-index: 1;
-    top: 9em;
-    width: 11em;
-  }
-
-  &.button_out {
-    z-index: 1;
-    top: 12em;
-    width: 11em;
-  }
+    color: black;
+    font-size: 1em;
+    
+    &:hover {
+        background-color: #005400;
+    }
+    
+    &:active {
+        transform: scale(0.9);
+        transition: 0.3s;
+    }
+    
+    &.button_register {
+        top: 3em;
+        width: 6em;
+    }
+    
+    &.button_login {
+        width: 6em;
+    }
+    
+    &.button_add {
+        z-index: 1;
+        top: 6em;
+        width: 11em;
+    }
+    
+    &.button_view {
+        z-index: 1;
+        top: 9em;
+        width: 11em;
+    }
+    
+    &.button_out {
+        z-index: 1;
+        top: 12em;
+        width: 11em;
+    }
 }
 
 .top {
-  text-align: start;
+    text-align: start;
 }
 
 .disclaimer {
-  font-family: 'Cardo', serif;
-  font-size: 1vw;
-  overflow: hidden;
-  white-space: nowrap;
-  display: block;
+    font-family: 'Cardo', serif;
+    font-size: 1vw;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
 }
 
 .welcome {
-  position: absolute;
-  font-family: 'Cardo', serif;
-  font-size: 0.8em;
-  display: block;
-  right: 0.3em;
-  float: right;
-  padding: 0;
-  text-align: right;
+    position: absolute;
+    font-family: 'Cardo', serif;
+    font-size: 0.8em;
+    display: block;
+    right: 0.3em;
+    float: right;
+    padding: 0;
+    text-align: right;
 }
 
 .greeting {
-  margin-bottom: 1px;
+    margin-bottom: 1px;
 }
 
 .balance {
-  margin-top: 0;
-  margin-bottom: 1px;
+    margin-top: 0;
+    margin-bottom: 1px;
 }
 
 .buttons {
-  width: 100%;
-  text-align: center;
+    width: 100%;
+    text-align: center;
 }
 
 .title {
-  font-family: 'Pacifico', cursive;
-  width: 100%;
-  text-align: center;
-  font-size: 5em;
-  font-weight: 100;
+    font-family: 'Pacifico', cursive;
+    width: 100%;
+    text-align: center;
+    font-size: 5em;
+    font-weight: 100;
 }
 
 .home,
 .coffee_show {
-  position: relative;
-  margin: 0.3vw;
-  display: block;
-  text-align: center;
+    position: relative;
+    margin: 0.3vw;
+    display: block;
+    text-align: center;
 }
 
 .coffee_show {
-  position: absolute;
-  margin: 0.3px;
+    position: absolute;
+    margin: 0.3px;
 }
 
 .coffeeContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .return {
-  top: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
 }
 
 @media (prefers-color-scheme: dark) {
-
-  .button_login, .button_register, .button_add, .button_view, .button_out {
-      color: #f5f5f5;
-  }
-
-  .button,
-  .button_return {
-    background-color: blueviolet;
-  }
-
-  .button_return {
-    font-size: 1.4em;
-    padding: 0.6em;
-  }
+    
+    .button_login, .button_register, .button_add, .button_view, .button_out {
+        color: #f5f5f5;
+    }
+    
+    .button,
+    .button_return {
+        background-color: blueviolet;
+    }
+    
+    .button_return {
+        font-size: 1.4em;
+        padding: 0.6em;
+    }
 }
 
 @media (prefers-color-scheme: light) {
-
-  .button_login, .button_register, .button_add, .button_view, .button_out {
-      color: #f5f5f5;
-  }
-
-  .button,
-  .button_return {
-    background-color: #6A5ACD;
-  }
-
-  .button:active {
-    background-color: #52469E;
-  }
-
-  .button_return {
-    font-size: 1.4em;
-    padding: 0.6em;
-  }
-
-  .button_return:hover {
-    background-color: #7C72E5;
-  }
+    
+    .button_login, .button_register, .button_add, .button_view, .button_out {
+        color: #f5f5f5;
+    }
+    
+    .button,
+    .button_return {
+        background-color: #6A5ACD;
+    }
+    
+    .button:active {
+        background-color: #52469E;
+    }
+    
+    .button_return {
+        font-size: 1.4em;
+        padding: 0.6em;
+    }
+    
+    .button_return:hover {
+        background-color: #7C72E5;
+    }
 }
 
 @media only screen and (max-width: 600px) {
-  .button_login, .button_register, .button_add, .button_view, .button_out {
-    font-size: 0.8em;
-    padding: 0.5em;
-  }
+    .button_login, .button_register, .button_add, .button_view, .button_out {
+        font-size: 0.8em;
+        padding: 0.5em;
+    }
 }

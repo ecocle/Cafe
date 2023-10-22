@@ -152,7 +152,7 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                console.error('Network response was not ok');
             }
 
             const responseData = await response.json();

@@ -1,6 +1,4 @@
-import classNames from 'classnames';
 import styles from './register-failed.module.scss';
-import paymentImage from '../../assets/paymentImage.jpg';
 import React from 'react';
 
 export interface RegisterFailedProps {
@@ -9,7 +7,7 @@ export interface RegisterFailedProps {
     selectedLanguage: string;
 }
 
-export const RegisterFailed = ({ className, onClose, selectedLanguage }: RegisterFailedProps) => {
+export const RegisterFailed = ({ onClose, selectedLanguage }: RegisterFailedProps) => {
     return (
         <div className={styles.popup}>
             <div className={styles.popupInner}>
