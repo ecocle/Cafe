@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
 
-require('dotenv').config({path: '../src/.env'});
+require('dotenv').config({path: './src/env.env'});
 
 const secret_key = process.env.SECRET_KEY;
 
@@ -35,7 +35,7 @@ const conn = mysql.createPool({
 });
 
 app.use(express.json());
-app.use(express.static("../dist"));
+app.use(express.static("./dist"));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
