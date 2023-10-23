@@ -17,7 +17,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
@@ -295,186 +295,190 @@ function App() {
 
     return (
         <div className={styles.App}>
-            {isLoading && <LoadingScreen />}
-            {isLoggingIn && (
-                <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage} />
-            )}
-            {isRegistering && (
-                <Register onClose={closeRegister} selectedLanguage={selectedLanguage} />
-            )}
-            {isAdding && (
-                <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc} />
-            )}
-            {showStates.admin && (
-                <div>
-                    <div className={styles.return}>
-                        <button className={styles.button_return} onClick={showMain}>
-                            <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
-                        </button>
-                    </div>
+            <div>
+                {isLoading && <LoadingScreen />}
+                {isLoggingIn && (
+                    <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin}
+                           selectedLanguage={selectedLanguage} />
+                )}
+                {isRegistering && (
+                    <Register onClose={closeRegister} selectedLanguage={selectedLanguage} />
+                )}
+                {isAdding && (
+                    <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc} />
+                )}
+                {showStates.admin && (
                     <div>
-                        <ViewOrders selectedLanguage={selectedLanguage} />
+                        <div className={styles.return}>
+                            <button className={styles.button_return} onClick={showMain}>
+                                <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
+                            </button>
+                        </div>
+                        <div>
+                            <ViewOrders selectedLanguage={selectedLanguage} />
+                        </div>
                     </div>
-                </div>
-            )}
-            {showStates.normal && (
-                <div>
-                    <div className={styles.return}>
-                        <button className={styles.button_return} onClick={showMain}>
-                            <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
-                        </button>
-                    </div>
+                )}
+                {showStates.normal && (
                     <div>
-                        <ViewOrdersNormal selectedLanguage={selectedLanguage} />
+                        <div className={styles.return}>
+                            <button className={styles.button_return} onClick={showMain}>
+                                <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
+                            </button>
+                        </div>
+                        <div>
+                            <ViewOrdersNormal selectedLanguage={selectedLanguage} />
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+                {showStates.coffee && (
+                    <div>
+                        <div className={styles.return}>
+                            <button className={styles.button_return} onClick={showMain}>
+                                <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
+                            </button>
+                        </div>
+                        <div className={styles.coffeeContainer}>
+                            {coffeeData.map((coffee, index) => (
+                                <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={userData}
+                                        selectedLanguage={selectedLanguage} />
+                            ))}
+                        </div>
+                    </div>
+                )}
+                {showStates.caffeineFree && (
+                    <div>
+                        <div className={styles.return}>
+                            <button className={styles.button_return} onClick={showMain}>
+                                <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
+                            </button>
+                        </div>
+                        <div className={styles.coffeeContainer}>
+                            {caffeineFreeData.map((caffeineFree, index) => (
+                                <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price}
+                                              userData={userData} selectedLanguage={selectedLanguage} />
+                            ))}
+                        </div>
+                    </div>
+                )}
+                {showStates.breakfast && (
+                    <div>
+                        <div className={styles.return}>
+                            <button className={styles.button_return} onClick={showMain}>
+                                <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
+                            </button>
+                        </div>
+                        <div className={styles.coffeeContainer}>
+                            {breakfastData.map((breakfast, index) => (
+                                <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} userData={userData}
+                                           selectedLanguage={selectedLanguage} />
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
             {showStates.main && (
-                <div className={styles.home}>
-                    <div>
-                        <div className={styles.top}>
-                            {isLoggedIn && showStates.main && (
-                                <div className={styles.welcome}>
-                                    <p>
-                                        {selectedLanguage === 'chinese' ? '你好 ' : 'Hello '}{userData!.username}
-                                    </p>
-                                    <p>
-                                        {selectedLanguage === 'chinese' ? '你还剩 ¥' : 'You have ¥'}{userData!.balance}{selectedLanguage === 'chinese' ? ' 在你帐号里' : ' left in your account'}
-                                    </p>
-                                    <div className={styles.settings}>
-                                        <button className={styles.button_add} onClick={add}>
-                                            Add money to account
-                                        </button>
-                                        {isAdmin && (
-                                            <div>
-                                                <button className={styles.button_view} onClick={showAdmin}>
-                                                    View Orders
-                                                </button>
-                                            </div>
-                                        )}
-                                        {!isAdmin && (
-                                            <div>
-                                                <button className={styles.button_view} onClick={showNormal}>
-                                                    View Orders
-                                                </button>
-                                            </div>
-                                        )}
-                                        <button className={styles.button_out} onClick={logOut}>
-                                            Log out
-                                        </button>
-                                    </div>
+                <div>
+                    <div className={styles.header}>
+                        {isLoggedIn && showStates.main && (
+                            <div className={styles.welcome}>
+                                <p>
+                                    {selectedLanguage === 'chinese' ? '你好 ' : 'Hello '}{userData!.username}
+                                </p>
+                                <p>
+                                    {selectedLanguage === 'chinese' ? '你还剩 ¥' : 'You have ¥'}{userData!.balance}{selectedLanguage === 'chinese' ? ' 在你帐号里' : ' left in your account'}
+                                </p>
+                                <div className={styles.settings}>
+                                    <button className={styles.button_add} onClick={add}>
+                                        Add money to account
+                                    </button>
+                                    {isAdmin && (
+                                        <div>
+                                            <button className={styles.button_view} onClick={showAdmin}>
+                                                View Orders
+                                            </button>
+                                        </div>
+                                    )}
+                                    {!isAdmin && (
+                                        <div>
+                                            <button className={styles.button_view} onClick={showNormal}>
+                                                View Orders
+                                            </button>
+                                        </div>
+                                    )}
+                                    <button className={styles.button_out} onClick={logOut}>
+                                        Log out
+                                    </button>
                                 </div>
-                            )}
+                            </div>
+                        )}
 
-                            {!isLoggedIn && (
-                                <div className={styles.options}>
-                                    <button name='login' type='button' onClick={login} className={styles.button_login}>
-                                        {selectedLanguage === 'chinese' ? '登陆' : 'Login'}
-                                    </button>
-                                    <button className={styles.button_register} name='create_acc' type='button'
-                                            onClick={register}>
-                                        {selectedLanguage === 'chinese' ? '注册' : 'Register'}
-                                    </button>
-                                </div>
-                            )}
-                            <LanguageSelection onLanguageChange={handleLanguageChange}
-                                               selectedLanguage={selectedLanguage} />
-                        </div>
-                        <h1 className={styles.title}>
-                            {selectedLanguage === 'chinese' ? '摸鱼咖啡厅' : 'MY Cafe'}
-                        </h1>
-                        <div className={styles.buttons}>
-                            {isLoggedIn && (
-                                <div>
-                                    <button className={styles.button_disabled} onClick={showCoffee} disabled>
-                                        <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
-                                    </button>
-                                </div>
-                            )}
-                            {!isLoggedIn && (
-                                <div>
-                                    <button className={styles.button_disabled} onClick={login} disabled>
-                                        <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
-                                    </button>
-                                </div>
-                            )}
-                            {isLoggedIn && (
-                                <div>
-                                    <button className={styles.button} onClick={showCaffeineFree}>
-                                        <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
-                                    </button>
-                                </div>
-                            )}
-                            {!isLoggedIn && (
-                                <div>
-                                    <button className={styles.button} onClick={login}>
-                                        <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
-                                    </button>
-                                </div>
-                            )}
-                            {isLoggedIn && (
-                                <div>
-                                    <button className={styles.button} onClick={showBreakfast}>
-                                        <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
-                                    </button>
-                                </div>
-                            )}
-                            {!isLoggedIn && (
-                                <div>
-                                    <button className={styles.button} onClick={login}>
-                                        <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
-                                    </button>
-                                </div>
-                            )}
-                        </div>
+                        {!isLoggedIn && (
+                            <div className={styles.options}>
+                                <button name='login' type='button' onClick={login} className={styles.button_login}>
+                                    {selectedLanguage === 'chinese' ? '登陆' : 'Login'}
+                                </button>
+                                <button className={styles.button_register} name='create_acc' type='button'
+                                        onClick={register}>
+                                    {selectedLanguage === 'chinese' ? '注册' : 'Register'}
+                                </button>
+                            </div>
+                        )}
+                        <LanguageSelection onLanguageChange={handleLanguageChange}
+                                           selectedLanguage={selectedLanguage} />
+                    </div>
+                    <h1 className={styles.title}>
+                        {selectedLanguage === 'chinese' ? '摸鱼咖啡厅' : 'MY Cafe'}
+                    </h1>
+                    <div className={styles.buttons}>
+                        {isLoggedIn && (
+                            <div>
+                                <button className={styles.button_disabled} onClick={showCoffee} disabled>
+                                    <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
+                                </button>
+                            </div>
+                        )}
+                        {!isLoggedIn && (
+                            <div>
+                                <button className={styles.button_disabled} onClick={login} disabled>
+                                    <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
+                                </button>
+                            </div>
+                        )}
+                        {isLoggedIn && (
+                            <div>
+                                <button className={styles.button} onClick={showCaffeineFree}>
+                                    <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
+                                </button>
+                            </div>
+                        )}
+                        {!isLoggedIn && (
+                            <div>
+                                <button className={styles.button} onClick={login}>
+                                    <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
+                                </button>
+                            </div>
+                        )}
+                        {isLoggedIn && (
+                            <div>
+                                <button className={styles.button} onClick={showBreakfast}>
+                                    <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
+                                </button>
+                            </div>
+                        )}
+                        {!isLoggedIn && (
+                            <div>
+                                <button className={styles.button} onClick={login}>
+                                    <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
-            {showStates.coffee && (
-                <div>
-                    <div className={styles.return}>
-                        <button className={styles.button_return} onClick={showMain}>
-                            <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
-                        </button>
-                    </div>
-                    <div className={styles.coffeeContainer}>
-                        {coffeeData.map((coffee, index) => (
-                            <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={userData}
-                                    selectedLanguage={selectedLanguage} />
-                        ))}
-                    </div>
-                </div>
-            )}
-            {showStates.caffeineFree && (
-                <div>
-                    <div className={styles.return}>
-                        <button className={styles.button_return} onClick={showMain}>
-                            <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
-                        </button>
-                    </div>
-                    <div className={styles.coffeeContainer}>
-                        {caffeineFreeData.map((caffeineFree, index) => (
-                            <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price}
-                                          userData={userData} selectedLanguage={selectedLanguage} />
-                        ))}
-                    </div>
-                </div>
-            )}
-            {showStates.breakfast && (
-                <div>
-                    <div className={styles.return}>
-                        <button className={styles.button_return} onClick={showMain}>
-                            <span>{selectedLanguage === 'chinese' ? '返回' : 'Return'}</span>
-                        </button>
-                    </div>
-                    <div className={styles.coffeeContainer}>
-                        {breakfastData.map((breakfast, index) => (
-                            <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} userData={userData}
-                                       selectedLanguage={selectedLanguage} />
-                        ))}
-                    </div>
-                </div>
-            )}
+            <div className={styles.footer}>
+                <p>{selectedLanguage === 'chinese' ? '由Shawn提供支持' : 'Powered By Shawn'}</p>
+            </div>
         </div>
     );
 }

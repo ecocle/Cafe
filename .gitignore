@@ -22,4 +22,4 @@ node_modules
 *.sw?
 
 # .env file
-/src/.env
+/src/env.env

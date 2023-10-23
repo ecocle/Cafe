@@ -5,12 +5,20 @@
 }
 
 .select {
+    font-size: 1.2em;
     flex-wrap: nowrap;
     background: transparent;
     border: transparent;
+    color: #efefef;
 }
 
 .select:active {
     background: transparent;
     border: transparent;
+}
+
+@media (prefers-color-scheme: light) {
+    .select {
+        color: #3a3a3a;
+    }
 }
