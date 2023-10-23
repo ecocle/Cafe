@@ -236,19 +236,23 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
                             <div>
                                 <label>
                                     <input type="checkbox" value="oatmilkSubstitution"
+                                           className={styles.checkbox}
                                            checked={selectedToppings.includes('oatmilkSubstitution')}
                                            onChange={() => handleToppingChange('oatmilkSubstitution')}/>
                                     <span
                                         className="no-line-break">{selectedLanguage === 'chinese' ? '燕麦奶更换' : 'Oat Milk Substitution'}</span>
                                 </label>
                                 fi <label>
-                                <input type="checkbox" value="boba" checked={selectedToppings.includes('boba')}
+                                <input type="checkbox" value="boba"
+                                       className={styles.checkbox}
+                                       checked={selectedToppings.includes('boba')}
                                        onChange={() => handleToppingChange('boba')}/>
                                 <span
                                     className="no-line-break">{selectedLanguage === 'chinese' ? '珍珠' : 'Boba'}</span>
                             </label>
                                 <label>
                                     <input type="checkbox" value="extraExpressoShot"
+                                           className={styles.checkbox}
                                            checked={selectedToppings.includes('extraExpressoShot')}
                                            onChange={() => handleToppingChange('extraExpressoShot')} disabled/>
                                     <span
@@ -256,6 +260,7 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
                                 </label>
                                 <label>
                                     <input type="checkbox" value="redBean"
+                                           className={styles.checkbox}
                                            checked={selectedToppings.includes('redBean')}
                                            onChange={() => handleToppingChange('redBean')}/>
                                     <span

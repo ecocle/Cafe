@@ -52,7 +52,7 @@
 }
 
 .button_login, .button_register, .button_add, .button_view, .button_out {
-    display: block;
+    display: inline-block;
     border-color: transparent;
     border-radius: 0.8vw;
     background-color: #006400;
@@ -60,11 +60,6 @@
     padding: 0.6em;
     cursor: pointer;
     margin: 0.3em;
-    top: 0;
-    right: 0;
-    float: right;
-    direction: ltr;
-    position: absolute;
     transition: 0.3s;
     color: black;
     font-size: 1em;
@@ -78,64 +73,40 @@
         transition: 0.3s;
     }
     
-    &.button_register {
-        top: 3em;
+    &.button_register, .button_login {
         width: 6em;
     }
     
-    &.button_login {
-        width: 6em;
-    }
-    
-    &.button_add {
+    &.button_add, .button_view, .button_out {
         z-index: 1;
-        top: 6em;
-        width: 11em;
-    }
-    
-    &.button_view {
-        z-index: 1;
-        top: 9em;
-        width: 11em;
-    }
-    
-    &.button_out {
-        z-index: 1;
-        top: 12em;
         width: 11em;
     }
 }
 
 .top {
-    text-align: start;
-}
-
-.disclaimer {
-    font-family: 'Cardo', serif;
-    font-size: 1vw;
-    overflow: hidden;
-    white-space: nowrap;
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 60px;
 }
 
 .welcome {
-    position: absolute;
+    order: 2;
     font-family: 'Cardo', serif;
     font-size: 0.8em;
-    display: block;
-    right: 0.3em;
-    float: right;
-    padding: 0;
-    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-end;
 }
 
-.greeting {
-    margin-bottom: 1px;
+.welcome p {
+    margin: 0 0;
+    padding: 5px 10px;
 }
 
-.balance {
-    margin-top: 0;
-    margin-bottom: 1px;
+.settings {
+    display: flex;
 }
 
 .buttons {
@@ -178,6 +149,12 @@
     text-align: center;
 }
 
+.options {
+    order: 2;
+    display: flex;
+    flex-direction: row;
+}
+
 @media (prefers-color-scheme: dark) {
     
     .button_login, .button_register, .button_add, .button_view, .button_out {
@@ -187,11 +164,6 @@
     .button,
     .button_return {
         background-color: blueviolet;
-    }
-    
-    .button_return {
-        font-size: 1.4em;
-        padding: 0.6em;
     }
 }
 
@@ -208,11 +180,6 @@
     
     .button:active {
         background-color: #52469E;
-    }
-    
-    .button_return {
-        font-size: 1.4em;
-        padding: 0.6em;
     }
     
     .button_return:hover {

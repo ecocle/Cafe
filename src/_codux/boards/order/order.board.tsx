@@ -9,7 +9,7 @@ export default createBoard({
     Board: () => <Order isOpen onClose={close} name={''} originalPrice={0} userData={null} selectedLanguage={""} />,
     isSnippet: true,
     environmentProps: {
-        canvasWidth: 602,
+        canvasWidth: 622,
         canvasHeight: 506
     }
 });

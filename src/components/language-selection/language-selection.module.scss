@@ -1,33 +1,16 @@
-/* Style the select element */
+.language {
+    display: flex;
+    height: 30px;
+    margin: 5px;
+}
+
 .select {
-    padding: 10px; /* Adjust padding as needed */
-    font-size: 16px; /* Adjust font size as needed */
-    border: 1px solid #a0a0a0a0; /* Add a border */
-    border-radius: 5px; /* Add border-radius for rounded corners */
-    appearance: none; /* Remove default styles (browsers may vary) */
-    background-color: slategrey; /* Set background color */
-    width: 5em; /* Set a fixed width or adjust as needed */
+    flex-wrap: nowrap;
+    background: transparent;
+    border: transparent;
 }
 
-/* Style the options */
-.option {
-    font-size: 1em; /* Adjust font size as needed */
-}
-
-/* Style the language options to make them stand out */
-.option[value="ENGLISH"] {
-    font-weight: bold; /* Make English option bold */
-    color: #007BFF; /* Change text color for English option */
-}
-
-.option[value="CHINESE"] {
-    font-weight: bold; /* Make Chinese option bold */
-    color: #FF5733; /* Change text color for Chinese option */
-}
-
-/* Style the select when it's focused or hovered */
-.select:hover,
-.select:focus {
-    border-color: #007BFF; /* Change border color on hover or focus */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle shadow on hover or focus */
+.select:active {
+    background: transparent;
+    border: transparent;
 }

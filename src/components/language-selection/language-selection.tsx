@@ -9,15 +9,24 @@ export interface LanguageSelectionProps {
 }
 
 export const LanguageSelection = ({ onLanguageChange, selectedLanguage }: LanguageSelectionProps) => {
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newLanguage = event.target.value as LANGUAGES;
+    const handleChange = (newLanguage: LANGUAGES) => {
         onLanguageChange(newLanguage);
     };
 
     return (
-        <select className={styles.select} value={selectedLanguage} onChange={handleChange}>
-            <option className={styles.option} value={LANGUAGES.ENGLISH}>English</option>
-            <option className={styles.option} value={LANGUAGES.CHINESE}>Chinese</option>
-        </select>
+        <div>
+            <button
+                className={styles.select}
+                onClick={() => handleChange(LANGUAGES.ENGLISH)}
+            >
+                EN
+            </button>
+            <button
+                className={styles.select}
+                onClick={() => handleChange(LANGUAGES.CHINESE)}
+            >
+                CH
+            </button>
+        </div>
     );
 };
