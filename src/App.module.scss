@@ -2,9 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
 .App {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr auto; // Header, content, footer
     min-height: 100vh;
+    flex-direction: column;
 }
 
 .content {
@@ -158,6 +159,8 @@
 }
 
 .footer {
+    grid-row-start: 3;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
