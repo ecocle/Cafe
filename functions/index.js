@@ -374,7 +374,7 @@ app.post('/api/logout', (req, res) => {
 
 const httpsServer = https.createServer(credentials, app);
 
-httpsServer.listen(5000, () => {
+httpsServer.listen(port, host,() => {
     if (host === '0.0.0.0') {
         console.log(`Server is accessible from any network interface`);
         console.log(`- Local: https://localhost:${port}`);
