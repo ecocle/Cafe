@@ -71,6 +71,7 @@ function App() {
     }, []);
 
     function showCoffee() {
+        setIsLoading(true);
         fetch('/api/dataCoffee')
             .then(response => {
                 if (!response.ok) {
@@ -86,9 +87,11 @@ function App() {
                     selectedLanguage: selectedLanguage
                 }));
                 setCoffeeData(formattedData);
+                setIsLoading(false);
             })
             .catch(error => {
                 console.error('Error:', error);
+                setIsLoading(false);
             });
 
         setShowStates((prevState) => ({
@@ -104,6 +107,7 @@ function App() {
     }
 
     function showCaffeineFree() {
+        setIsLoading(true);
         fetch('/api/dataCaffeineFree')
             .then(response => {
                 if (!response.ok) {
@@ -119,9 +123,11 @@ function App() {
                     selectedLanguage: selectedLanguage
                 }));
                 setCaffeineFreeData(formattedData);
+                setIsLoading(false);
             })
             .catch(error => {
                 console.error('Error:', error);
+                setIsLoading(false);
             });
 
         setShowStates((prevState) => ({
