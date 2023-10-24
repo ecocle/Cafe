@@ -18,14 +18,16 @@ export const LanguageSelection = ({ onLanguageChange, selectedLanguage }: Langua
             <button
                 className={styles.select}
                 onClick={() => handleChange(LANGUAGES.ENGLISH)}
+                disabled={selectedLanguage === LANGUAGES.ENGLISH}
             >
-                EN
+                <span className={styles.text}>EN</span>
             </button>
             <button
                 className={styles.select}
                 onClick={() => handleChange(LANGUAGES.CHINESE)}
+                disabled={selectedLanguage === LANGUAGES.CHINESE}
             >
-                CH
+                <span className={styles.text}>CH</span>
             </button>
         </div>
     );

@@ -5,20 +5,71 @@
 }
 
 .select {
-    font-size: 1.2em;
-    flex-wrap: nowrap;
     background: transparent;
     border: transparent;
-    color: #efefef;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    margin-right: 1em;
 }
 
-.select:active {
-    background: transparent;
-    border: transparent;
+.select:last-child {
+    margin-right: 0;
+}
+
+.select:disabled {
+    cursor: default;
+}
+
+.text {
+    font-size: 1.3em;
+    color: #efefef;
+    position: relative;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.text::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.select:not(:disabled):hover .text::after {
+    width: 85%;
+}
+
+.select:not(:disabled):active .text,
+.select:not(:disabled):active .text::after {
+    color: #b4b4b4;
+}
+
+.select:disabled .text {
+    color: #ccc;
+}
+
+.select:disabled .text::after {
+    width: 0;
 }
 
 @media (prefers-color-scheme: light) {
-    .select {
+    .text {
         color: #3a3a3a;
+    }
+    
+    .select:not(:disabled):active .text,
+    .select:not(:disabled):active .text::after {
+        color: #6b6b6b;
+    }
+    
+    .select:disabled .text {
+        color: #4d4d4d;
     }
 }

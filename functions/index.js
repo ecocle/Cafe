@@ -77,7 +77,7 @@ app.get("/api/dataCoffee", async (req, res) => {
             rows = cachedResults
         } else {
             [rows] = await conn.query(queryDataCoffee);
-            setInCache(queryDataCoffee, rows, 16 * 60 * 60);
+            setInCache(queryDataCoffee, rows, 30 * 60);
         }
         res.json(rows || []);
     } catch (err) {
@@ -96,7 +96,7 @@ app.get("/api/dataCaffeineFree", async (req, res) => {
             rows = cachedResults
         } else {
             [rows] = await conn.query(queryDataCaffeineFree);
-            setInCache(queryDataCaffeineFree, rows, 16 * 60 * 60);
+            setInCache(queryDataCaffeineFree, rows, 30 * 60);
         }
         
         res.json(rows);
@@ -116,7 +116,7 @@ app.get("/api/dataBreakfast", async (req, res) => {
             rows = cachedResults
         } else {
             [rows] = await conn.query(queryDataBreakfast);
-            setInCache(queryDataBreakfast, rows, 16 * 60 * 60);
+            setInCache(queryDataBreakfast, rows, 30 * 60);
         }
         res.json(rows);
     } catch (err) {
