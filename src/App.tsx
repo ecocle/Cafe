@@ -411,24 +411,24 @@ function App() {
                                 </p>
                                 <div className={styles.settings}>
                                     <button className={styles.button_add} onClick={add}>
-                                        Add money to account
+                                        {selectedLanguage === 'chinese' ? '充值' : 'Add money to account'}
                                     </button>
                                     {isAdmin && (
                                         <div>
                                             <button className={styles.button_view} onClick={showAdmin}>
-                                                View Orders
+                                                {selectedLanguage === 'chinese' ? '查看订单' : 'View Orders'}
                                             </button>
                                         </div>
                                     )}
                                     {!isAdmin && (
                                         <div>
                                             <button className={styles.button_view} onClick={showNormal}>
-                                                View Orders
+                                                {selectedLanguage === 'chinese' ? '查看订单' : 'View Orders'}
                                             </button>
                                         </div>
                                     )}
                                     <button className={styles.button_out} onClick={logOut}>
-                                        Log out
+                                        {selectedLanguage === 'chinese' ? '退出登录' : 'Log Out'}
                                     </button>
                                 </div>
                             </div>

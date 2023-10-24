@@ -164,16 +164,16 @@ export const ViewOrdersNormal = ({selectedLanguage}: ViewOrdersNormalProps) => {
             <table className={styles['orders-table']}>
                 <thead>
                 <tr>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Order Time'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'First Name'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Last Name'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Type'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Temperature'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Toppings'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Size'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Price'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Comments'}</th>
-                    <th>{selectedLanguage === 'chinese' ? '' : 'Cup'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '订单时间' : 'Order Time'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '名' : 'First Name'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '姓' : 'Last Name'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '类型' : 'Type'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '温度' : 'Temperature'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '配料' : 'Toppings'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '大小' : 'Size'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '价钱' : 'Price'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '备注' : 'Comments'}</th>
+                    <th>{selectedLanguage === 'chinese' ? '杯子' : 'Cup'}</th>
                 </tr>
                 </thead>
                 <tbody>{renderRows()}</tbody>
