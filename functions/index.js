@@ -367,17 +367,17 @@ app.post('/api/logout', (req, res) => {
 app.listen(port, host,() => {
     if (host === '0.0.0.0') {
         console.log(`Server is accessible from any network interface`);
-        console.log(`- Local: https://localhost:${port}`);
+        console.log(`- Local: http://localhost:${port}`);
 
         const interfaces = os.networkInterfaces();
         for (const iface of Object.values(interfaces)) {
             for (const alias of iface) {
                 if ('IPv4' !== alias.family || alias.internal !== false) continue;
-                console.log(`- Network: https://${alias.address}:${port}`);
+                console.log(`- Network: http://${alias.address}:${port}`);
             }
         }
     } else {
-        console.log(`Server running at https://${host}:${port}/`);
+        console.log(`Server running at http://${host}:${port}/`);
     }
 });
 

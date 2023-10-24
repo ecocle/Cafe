@@ -1,16 +1,19 @@
-import { useState, useEffect, SetStateAction } from 'react';
+import { lazy, useState, useEffect, SetStateAction, Suspense } from 'react';
 import styles from './App.module.scss';
 import { LoadingScreen } from './components/loading-screen/loading-screen';
-import { Coffee, CoffeeProps } from './components/coffee/coffee';
-import { CaffeineFree, CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
-import { Breakfast, BreakfastProps } from './components/breakfast/breakfast';
-import { Login } from './components/login/login';
-import { Register } from './components/register/register';
-import { AddMoneyToAcc } from './components/add-money-to-acc/add-money-to-acc';
+const Coffee = lazy(() => import('./components/coffee/coffee').then(module => ({ default: module.Coffee })));
+const CaffeineFree = lazy(() => import('./components/caffeine-free/caffeine-free').then(module => ({ default: module.CaffeineFree })));
+const Breakfast = lazy(() => import('./components/breakfast/breakfast').then(module => ({ default: module.Breakfast })));
+const Login = lazy(() => import('./components/login/login').then(module => ({ default: module.Login })));
+const Register = lazy(() => import('./components/register/register').then(module => ({ default: module.Register })));
+const AddMoneyToAcc = lazy(() => import('./components/add-money-to-acc/add-money-to-acc').then(module => ({ default: module.AddMoneyToAcc })));
 import { LanguageSelection } from './components/language-selection/language-selection';
-import { ViewOrders } from './components/view-orders/view-orders';
-import { ViewOrdersNormal } from './components/view-orders-normal/view-orders-normal';
+const ViewOrders = lazy(() => import('./components/view-orders/view-orders').then(module => ({ default: module.ViewOrders })));
+const ViewOrdersNormal = lazy(() => import('./components/view-orders-normal/view-orders-normal').then(module => ({ default: module.ViewOrdersNormal })));
 import { DEFAULT_LANGUAGE, LANGUAGES } from './constants/constants';
+import { CoffeeProps } from './components/coffee/coffee';
+import { CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
+import { BreakfastProps } from './components/breakfast/breakfast';
 
 
 function App() {
@@ -65,7 +68,7 @@ function App() {
         }
     }, []);
 
-    useEffect(() => {
+    function showCoffee() {
         fetch('/api/dataCoffee')
             .then(response => {
                 if (!response.ok) {
@@ -85,9 +88,20 @@ function App() {
             .catch(error => {
                 console.error('Error:', error);
             });
-    }, [selectedLanguage]);
 
-    useEffect(() => {
+        setShowStates((prevState) => ({
+            ...prevState,
+            coffee: !prevState.coffee,
+            caffeineFree: false,
+            breakfast: false,
+            main: false,
+            return: true,
+            admin: false,
+            normal: false
+        }));
+    }
+
+    function showCaffeineFree() {
         fetch('/api/dataCaffeineFree')
             .then(response => {
                 if (!response.ok) {
@@ -107,9 +121,20 @@ function App() {
             .catch(error => {
                 console.error('Error:', error);
             });
-    }, [selectedLanguage]);
 
-    useEffect(() => {
+        setShowStates((prevState) => ({
+            ...prevState,
+            coffee: false,
+            caffeineFree: !prevState.caffeineFree,
+            breakfast: false,
+            main: false,
+            return: true,
+            admin: false,
+            normal: false
+        }));
+    }
+
+    function showBreakfast() {
         setIsLoading(true);
         fetch('/api/dataBreakfast')
             .then(response => {
@@ -132,36 +157,7 @@ function App() {
                 console.error('Error:', error);
                 setIsLoading(false);
             });
-    }, [selectedLanguage]);
 
-
-    const showCoffee = () => {
-        setShowStates((prevState) => ({
-            ...prevState,
-            coffee: !prevState.coffee,
-            caffeineFree: false,
-            breakfast: false,
-            main: false,
-            return: true,
-            admin: false,
-            normal: false
-        }));
-    };
-
-    const showCaffeineFree = () => {
-        setShowStates((prevState) => ({
-            ...prevState,
-            coffee: false,
-            caffeineFree: !prevState.caffeineFree,
-            breakfast: false,
-            main: false,
-            return: true,
-            admin: false,
-            normal: false
-        }));
-    };
-
-    function showBreakfast() {
         setShowStates((prevState) => ({
             ...prevState,
             coffee: false,
@@ -174,7 +170,7 @@ function App() {
         }));
     }
 
-    const showMain = () => {
+    function showMain() {
         setTimeout(function() {
             setShowStates((prevState) => ({
                 ...prevState,
@@ -187,9 +183,9 @@ function App() {
                 normal: false
             }));
         }, 300);
-    };
+    }
 
-    const showAdmin = () => {
+    function showAdmin() {
         setTimeout(function() {
             setShowStates((prevState) => ({
                 ...prevState,
@@ -202,9 +198,9 @@ function App() {
                 normal: false
             }));
         }, 300);
-    };
+    }
 
-    const showNormal = () => {
+    function showNormal() {
         setTimeout(function() {
             setShowStates((prevState) => ({
                 ...prevState,
@@ -217,7 +213,7 @@ function App() {
                 normal: true
             }));
         }, 300);
-    };
+    }
 
     const checkAdmin = () => {
         if (userData && userData.username === 'Admin') {
@@ -298,14 +294,20 @@ function App() {
             <div>
                 {isLoading && <LoadingScreen />}
                 {isLoggingIn && (
-                    <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin}
-                           selectedLanguage={selectedLanguage} />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin}
+                               selectedLanguage={selectedLanguage} />
+                    </Suspense>
                 )}
                 {isRegistering && (
-                    <Register onClose={closeRegister} selectedLanguage={selectedLanguage} />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Register onClose={closeRegister} selectedLanguage={selectedLanguage} />
+                    </Suspense>
                 )}
                 {isAdding && (
-                    <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc} />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <AddMoneyToAcc selectedLanguage={selectedLanguage} onClose={closeAddMoneyToAcc} />
+                    </Suspense>
                 )}
                 {showStates.admin && (
                     <div>
@@ -315,7 +317,9 @@ function App() {
                             </button>
                         </div>
                         <div>
-                            <ViewOrders selectedLanguage={selectedLanguage} />
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <ViewOrders selectedLanguage={selectedLanguage} />
+                            </Suspense>
                         </div>
                     </div>
                 )}
@@ -327,7 +331,9 @@ function App() {
                             </button>
                         </div>
                         <div>
-                            <ViewOrdersNormal selectedLanguage={selectedLanguage} />
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <ViewOrdersNormal selectedLanguage={selectedLanguage} />
+                            </Suspense>
                         </div>
                     </div>
                 )}
@@ -340,8 +346,10 @@ function App() {
                         </div>
                         <div className={styles.coffeeContainer}>
                             {coffeeData.map((coffee, index) => (
-                                <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={userData}
-                                        selectedLanguage={selectedLanguage} />
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={userData}
+                                            selectedLanguage={selectedLanguage} />
+                                </Suspense>
                             ))}
                         </div>
                     </div>
@@ -355,8 +363,10 @@ function App() {
                         </div>
                         <div className={styles.coffeeContainer}>
                             {caffeineFreeData.map((caffeineFree, index) => (
-                                <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price}
-                                              userData={userData} selectedLanguage={selectedLanguage} />
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price}
+                                                  userData={userData} selectedLanguage={selectedLanguage} />
+                                </Suspense>
                             ))}
                         </div>
                     </div>
@@ -370,8 +380,11 @@ function App() {
                         </div>
                         <div className={styles.coffeeContainer}>
                             {breakfastData.map((breakfast, index) => (
-                                <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} userData={userData}
-                                           selectedLanguage={selectedLanguage} />
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price}
+                                               userData={userData}
+                                               selectedLanguage={selectedLanguage} />
+                                </Suspense>
                             ))}
                         </div>
                     </div>
