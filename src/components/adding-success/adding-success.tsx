@@ -25,7 +25,7 @@ export const AddingSuccess = ({ selectedLanguage, onClose, amount }: AddingSucce
                 </div>
                 <h2>{selectedLanguage === 'chinese' ? '已添加金额' : 'Amount Added!'}</h2>
                 <p>{selectedLanguage === 'chinese' ? '金额已成功添加到您的账户。' : 'The amount has been added to your account successfully.'}</p>
-                <button onClick={onClose} className={styles.closeBtn}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
+                <button onClick={onClose} className={styles.close}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
             </div>
         </div>
     );

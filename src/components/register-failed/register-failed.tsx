@@ -13,7 +13,7 @@ export const RegisterFailed = ({ onClose, selectedLanguage }: RegisterFailedProp
             <div className={styles.popupInner}>
                 <h2>{selectedLanguage === 'chinese' ? '账号已存在' : 'Account already exist'}</h2>
                 <p>{selectedLanguage === 'chinese' ? '尝试另一个用户名和密码。' : 'Try another username and password.'}</p>
-                <button onClick={onClose} className={styles.closeBtn}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
+                <button onClick={onClose} className={styles.close}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
             </div>
         </div>
     );

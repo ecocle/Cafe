@@ -13,7 +13,7 @@ export const AddingFailed = ({ onClose, selectedLanguage }: AddingFailedProps) =
             <div className={styles.popupInner}>
                 <h2>{selectedLanguage === 'chinese' ? 'null' : 'This shouldn\'t happen'}</h2>
                 <p>{selectedLanguage === 'chinese' ? 'null' : 'You shouldn\'t see this page if you do contact me(shawn).'}</p>
-                <button onClick={onClose} className={styles.closeBtn}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
+                <button onClick={onClose} className={styles.close}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
             </div>
         </div>
     );

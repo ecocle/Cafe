@@ -13,7 +13,7 @@ export const RegisterSuccess = ({ onClose, selectedLanguage }: RegisterSuccessPr
             <div className={styles.popupInner}>
                 <h2>{selectedLanguage === 'chinese' ? '注册成功' : 'Account Registered!'}</h2>
                 <p>{selectedLanguage === 'chinese' ? '您的帐户已注册成功。' : 'Your account is registered successfully.'}</p>
-                <button onClick={onClose} className={styles.closeBtn}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
+                <button onClick={onClose} className={styles.close}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
             </div>
         </div>
     );

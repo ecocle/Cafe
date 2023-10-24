@@ -13,7 +13,7 @@ export const LoginSuccess = ({ onClose, selectedLanguage }: LoginSuccessProps) =
             <div className={styles.popupInner}>
                 <h2>{selectedLanguage === 'chinese' ? '登陆成功！' : 'Login successful!'}</h2>
                 <p>{selectedLanguage === 'chinese' ? '成功的登陆了。' : 'Logged in successfully.'}</p>
-                <button onClick={onClose} className={styles.closeBtn}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
+                <button onClick={onClose} className={styles.close}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
             </div>
         </div>
     );

@@ -80,6 +80,7 @@
     transition: 0.3s;
     font-size: 1em;
     color: #f5f5f5;
+    border-radius: 5px;
     
     &:hover {
         background-color: #005400;
@@ -95,6 +96,7 @@
     
     &.button_register,
     .button_login {
+        height: 3em;
         width: 6em;
     }
     

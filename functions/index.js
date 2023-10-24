@@ -33,6 +33,21 @@ const conn = mysql.createPool({
     queueLimit: 0,
 });
 
+const cache = {};
+
+const getFromCache = (key) => {
+    const item = cache[key];
+    if (item && (item.expiry > Date.now())) {
+        return item.value;
+    }
+    return null;
+};
+
+const setInCache = (key, value, duration) => {
+    const expiry = Date.now() + (duration * 1000);
+    cache[key] = { value, expiry };
+};
+
 app.use(express.json());
 app.use(express.static("../dist"));
 
@@ -54,7 +69,16 @@ app.get("/", (req, res) => {
 
 app.get("/api/dataCoffee", async (req, res) => {
     try {
-        const [rows] = await conn.query('SELECT * FROM Coffee');
+        const queryDataCoffee = 'SELECT * FROM Coffee'
+        const cachedResults = getFromCache(queryDataCoffee);
+        let rows;
+        
+        if (cachedResults) {
+            rows = cachedResults
+        } else {
+            [rows] = await conn.query(queryDataCoffee);
+            setInCache(queryDataCoffee, rows, 16 * 60 * 60);
+        }
         res.json(rows || []);
     } catch (err) {
         console.error('Error fetching coffee data:', err);
@@ -64,7 +88,17 @@ app.get("/api/dataCoffee", async (req, res) => {
 
 app.get("/api/dataCaffeineFree", async (req, res) => {
     try {
-        const [rows] = await conn.query('SELECT * FROM Caffeine_free');
+        const queryDataCaffeineFree = 'SELECT * FROM Caffeine_free';
+        const cachedResults = getFromCache(queryDataCaffeineFree);
+        let rows;
+        
+        if (cachedResults) {
+            rows = cachedResults
+        } else {
+            [rows] = await conn.query(queryDataCaffeineFree);
+            setInCache(queryDataCaffeineFree, rows, 16 * 60 * 60);
+        }
+        
         res.json(rows);
     } catch (err) {
         console.error('Error fetching coffee data:', err);
@@ -74,7 +108,16 @@ app.get("/api/dataCaffeineFree", async (req, res) => {
 
 app.get("/api/dataBreakfast", async (req, res) => {
     try {
-        const [rows] = await conn.query('SELECT * FROM Breakfast');
+        const queryDataBreakfast = 'SELECT * FROM Breakfast'
+        const cachedResults = getFromCache(queryDataBreakfast);
+        let rows;
+        
+        if (cachedResults) {
+            rows = cachedResults
+        } else {
+            [rows] = await conn.query(queryDataBreakfast);
+            setInCache(queryDataBreakfast, rows, 16 * 60 * 60);
+        }
         res.json(rows);
     } catch (err) {
         console.error('Error fetching coffee data:', err);

@@ -43,7 +43,7 @@ export const Success = ({ onClose, userData, price, selectedLanguage}: SuccessPr
                         <p>{selectedLanguage === 'chinese' ? '你还剩' : 'You have'} <span style={{fontWeight: 'bold'}}>¥{userData!.balance - price}</span> {selectedLanguage === 'chinese' ? '在你帐号里' : 'Left in your account'}</p>
                     </div>
                 )}
-                <button onClick={onClose} className={styles.closeBtn}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
+                <button onClick={onClose} className={styles.close}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
             </div>
         </div>
     );

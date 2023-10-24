@@ -13,7 +13,7 @@ export const LoginFailed = ({ onClose, selectedLanguage }: LoginFailedProps) => 
             <div className={styles.popupInner}>
                 <h2>{selectedLanguage === 'chinese' ? '账号不存在！' : 'Accounts does not exist!'}</h2>
                 <p>{selectedLanguage === 'chinese' ? '尝试检查您的用户名和密码。' : 'Try checking your username and password.'}</p>
-                <button onClick={onClose} className={styles.closeBtn}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
+                <button onClick={onClose} className={styles.close}>{selectedLanguage === 'chinese' ? '返回' : 'Go back'}</button>
             </div>
         </div>
     );

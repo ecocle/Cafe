@@ -18,6 +18,19 @@
     position: absolute;
     right: 0.3em;
     top: 0.3em;
+    background: #007bff;
+    padding: 5px;
+    border: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close:hover {
+    background: #006cf5;
+}
+
+.close:active {
+    background: #0056b3;
 }
 
 @media (prefers-color-scheme: dark) {
