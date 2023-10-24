@@ -1,6 +1,4 @@
 const express = require("express");
-const fs = require('fs');
-const https = require('https');
 const session = require('express-session');
 const os = require('os');
 const jwt = require("jsonwebtoken");
@@ -15,12 +13,6 @@ const host = '0.0.0.0'
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
-
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/hualangcafe.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/hualangcafe.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/hualangcafe.com/chain.pem', 'utf8');
-
-const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 require('dotenv').config({path: '../src/env.env'});
 const secret_key = process.env.SECRET_KEY;
@@ -372,9 +364,7 @@ app.post('/api/logout', (req, res) => {
     res.clearCookie('access_token').json({message: 'Logged out successfully'});
 });
 
-const httpsServer = https.createServer(credentials, app);
-
-httpsServer.listen(port, host,() => {
+app.listen(port, host,() => {
     if (host === '0.0.0.0') {
         console.log(`Server is accessible from any network interface`);
         console.log(`- Local: https://localhost:${port}`);
