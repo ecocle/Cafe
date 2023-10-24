@@ -14,6 +14,12 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
 
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/hualangcafe.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/hualangcafe.com/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/hualangcafe.com/chain.pem', 'utf8');
+
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+
 require('dotenv').config({path: '../src/env.env'});
 const secret_key = process.env.SECRET_KEY;
 
@@ -95,7 +101,6 @@ app.post('/api/orders', async (req, res) => {
     try {
         const decodedToken = jwt.verify(token, secret_key);
         username = decodedToken.username;
-        console.log('Token verified, username:', username);
     } catch (error) {
         console.error('Error verifying token:', error);
         return res.status(401).json({error: 'Invalid token'});
@@ -103,7 +108,6 @@ app.post('/api/orders', async (req, res) => {
 
     try {
         const result = await orderResult(data, username, conn);
-        console.log('Order placed successfully:', result);
         res.json({message: 'Order placed successfully', result});
     } catch (error) {
         console.error('Error placing order:', error);
@@ -366,20 +370,22 @@ app.post('/api/logout', (req, res) => {
     res.clearCookie('access_token').json({message: 'Logged out successfully'});
 });
 
-app.listen(port, host, () => {
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(5000, () => {
     if (host === '0.0.0.0') {
         console.log(`Server is accessible from any network interface`);
-        console.log(`- Local: http://localhost:${port}`);
+        console.log(`- Local: https://localhost:${port}`);
 
         const interfaces = os.networkInterfaces();
         for (const iface of Object.values(interfaces)) {
             for (const alias of iface) {
                 if ('IPv4' !== alias.family || alias.internal !== false) continue;
-                console.log(`- Network: http://${alias.address}:${port}`);
+                console.log(`- Network: https://${alias.address}:${port}`);
             }
         }
     } else {
-        console.log(`Server running at http://${host}:${port}/`);
+        console.log(`Server running at https://${host}:${port}/`);
     }
 });
 
