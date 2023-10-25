@@ -1,21 +1,19 @@
 import { lazy, useState, useEffect, SetStateAction, Suspense } from 'react';
 import styles from './App.module.scss';
 import { LoadingScreen } from './components/loading-screen/loading-screen';
-
+import { LanguageSelection } from './components/language-selection/language-selection';
+import { DEFAULT_LANGUAGE, LANGUAGES } from './constants/constants';
+import { CoffeeProps } from './components/coffee/coffee';
+import { CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
+import { BreakfastProps } from './components/breakfast/breakfast';
 const Coffee = lazy(() => import('./components/coffee/coffee').then(module => ({ default: module.Coffee })));
 const CaffeineFree = lazy(() => import('./components/caffeine-free/caffeine-free').then(module => ({ default: module.CaffeineFree })));
 const Breakfast = lazy(() => import('./components/breakfast/breakfast').then(module => ({ default: module.Breakfast })));
 const Login = lazy(() => import('./components/login/login').then(module => ({ default: module.Login })));
 const Register = lazy(() => import('./components/register/register').then(module => ({ default: module.Register })));
 const AddMoneyToAcc = lazy(() => import('./components/add-money-to-acc/add-money-to-acc').then(module => ({ default: module.AddMoneyToAcc })));
-import { LanguageSelection } from './components/language-selection/language-selection';
-
 const ViewOrders = lazy(() => import('./components/view-orders/view-orders').then(module => ({ default: module.ViewOrders })));
 const ViewOrdersNormal = lazy(() => import('./components/view-orders-normal/view-orders-normal').then(module => ({ default: module.ViewOrdersNormal })));
-import { DEFAULT_LANGUAGE, LANGUAGES } from './constants/constants';
-import { CoffeeProps } from './components/coffee/coffee';
-import { CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
-import { BreakfastProps } from './components/breakfast/breakfast';
 
 
 function App() {

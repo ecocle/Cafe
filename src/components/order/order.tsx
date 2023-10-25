@@ -24,7 +24,7 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
     const [price, setPrice] = useState(originalPrice);
     const [comments, setComments] = useState('');
     const [useCup, setUseCup] = useState(false);
-    const noSize = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Classic flavored Porridge', 'Chocolate flavored Porridge'];
+    const onlyMedium = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Classic flavored Porridge', 'Chocolate flavored Porridge'];
     const noToppings = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Classic flavored Porridge', 'Chocolate flavored Porridge'];
     const noHot = ['Crispy cereal in milk(classic)', 'Crispy cereal in milk(honey)', 'Crispy cereal in milk(chocolate)', 'Cocoa', 'Matcha milk', 'Matcha boba', 'Tai Red Tea', 'Coconut Water', 'Milk tea', 'Jasmine Milktea', 'Boba', 'Refreshing babyblue drink', 'Pure milk'];
     const noCold = ['Classic flavored Porridge', 'Chocolate flavored Porridge'];
@@ -218,13 +218,12 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
                         </select>
                     </label>
                 </div>
-                {!noSize.includes(name) && (
+                {!onlyMedium.includes(name) && (
                     <div className="option">
                         <label>
                             {selectedLanguage === 'chinese' ? '大小:' : 'Size:'}
                             <select value={selectedSize} onChange={handleSizeChange}>
                                 <option value="medium">{selectedLanguage === 'chinese' ? '中' : 'Medium'}</option>
-                                <option value="large">{selectedLanguage === 'chinese' ? '大' : 'Large'}</option>
                             </select>
                         </label>
                     </div>
