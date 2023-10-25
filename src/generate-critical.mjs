@@ -32,7 +32,7 @@ task('generate-critical-css', async () => {
                 width: 1200,
               },
             ],
-          }, (err, output) => {
+          }, (err) => {
             if (err) {
               console.error(err);
               reject(err);
