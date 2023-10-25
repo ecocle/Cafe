@@ -130,7 +130,11 @@ export const Login = ({ className, onLoginSuccess, onClose, selectedLanguage }: 
                         required
                     />
                     <br />
-                    <button className={styles.button} type="button" onClick={handleLogin}>
+                    <button className={styles.button}
+                            type="button"
+                            onClick={handleLogin}
+                            disabled={username === "" || password === ""}
+                    >
                         {selectedLanguage === 'chinese' ? '登陆' : 'Login'}
                     </button>
                 </div>

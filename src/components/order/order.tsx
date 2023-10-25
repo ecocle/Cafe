@@ -283,7 +283,7 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
                 </div>
                 <div className="option">
                     <label>
-                        <input type="checkbox" checked={useCup} onChange={handleUseCupChange}/>
+                        <input type="checkbox" checked={useCup} onChange={handleUseCupChange} className={styles.checkbox}/>
                         <span
                             className="no-line-break">{selectedLanguage === 'chinese' ? '用自己的杯子' : 'Use own cup'}</span>
                     </label>

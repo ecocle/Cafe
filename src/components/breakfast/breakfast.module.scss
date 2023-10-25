@@ -1,100 +1,51 @@
-@media (prefers-color-scheme: dark) {
-    .root {
-        display: flex;
-        justify-content: center;
-        align-items: start;
-        height: auto;
-        width: auto;
-        margin: 1vw;
-        transition: transform 0.3s ease;
-    }
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    height: auto;
+    width: auto;
+    margin: 1vw;
+}
 
-    .root:hover {
-        transform: scale(1.05);
-    }
+.coffee {
+    display: inline;
+    overflow: visible;
+    background: #50C878;
+    background-origin: padding-box;
+    background-clip: border-box;
+    box-shadow: 2.83px 2.83px 12px black;
+    margin: 0;
+    border-radius: 0.8em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-    .root:active {
-        transform: scale(0.95);
-    }
+.coffee:hover {
+    transform: scale(1.05);
+}
 
-    .coffee {
-        display: inline;
-        overflow: visible;
-        position: static;
-        background: #50C878  ;
-        background-origin: padding-box;
-        background-clip: border-box;
-        box-shadow: 2.83px 2.83px 12px black;
-        margin: 0px;
-        border-radius: 0.8em;
-        cursor: pointer;
-    }
+.coffee:active {
+    transform: scale(0.95);
+}
 
-    .text {
-        margin: 0.3vw;
-        padding: 0vw;
-        color: black;
-    }
+.text {
+    margin: 0.3vw;
+    padding: 0vw;
+    color: black;
+}
 
-    .border-text {
-        font-weight: bold;
-        color: #f5f5f5;
-        text-shadow:
-            -1px -1px 0 #000,
-            1px -1px 0 #000,
-            -1px 1px 0 #000,
-            1px 1px 0 #000;
-        font-size: 1.3em;
-    }
+.border-text {
+    font-weight: bold;
+    color: #f5f5f5;
+    text-shadow: -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+    font-size: 1.3em;
 }
 
 @media (prefers-color-scheme: light) {
-    .root {
-        display: flex;
-        justify-content: center;
-        align-items: start;
-        height: auto;
-        width: auto;
-        margin: 1vw;
-        transition: transform 0.3s ease;
-    }
-
-    .root:hover {
-        transform: scale(1.05);
-    }
-
-    .root:active {
-        transform: scale(0.95);
-    }
-
     .coffee {
-        display: inline;
-        overflow: visible;
-        position: static;
         background: #a8d0e6;
-        background-origin: padding-box;
-        background-clip: border-box;
-        box-shadow: 2.83px 2.83px 12px black;
-        margin: 0px;
-        border-radius: 0.8em;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    .text {
-        margin: 0.3vw;
-        padding: 0vw;
-        color: black;
-    }
-
-    .border-text {
-        font-weight: bold;
-        color: #f5f5f5;
-        text-shadow:
-            -1px -1px 0 #000,
-            1px -1px 0 #000,
-            -1px 1px 0 #000,
-            1px 1px 0 #000;
-        font-size: 1.3em;
     }
 }

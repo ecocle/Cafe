@@ -12,7 +12,6 @@ export interface BreakfastProps {
 }
 
 export const Breakfast = ({ className, Name, Price, userData, selectedLanguage }: BreakfastProps) => {
-    let PriceLarge = Price + 3;
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -28,8 +27,7 @@ export const Breakfast = ({ className, Name, Price, userData, selectedLanguage }
             <div className={classNames(styles.root, className)}>
                 <div className={styles.coffee} onClick={handleOrder}>
                     <h2 className={styles.text}>{Name}</h2>
-                    <p className={classNames(styles.text, styles['border-text'])}>M:{Price}</p>
-                    <p className={classNames(styles.text, styles['border-text'])}>L:{PriceLarge}</p>
+                    <p className={styles.text}><span className={styles['border-text']}>M:{Price}</span></p>
                 </div>
             </div>
             <div>

@@ -496,7 +496,8 @@ function App() {
                 </div>
             )}
             <div className={styles.footer}>
-                <p>{selectedLanguage === 'chinese' ? '由Shawn提供支持' : 'Powered By Shawn'}</p>
+                <a>{selectedLanguage === 'chinese' ? '由Shawn提供支持' : 'Powered By Shawn'}</a>
+                {/*<button className={styles.select} disabled><span className={styles.text}>About</span></button>*/}
             </div>
         </div>
     );
