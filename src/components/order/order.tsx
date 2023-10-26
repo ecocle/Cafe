@@ -223,6 +223,18 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
                         <label>
                             {selectedLanguage === 'chinese' ? '大小:' : 'Size:'}
                             <select value={selectedSize} onChange={handleSizeChange}>
+                                <option value="small">{selectedLanguage === 'chinese' ? '小' : 'Small'}</option>
+                                <option value="medium">{selectedLanguage === 'chinese' ? '中' : 'Medium'}</option>
+                                <option value="large">{selectedLanguage === 'chinese' ? '大' : 'Large'}</option>
+                            </select>
+                        </label>
+                    </div>
+                )}
+                {onlyMedium.includes(name) && (
+                    <div className="option">
+                        <label>
+                            {selectedLanguage === 'chinese' ? '大小:' : 'Size:'}
+                            <select value={selectedSize} onChange={handleSizeChange}>
                                 <option value="medium">{selectedLanguage === 'chinese' ? '中' : 'Medium'}</option>
                             </select>
                         </label>
@@ -295,11 +307,11 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
                                   style={{resize: 'none'}}/>
                     </label>
                 </div>
-                <button onClick={handleOrder} className={styles['order-btn']}>
-                    {selectedLanguage === 'chinese' ? '点单' : 'Place Order'}
+                <button onClick={handleOrder} className={styles['order-btn']} disabled={firstName === "" || lastName === ""}>
+                    <span>{selectedLanguage === 'chinese' ? '点单' : 'Place Order'}</span>
                 </button>
                 <div>
-                    <p className={styles.price}>{selectedLanguage === 'chinese' ? '总价' : 'Total price:'}{price}</p>
+                    <p className={styles.price} >{selectedLanguage === 'chinese' ? '总价' : 'Total price:'}{price}</p>
                 </div>
             </div>
         </div>
