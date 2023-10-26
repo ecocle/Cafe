@@ -13,7 +13,7 @@
     background: #50C878;
     background-origin: padding-box;
     background-clip: border-box;
-    box-shadow: 2.83px 2.83px 12px black;
+    box-shadow: 0 0 8px dimgrey;
     margin: 0;
     border-radius: 0.8em;
     cursor: pointer;
@@ -22,10 +22,12 @@
 
 .coffee:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 12px gray;
 }
 
 .coffee:active {
     transform: scale(0.95);
+    box-shadow: 0 0 8px dimgrey;
 }
 
 .text {
@@ -47,5 +49,14 @@
 @media (prefers-color-scheme: light) {
     .coffee {
         background: #a8d0e6;
+        box-shadow: 0 0 8px #282828;
     }
+    
+    .coffee:hover {
+    box-shadow: 0 0 12px black;
+    }
+    
+    .coffee:active {
+    box-shadow: 0 0 8px #282828;
+}
 }

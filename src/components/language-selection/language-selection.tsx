@@ -27,7 +27,7 @@ export const LanguageSelection = ({ onLanguageChange, selectedLanguage }: Langua
                 onClick={() => handleChange(LANGUAGES.CHINESE)}
                 disabled={selectedLanguage === LANGUAGES.CHINESE}
             >
-                <span className={styles.text}>CH</span>
+                <span className={styles.text}>中文</span>
             </button>
         </div>
     );

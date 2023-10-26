@@ -6,6 +6,8 @@ import { DEFAULT_LANGUAGE, LANGUAGES } from './constants/constants';
 import { CoffeeProps } from './components/coffee/coffee';
 import { CaffeineFreeProps } from './components/caffeine-free/caffeine-free';
 import { BreakfastProps } from './components/breakfast/breakfast';
+
+// Lazy load components
 const Coffee = lazy(() => import('./components/coffee/coffee').then(module => ({ default: module.Coffee })));
 const CaffeineFree = lazy(() => import('./components/caffeine-free/caffeine-free').then(module => ({ default: module.CaffeineFree })));
 const Breakfast = lazy(() => import('./components/breakfast/breakfast').then(module => ({ default: module.Breakfast })));
@@ -15,8 +17,8 @@ const AddMoneyToAcc = lazy(() => import('./components/add-money-to-acc/add-money
 const ViewOrders = lazy(() => import('./components/view-orders/view-orders').then(module => ({ default: module.ViewOrders })));
 const ViewOrdersNormal = lazy(() => import('./components/view-orders-normal/view-orders-normal').then(module => ({ default: module.ViewOrdersNormal })));
 
-
 function App() {
+    // State variables
     const [isLoading, setIsLoading] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(DEFAULT_LANGUAGE);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -38,16 +40,14 @@ function App() {
         normal: false
     });
 
+    // Interface for data items
     interface DataItem {
         Name: string;
         Price: string;
         'Name(ch)': string;
     }
 
-    useEffect(() => {
-        checkAdmin();
-    }, [userData]);
-
+    // Fetch user data on component mount
     useEffect(() => {
         const token = getCookie('access_token');
         if (token) {
@@ -68,9 +68,22 @@ function App() {
         }
     }, []);
 
-    function showCoffee() {
+    // Fetch coffee, caffeine-free, and breakfast data on component mount
+    useEffect(() => {
+        fetchData('/api/dataCoffee', setCoffeeData);
+        fetchData('/api/dataCaffeineFree', setCaffeineFreeData);
+        fetchData('/api/dataBreakfast', setBreakfastData);
+    }, []);
+
+    // Check if user is admin
+    useEffect(() => {
+        checkAdmin();
+    }, [userData]);
+
+    // Fetch data from API
+    function fetchData(url: string, setData: Function) {
         setIsLoading(true);
-        fetch('/api/dataCoffee')
+        fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data. Status code: ' + response.status);
@@ -84,15 +97,19 @@ function App() {
                     userData: userData,
                     selectedLanguage: selectedLanguage
                 }));
-                setCoffeeData(formattedData);
+                setData(formattedData);
                 setIsLoading(false);
             })
             .catch(error => {
                 console.error('Error:', error);
                 setIsLoading(false);
             });
+    }
 
-        setShowStates((prevState) => ({
+    // Show coffee data
+    function showCoffee() {
+        fetchData('/api/dataCoffee', setCoffeeData);
+        setShowStates(prevState => ({
             ...prevState,
             coffee: !prevState.coffee,
             caffeineFree: false,
@@ -104,31 +121,10 @@ function App() {
         }));
     }
 
+    // Show caffeine-free data
     function showCaffeineFree() {
-        setIsLoading(true);
-        fetch('/api/dataCaffeineFree')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data. Status code: ' + response.status);
-                }
-                return response.json();
-            })
-            .then((data: DataItem[]) => {
-                const formattedData = data.map(item => ({
-                    Name: selectedLanguage === 'chinese' ? item['Name(ch)'] : item.Name,
-                    Price: Number(item.Price),
-                    userData: userData,
-                    selectedLanguage: selectedLanguage
-                }));
-                setCaffeineFreeData(formattedData);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                setIsLoading(false);
-            });
-
-        setShowStates((prevState) => ({
+        fetchData('/api/dataCaffeineFree', setCaffeineFreeData);
+        setShowStates(prevState => ({
             ...prevState,
             coffee: false,
             caffeineFree: !prevState.caffeineFree,
@@ -140,31 +136,10 @@ function App() {
         }));
     }
 
+    // Show breakfast data
     function showBreakfast() {
-        setIsLoading(true);
-        fetch('/api/dataBreakfast')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data. Status code: ' + response.status);
-                }
-                return response.json();
-            })
-            .then((data: DataItem[]) => {
-                const formattedData = data.map(item => ({
-                    Name: selectedLanguage === 'chinese' ? item['Name(ch)'] : item.Name,
-                    Price: Number(item.Price),
-                    userData: userData,
-                    selectedLanguage: selectedLanguage
-                }));
-                setBreakfastData(formattedData);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                setIsLoading(false);
-            });
-
-        setShowStates((prevState) => ({
+        fetchData('/api/dataBreakfast', setBreakfastData);
+        setShowStates(prevState => ({
             ...prevState,
             coffee: false,
             caffeineFree: false,
@@ -176,9 +151,10 @@ function App() {
         }));
     }
 
+    // Show main page
     function showMain() {
-        setTimeout(function() {
-            setShowStates((prevState) => ({
+        setTimeout(() => {
+            setShowStates(prevState => ({
                 ...prevState,
                 coffee: false,
                 caffeineFree: false,
@@ -191,9 +167,10 @@ function App() {
         }, 300);
     }
 
+    // Show admin page
     function showAdmin() {
-        setTimeout(function() {
-            setShowStates((prevState) => ({
+        setTimeout(() => {
+            setShowStates(prevState => ({
                 ...prevState,
                 coffee: false,
                 caffeineFree: false,
@@ -206,9 +183,10 @@ function App() {
         }, 300);
     }
 
+    // Show normal user page
     function showNormal() {
-        setTimeout(function() {
-            setShowStates((prevState) => ({
+        setTimeout(() => {
+            setShowStates(prevState => ({
                 ...prevState,
                 coffee: false,
                 caffeineFree: false,
@@ -221,16 +199,17 @@ function App() {
         }, 300);
     }
 
+    // Check if user is admin
     const checkAdmin = () => {
         if (userData && userData.username === 'Admin') {
             setIsAdmin(true);
         }
     };
 
+    // Handle successful login
     const handleLoginSuccess = (username: string, token: string) => {
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
-
         fetch('/api/user_data', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -247,22 +226,27 @@ function App() {
             .catch(error => console.error('Error:', error));
     };
 
+    // Handle language change
     const handleLanguageChange = (newLanguage: SetStateAction<LANGUAGES>) => {
         setSelectedLanguage(newLanguage);
     };
 
+    // Open login modal
     const login = () => {
         setIsLoggingIn(true);
     };
 
+    // Open register modal
     const register = () => {
         setIsRegistering(true);
     };
 
+    // Open add money to account modal
     const add = () => {
         setIsAdding(true);
     };
 
+    // Log out user
     function logOut() {
         fetch('/api/logout', {
             method: 'POST'
@@ -277,17 +261,22 @@ function App() {
             });
     }
 
+    // Close login modal
     const closeLogin = async () => {
         setIsLoggingIn(false);
     };
 
+    // Close register modal
     const closeRegister = () => {
         setIsRegistering(false);
     };
 
+    // Close add money to account modal
     const closeAddMoneyToAcc = () => {
         setIsAdding(false);
     };
+
+    // Get cookie by name
     const getCookie = (name: string): string | undefined => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -301,8 +290,7 @@ function App() {
                 {isLoading && <LoadingScreen />}
                 {isLoggingIn && (
                     <Suspense fallback={<div>Loading...</div>}>
-                        <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin}
-                               selectedLanguage={selectedLanguage} />
+                        <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage} />
                     </Suspense>
                 )}
                 {isRegistering && (
@@ -353,8 +341,7 @@ function App() {
                         <div className={styles.coffeeContainer}>
                             {coffeeData.map((coffee, index) => (
                                 <Suspense fallback={<div>Loading...</div>}>
-                                    <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={userData}
-                                            selectedLanguage={selectedLanguage} />
+                                    <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={coffee.userData} selectedLanguage={selectedLanguage} />
                                 </Suspense>
                             ))}
                         </div>
@@ -370,8 +357,7 @@ function App() {
                         <div className={styles.coffeeContainer}>
                             {caffeineFreeData.map((caffeineFree, index) => (
                                 <Suspense fallback={<div>Loading...</div>}>
-                                    <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price}
-                                                  userData={userData} selectedLanguage={selectedLanguage} />
+                                    <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price} userData={caffeineFree.userData} selectedLanguage={selectedLanguage} />
                                 </Suspense>
                             ))}
                         </div>
@@ -387,9 +373,7 @@ function App() {
                         <div className={styles.coffeeContainer}>
                             {breakfastData.map((breakfast, index) => (
                                 <Suspense fallback={<div>Loading...</div>}>
-                                    <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price}
-                                               userData={userData}
-                                               selectedLanguage={selectedLanguage} />
+                                    <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} userData={breakfast.userData} selectedLanguage={selectedLanguage} />
                                 </Suspense>
                             ))}
                         </div>
@@ -399,7 +383,7 @@ function App() {
             {showStates.main && (
                 <div>
                     <div className={styles.header}>
-                        {isLoggedIn && showStates.main && (
+                        {isLoggedIn && (
                             <div className={styles.welcome}>
                                 <p>
                                     {selectedLanguage === 'chinese' ? '你好 ' : 'Hello '}{userData!.username}
@@ -411,19 +395,14 @@ function App() {
                                     <button className={styles.button_add} onClick={add}>
                                         {selectedLanguage === 'chinese' ? '充值' : 'Add money to account'}
                                     </button>
-                                    {isAdmin && (
-                                        <div>
-                                            <button className={styles.button_view} onClick={showAdmin}>
-                                                {selectedLanguage === 'chinese' ? '查看订单' : 'View Orders'}
-                                            </button>
-                                        </div>
-                                    )}
-                                    {!isAdmin && (
-                                        <div>
-                                            <button className={styles.button_view} onClick={showNormal}>
-                                                {selectedLanguage === 'chinese' ? '查看订单' : 'View Orders'}
-                                            </button>
-                                        </div>
+                                    {isAdmin ? (
+                                        <button className={styles.button_view} onClick={showAdmin}>
+                                            {selectedLanguage === 'chinese' ? '查看订单' : 'View Orders'}
+                                        </button>
+                                    ) : (
+                                        <button className={styles.button_view} onClick={showNormal}>
+                                            {selectedLanguage === 'chinese' ? '查看订单' : 'View Orders'}
+                                        </button>
                                     )}
                                     <button className={styles.button_out} onClick={logOut}>
                                         {selectedLanguage === 'chinese' ? '退出登录' : 'Log Out'}
@@ -431,73 +410,54 @@ function App() {
                                 </div>
                             </div>
                         )}
-
                         {!isLoggedIn && (
                             <div className={styles.options}>
                                 <button name='login' type='button' onClick={login} className={styles.button_login}>
                                     {selectedLanguage === 'chinese' ? '登陆' : 'Login'}
                                 </button>
-                                <button className={styles.button_register} name='create_acc' type='button'
-                                        onClick={register}>
+                                <button className={styles.button_register} name='create_acc' type='button' onClick={register}>
                                     {selectedLanguage === 'chinese' ? '注册' : 'Register'}
                                 </button>
                             </div>
                         )}
-                        <LanguageSelection onLanguageChange={handleLanguageChange}
-                                           selectedLanguage={selectedLanguage} />
+                        <LanguageSelection onLanguageChange={handleLanguageChange} selectedLanguage={selectedLanguage} />
                     </div>
                     <h1 className={styles.title}>
                         {selectedLanguage === 'chinese' ? '摸鱼咖啡厅' : 'MY Cafe'}
                     </h1>
                     <div className={styles.buttons}>
-                        {isLoggedIn && (
-                            <div>
-                                <button className={styles.button_disabled} onClick={showCoffee} disabled>
-                                    <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
-                                </button>
-                            </div>
+                        {isLoggedIn ? (
+                            <button className={styles.button_disabled} onClick={showCoffee} disabled>
+                                <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
+                            </button>
+                        ) : (
+                            <button className={styles.button_disabled} onClick={login} disabled>
+                                <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
+                            </button>
                         )}
-                        {!isLoggedIn && (
-                            <div>
-                                <button className={styles.button_disabled} onClick={login} disabled>
-                                    <span>{selectedLanguage === 'chinese' ? '经典咖啡' : 'Coffee'}</span>
-                                </button>
-                            </div>
+                        {isLoggedIn ? (
+                            <button className={styles.button} onClick={showCaffeineFree}>
+                                <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
+                            </button>
+                        ) : (
+                            <button className={styles.button} onClick={login}>
+                                <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
+                            </button>
                         )}
-                        {isLoggedIn && (
-                            <div>
-                                <button className={styles.button} onClick={showCaffeineFree}>
-                                    <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
-                                </button>
-                            </div>
-                        )}
-                        {!isLoggedIn && (
-                            <div>
-                                <button className={styles.button} onClick={login}>
-                                    <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
-                                </button>
-                            </div>
-                        )}
-                        {isLoggedIn && (
-                            <div>
-                                <button className={styles.button} onClick={showBreakfast}>
-                                    <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
-                                </button>
-                            </div>
-                        )}
-                        {!isLoggedIn && (
-                            <div>
-                                <button className={styles.button} onClick={login}>
-                                    <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
-                                </button>
-                            </div>
+                        {isLoggedIn ? (
+                            <button className={styles.button} onClick={showBreakfast}>
+                                <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
+                            </button>
+                        ) : (
+                            <button className={styles.button} onClick={login}>
+                                <span>{selectedLanguage === 'chinese' ? '早餐' : 'Breakfast'}</span>
+                            </button>
                         )}
                     </div>
                 </div>
             )}
             <div className={styles.footer}>
                 <a>{selectedLanguage === 'chinese' ? '由Shawn提供支持' : 'Powered By Shawn'}</a>
-                {/*<button className={styles.select} disabled><span className={styles.text}>About</span></button>*/}
             </div>
         </div>
     );

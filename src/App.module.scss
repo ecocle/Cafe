@@ -25,19 +25,25 @@
     width: auto;
     transition: all 0.3s;
     cursor: pointer;
-    margin: 8px;
-    border-radius: 0.6em;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    margin: 4px;
+    border-radius: 0.7em;
+    box-shadow: 0 0 6px #36454F;
+    
+    &.button_disabled {
+        box-shadow: 0 0 10px black inset;
+    }
     
     &.button {
         &:hover {
             transform: scale(1.1);
             background-color: blueviolet;
+            box-shadow: 0 0 18px #696969;
         }
         
         &:active {
             background-color: rebeccapurple;
             transform: scale(0.9);
+            box-shadow: 0 0 10px #36454F;
         }
     }
     
@@ -249,16 +255,28 @@
 }
 
 @media (prefers-color-scheme: light) {
+    .button_disabled {
+        box-shadow: 0 0 10px #4682b4 inset;
+    }
+    
     .button,
     .button_return {
         background-color: #6A5ACD;
+        box-shadow: 0 0 6px #4682b4;
+        
+        &.button {
+            &:hover {
+                background-color: #6A5ACD;
+                box-shadow: 0 0 18px #191970;
+            }
+            
+            &:active {
+                background-color: #52469E;
+            }
+        }
         
         &:active {
             background-color: #52469E;
-        }
-        
-        &:hover {
-            background-color: #6A5ACD;
         }
     }
     
