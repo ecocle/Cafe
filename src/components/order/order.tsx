@@ -223,7 +223,6 @@ export const Order = ({isOpen, onClose, name, originalPrice, userData, selectedL
                         <label>
                             {selectedLanguage === 'chinese' ? '大小:' : 'Size:'}
                             <select value={selectedSize} onChange={handleSizeChange}>
-                                <option value="small">{selectedLanguage === 'chinese' ? '小' : 'Small'}</option>
                                 <option value="medium">{selectedLanguage === 'chinese' ? '中' : 'Medium'}</option>
                                 <option value="large">{selectedLanguage === 'chinese' ? '大' : 'Large'}</option>
                             </select>
