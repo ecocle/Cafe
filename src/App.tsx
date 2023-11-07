@@ -68,13 +68,6 @@ function App() {
         }
     }, []);
 
-    // Fetch coffee, caffeine-free, and breakfast data on component mount
-    useEffect(() => {
-        fetchData('/api/dataCoffee', setCoffeeData);
-        fetchData('/api/dataCaffeineFree', setCaffeineFreeData);
-        fetchData('/api/dataBreakfast', setBreakfastData);
-    }, []);
-
     // Check if user is admin
     useEffect(() => {
         checkAdmin();
@@ -121,7 +114,7 @@ function App() {
         }));
     }
 
-    // Show caffeine-free data
+    // Show caffeine free data
     function showCaffeineFree() {
         fetchData('/api/dataCaffeineFree', setCaffeineFreeData);
         setShowStates(prevState => ({
@@ -290,7 +283,8 @@ function App() {
                 {isLoading && <LoadingScreen />}
                 {isLoggingIn && (
                     <Suspense fallback={<div>Loading...</div>}>
-                        <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin} selectedLanguage={selectedLanguage} />
+                        <Login onLoginSuccess={handleLoginSuccess} onClose={closeLogin}
+                               selectedLanguage={selectedLanguage} />
                     </Suspense>
                 )}
                 {isRegistering && (
@@ -341,7 +335,8 @@ function App() {
                         <div className={styles.coffeeContainer}>
                             {coffeeData.map((coffee, index) => (
                                 <Suspense fallback={<div>Loading...</div>}>
-                                    <Coffee key={index} Name={coffee.Name} Price={coffee.Price} userData={coffee.userData} selectedLanguage={selectedLanguage} />
+                                    <Coffee key={index} Name={coffee.Name} Price={coffee.Price}
+                                            userData={coffee.userData} selectedLanguage={selectedLanguage} />
                                 </Suspense>
                             ))}
                         </div>
@@ -357,7 +352,9 @@ function App() {
                         <div className={styles.coffeeContainer}>
                             {caffeineFreeData.map((caffeineFree, index) => (
                                 <Suspense fallback={<div>Loading...</div>}>
-                                    <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price} userData={caffeineFree.userData} selectedLanguage={selectedLanguage} />
+                                    <CaffeineFree key={index} Name={caffeineFree.Name} Price={caffeineFree.Price}
+                                                  userData={caffeineFree.userData}
+                                                  selectedLanguage={selectedLanguage} />
                                 </Suspense>
                             ))}
                         </div>
@@ -373,7 +370,8 @@ function App() {
                         <div className={styles.coffeeContainer}>
                             {breakfastData.map((breakfast, index) => (
                                 <Suspense fallback={<div>Loading...</div>}>
-                                    <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price} userData={breakfast.userData} selectedLanguage={selectedLanguage} />
+                                    <Breakfast key={index} Name={breakfast.Name} Price={breakfast.Price}
+                                               userData={breakfast.userData} selectedLanguage={selectedLanguage} />
                                 </Suspense>
                             ))}
                         </div>
@@ -415,12 +413,14 @@ function App() {
                                 <button name='login' type='button' onClick={login} className={styles.button_login}>
                                     {selectedLanguage === 'chinese' ? '登陆' : 'Login'}
                                 </button>
-                                <button className={styles.button_register} name='create_acc' type='button' onClick={register}>
+                                <button className={styles.button_register} name='create_acc' type='button'
+                                        onClick={register}>
                                     {selectedLanguage === 'chinese' ? '注册' : 'Register'}
                                 </button>
                             </div>
                         )}
-                        <LanguageSelection onLanguageChange={handleLanguageChange} selectedLanguage={selectedLanguage} />
+                        <LanguageSelection onLanguageChange={handleLanguageChange}
+                                           selectedLanguage={selectedLanguage} />
                     </div>
                     <h1 className={styles.title}>
                         {selectedLanguage === 'chinese' ? '摸鱼咖啡厅' : 'MY Cafe'}
@@ -441,7 +441,7 @@ function App() {
                             </button>
                         ) : (
                             <button className={styles.button} onClick={login}>
-                                <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Caffeine free'}</span>
+                                <span>{selectedLanguage === 'chinese' ? '无咖啡因饮品' : 'Non-Caffeinated Drinks'}</span>
                             </button>
                         )}
                         {isLoggedIn ? (
